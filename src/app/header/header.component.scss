@@ -1,0 +1,65 @@
+.header-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 160px;
+  margin-bottom: 40px;
+  > div:first-child {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    > div:last-child {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      > input {
+        height: 20px;
+        border: none;
+        background-color: rgb(243, 236, 236);
+        border-radius: 3px;
+      }
+    }
+    img {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    > span {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    > span:first-child {
+      font-weight: bold;
+      font-size: 26px;
+    }
+    > .dropdown-container {
+      > span {
+        position: relative;
+        cursor: pointer;
+        > .dropdown {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: 30px;
+          gap: 5px;
+          z-index: 1;
+          > span {
+            color: black;
+          }
+        }
+      }
+    }
+  }
+  > div:last-child {
+    display: flex;
+    gap: 20px;
+
+    img {
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+    }
+  }
+}

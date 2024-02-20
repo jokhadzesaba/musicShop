@@ -1,8 +1,13 @@
+h1 {
+  padding-left: 80px;
+  margin-bottom: 40px;
+}
 .products {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
   width: 100%;
+  justify-content: center;
   > .single-product {
     width: 228px;
     height: 380px;

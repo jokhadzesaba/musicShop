@@ -1,0 +1,29 @@
+<div class="topProducts-container">
+  <div>
+    <div>
+      <div
+        (click)="changeIndex(0)"
+        [ngClass]="index === 0 ? 'highlight' : ''"
+      ></div>
+      <div
+        (click)="changeIndex(1)"
+        [ngClass]="index === 1 ? 'highlight' : ''"
+      ></div>
+      <div
+        (click)="changeIndex(2)"
+        [ngClass]="index === 2 ? 'highlight' : ''"
+      ></div>
+      <div
+        (click)="changeIndex(3)"
+        [ngClass]="index === 3 ? 'highlight' : ''"
+      ></div>
+    </div>
+    <div class="arrows">
+      <img (click)="changeImgDown()" src="assets/left.png" alt="img" />
+      <img (click)="changeImgUp()" src="assets/right.png" alt="img" />
+    </div>
+  </div>
+  <div class="images">
+    <img [src]="img" alt="img" />
+  </div>
+</div>

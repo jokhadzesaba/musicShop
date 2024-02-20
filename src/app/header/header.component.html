@@ -1,1 +1,28 @@
-<p>header works!</p>
+<div class="header-container">
+  <div>
+    <span>Funiro.</span>
+    <div class="dropdown-container">
+      <span (click)="changeDropDown()"
+        >Products
+        <div *ngIf="dropDown" class="dropdown">
+          <span>Guitar</span>
+          <span>Drums</span>
+          <span>Bass Guitar</span>
+          <span>Piano</span>
+        </div>
+      </span>
+      <img (click)="changeDropDown()" src="assets/down-arrow.png" alt="img" />
+    </div>
+    <span>Contact</span>
+    <span>About Us</span>
+    <div>
+      <img src="assets/loupe.png" alt="img" />
+      <input type="text" placeholder="Search" />
+    </div>
+  </div>
+  <div>
+    <img src="assets/heart.png" alt="img" />
+    <img src="assets/shopping-cart.png" alt="img" />
+    <img src="assets/profile.png" alt="img" />
+  </div>
+</div>

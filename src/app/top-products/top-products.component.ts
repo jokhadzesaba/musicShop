@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
 
 @Component({
   selector: 'app-top-products',
   templateUrl: './top-products.component.html',
   styleUrls: ['./top-products.component.scss'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class TopProductsComponent implements OnInit {
   public index = 0;

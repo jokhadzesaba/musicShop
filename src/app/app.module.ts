@@ -8,6 +8,7 @@ import { ProductPageComponent } from './product-page/product-page.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { TopProductsComponent } from './top-products/top-products.component';
+import { LoginModule } from './login/login/login.module';
 
 @NgModule({
   declarations: [
@@ -16,11 +17,13 @@ import { TopProductsComponent } from './top-products/top-products.component';
     ProductPageComponent,
     HeaderComponent,
     FooterComponent,
-    TopProductsComponent
+    TopProductsComponent,
+    
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    LoginModule
   ],
   providers: [],
   bootstrap: [AppComponent]

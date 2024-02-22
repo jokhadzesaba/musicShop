@@ -1,9 +1,12 @@
 .header-container {
   display: flex;
   justify-content: center;
-  width: 100%;
   gap: 160px;
   margin-bottom: 40px;
+  position: sticky;
+  top: 5px;
+  z-index: 2;
+
   > div:first-child {
     width: 60%;
     display: flex;

@@ -1,6 +1,8 @@
 .container {
   width: 400px;
   height: 400px;
+  margin: 0 auto;
+  background-color: rgb(98, 223, 223);
   > div {
     display: flex;
     gap: 20px;
@@ -18,6 +20,10 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
+    > .inputs {
+      display: flex;
+      flex-direction: column;
+    }
     input,
     button {
       border: none;
@@ -46,5 +52,11 @@
 .selected {
   color: white;
   border-bottom: 1px solid white;
-  //   background-color: red;
+}
+.error-message {
+  font-size: 14px;
+  color: red;
+}
+.button-disabled {
+  background-color: rgb(138, 201, 211);
 }

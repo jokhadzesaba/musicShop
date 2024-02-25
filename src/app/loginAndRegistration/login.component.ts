@@ -33,8 +33,13 @@ export class LoginComponent implements OnInit {
     this.logInService.loginWithEmailAndPassword(email!, password!);
   }
   public registration() {
-    const email = this.form.get('email')?.value;
-    const password = this.form.get('password')?.value;
+    let email = this.form.get('email')?.value;
+    let password = this.form.get('password')?.value;
     this.logInService.registration(email!, password!);
+    this.form.get('email')?.setValue('');
+    this.form.get('password')?.setValue('');
+    this.form.get('email')?.markAsUntouched();
+    this.form.get('password')?.markAsUntouched();
+    this.selected = true;
   }
 }

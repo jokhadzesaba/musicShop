@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "musicShop": {
+    "musicshop": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "musicShop:build:production"
+              "buildTarget": "musicshop:build:production"
             },
             "development": {
-              "browserTarget": "musicShop:build:development"
+              "buildTarget": "musicshop:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "musicShop:build"
+            "buildTarget": "musicshop:build"
           }
         },
         "test": {
@@ -97,6 +97,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "musicshop:build:production",
+              "serveTarget": "musicshop:serve:production"
+            },
+            "development": {
+              "buildTarget": "musicshop:build:development",
+              "serveTarget": "musicshop:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "exercise-app-9b873": {
+      "hosting": {
+        "musicshop": [
+          "exercise-app-9b873"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "exercise-app-9b873"
+  }
+}

@@ -12,12 +12,12 @@ import { firebaseConfig } from './interfaces';
 import { AngularFireModule } from '@angular/fire/compat';
 import { LoginAndRegistrationModule } from './loginAndRegistration/login-and-registration/login-and-registration.module';
 import { ProductPageModule } from './product-page/product-page/product-page.module';
+import { ProfileModuleModule } from './profile/profile-module/profile-module.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProfileComponent,
     HeaderComponent,
     FooterComponent,
   ],
@@ -26,6 +26,7 @@ import { ProductPageModule } from './product-page/product-page/product-page.modu
     AppRoutingModule,
     LoginAndRegistrationModule,
     ProductPageModule,
+    ProfileModuleModule,
     AngularFireModule.initializeApp(firebaseConfig),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),

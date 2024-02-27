@@ -4,6 +4,8 @@ export interface User {
   likedProduct: Product[];
   cart: Product[];
   checkout: Product[];
+  photoUrl?:string,
+  userId?:string
 }
 export interface Product {
   category: 'guitar' | 'drum' | 'bass' | 'piano' | 'other';
@@ -12,6 +14,10 @@ export interface Product {
   quantity: number;
   discount: number;
   photoUrl: string;
+}
+export interface KeyValueUser{
+  key:string;
+  user:User
 }
 export const firebaseConfig = {
   apiKey: 'AIzaSyCbQiRFo1MKF_WTEIwSMYg4rFL0CkKdTDI',

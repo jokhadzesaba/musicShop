@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
   public select() {
     this.selected = !this.selected;
+    this.clearInputs()
   }
   public googleLogin() {
     this.logInService.loginWithGoogle();
@@ -36,10 +37,13 @@ export class LoginComponent implements OnInit {
     let email = this.form.get('email')?.value;
     let password = this.form.get('password')?.value;
     this.logInService.registration(email!, password!);
+    this.clearInputs()
+    this.selected = true;
+  }
+  public clearInputs(){
     this.form.get('email')?.setValue('');
     this.form.get('password')?.setValue('');
     this.form.get('email')?.markAsUntouched();
     this.form.get('password')?.markAsUntouched();
-    this.selected = true;
   }
 }

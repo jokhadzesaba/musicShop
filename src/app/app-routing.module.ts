@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path:'',
-    redirectTo:'login',
-    pathMatch:'full'
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
   },
   {
     path: 'login',
@@ -19,6 +19,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./product-page/product-page/product-page.module').then(
         (m) => m.ProductPageModule
+      ),
+  },
+  {
+    path: 'profile/:id',
+    loadChildren: () =>
+      import('./profile/profile-module/profile-module.module').then(
+        (m) => m.ProfileModuleModule
       ),
   },
 ];

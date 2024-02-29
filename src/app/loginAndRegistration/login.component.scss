@@ -1,50 +1,58 @@
-.container {
-  width: 400px;
-  height: 400px;
-  margin: 0 auto;
-  background-color: rgb(98, 223, 223);
-  > div {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    > p {
-      cursor: pointer;
-      font-size: 20px;
-    }
-  }
-  > form {
-    width: 100%;
-    height: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    > .inputs {
+.loginContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .container {
+    width: 400px;
+    height: 400px;
+    background-color: rgb(98, 223, 223);
+    border-radius: 4px;
+    background-image: url("../../assets/background.webp");
+    background-size: cover;
+    > div {
       display: flex;
-      flex-direction: column;
-    }
-    input,
-    button {
-      border: none;
-      width: 200px;
-      height: 30px;
-      border-radius: 10px;
-      &:focus {
-        outline: none;
+      gap: 20px;
+      padding: 20px;
+      > p {
+        cursor: pointer;
+        font-size: 20px;
       }
     }
-    button {
-      background-color: rgb(19, 175, 199);
-      color: white;
+    > form {
+      width: 100%;
+      height: 50%;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      cursor: pointer;
-      > img {
-        width: 16px;
-        height: 16px;
-        margin-left: 5px;
+      justify-content: center;
+      gap: 10px;
+      > .inputs {
+        display: flex;
+        flex-direction: column;
+      }
+      input,
+      button {
+        border: none;
+        width: 200px;
+        height: 30px;
+        border-radius: 10px;
+        &:focus {
+          outline: none;
+        }
+      }
+      button {
+        background-color: rgb(19, 175, 199);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        > img {
+          width: 16px;
+          height: 16px;
+          margin-left: 5px;
+        }
       }
     }
   }

@@ -18,8 +18,6 @@ import { ProfileModuleModule } from './profile/profile-module/profile-module.mod
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    FooterComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,8 +10,6 @@ import { KeyValueUser, User } from 'src/app/interfaces';
 })
 export class LoginAndRegistrationService {
   public loggedUser = new BehaviorSubject<KeyValueUser | undefined>(undefined);
-  public userId = new BehaviorSubject<string | undefined>(undefined);
-
   public url =
     'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app/musicShopUsers';
   constructor(
@@ -130,5 +128,10 @@ export class LoginAndRegistrationService {
         return of(undefined);
       })
     );
+  }
+  findUserById(id:string){
+    return this.http.get<User>(`${this.url}/${id}.json`).pipe(map((response:User)=>{
+        return response.email
+    }))
   }
 }

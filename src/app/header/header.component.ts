@@ -8,25 +8,25 @@ import { KeyValueUser } from '../interfaces';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  changeDetection:ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit {
   public dropDown: boolean = false;
-  public user?:KeyValueUser
-  constructor(private router:Router, private loginService:LoginAndRegistrationService){
-
-  }
+  public user?: KeyValueUser;
+  constructor(
+    private router: Router,
+    private loginService: LoginAndRegistrationService
+  ) {}
   ngOnInit(): void {
-    this.loginService.loggedUser.subscribe((user)=>{
-      this.user = user
-    })
+    this.loginService.loggedUser.subscribe((user) => {
+      this.user = user;
+    });
   }
   public changeDropDown() {
     console.log(this.dropDown);
     this.dropDown = !this.dropDown;
   }
-  public navigate(){
-    console.log(this.user?.key);
-    this.router.navigate([`profile/${this.user?.key}`])
+  public navigate() {
+    this.router.navigate([`profile/${this.user?.key}`]);
   }
 }

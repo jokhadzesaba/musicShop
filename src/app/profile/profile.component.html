@@ -1,1 +1,34 @@
-
+<div class="container">
+  <div class="background"></div>
+  <div class="profile-container">
+    <div class="profile">
+      <div class="img-container">
+        <img src="../../assets/profile.png" alt="img" />
+      </div>
+      <div class="info">
+        <p>Email: {{ user?.user?.email }}</p>
+        <p>Address</p>
+        <button>Add New Product</button>
+        <form [formGroup]="form">
+          <select formControlName="category">
+            <option value="guitar">Guitar</option>
+            <option value="drum">Drum</option>
+            <option value="bass">Bass</option>
+            <option value="piano">Piano</option>
+            <option value="other">Other</option>
+          </select>
+          <input placeholder="model" formControlName="model" />
+          <input placeholder="price" formControlName="price" />
+          <input placeholder="discount" formControlName="discount" />
+          <input placeholder="quantity" formControlName="quantity" />
+          <input placeholder="Photo" formControlName="photoUrl" />
+          <input type="file" (change)="onFileChange($event)" />
+        </form>
+      </div>
+      <div>
+        <button>Liked Products</button>
+        <button>Purchased Product</button>
+      </div>
+    </div>
+  </div>
+</div>

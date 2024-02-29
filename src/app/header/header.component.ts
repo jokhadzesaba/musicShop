@@ -13,6 +13,7 @@ import { KeyValueUser } from '../interfaces';
 export class HeaderComponent implements OnInit {
   public dropDown: boolean = false;
   public user?: KeyValueUser;
+  public profilePicture?: string;
   constructor(
     private router: Router,
     private loginService: LoginAndRegistrationService
@@ -20,10 +21,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.loginService.loggedUser.subscribe((user) => {
       this.user = user;
+      this.profilePicture = this.user?.user.photoUrl;
     });
   }
   public changeDropDown() {
-    console.log(this.dropDown);
     this.dropDown = !this.dropDown;
   }
   public navigate() {

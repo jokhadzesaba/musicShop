@@ -1,0 +1,65 @@
+.container {
+  width: 100%;
+  height: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  > .background {
+    height: 20%;
+    background-color: pink;
+  }
+  > .profile-container {
+    width: 100%;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > .profile {
+      width: 75%;
+      height: 99%;
+      background-color: white;
+      border: 1px solid black;
+      position: relative;
+      > .info {
+        width: 90%;
+        height: 70%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 auto;
+        > button {
+          width: 200px;
+          height: 20px;
+          background-color: rgb(100, 163, 142);
+          color: white;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        > form {
+          display: flex;
+          flex-direction: column;
+          margin: 0 auto;
+          gap: 10px;
+          input,
+          select {
+            width: 250px;
+            height: 25px;
+            background-color: aquamarine;
+            border-radius: 5px;
+          }
+        }
+      }
+      > .img-container {
+        top: -80px;
+        left: 43%;
+        position: absolute;
+        img {
+          width: 150px;
+          height: 150px;
+        }
+      }
+    }
+  }
+}

@@ -7,14 +7,14 @@ import { render } from 'creditcardpayments/creditCardPayments';
 })
 export class AppComponent {
   title = 'musicShop';
-  constructor() {
-    render({
-      id: '#paypalbutton',
-      currency: 'USD',
-      value: '00.1',
-      onApprove: () => {
-        alert('payment successfull');
-      },
-    });
-  }
+  // constructor() {
+  //   render({
+  //     id: '#paypalbutton',
+  //     currency: 'USD',
+  //     value: '00.1',
+  //     onApprove: () => {
+  //       alert('payment successfull');
+  //     },
+  //   });
+  // }
 }

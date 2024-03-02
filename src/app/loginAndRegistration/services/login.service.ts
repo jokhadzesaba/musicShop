@@ -73,7 +73,7 @@ export class LoginAndRegistrationService {
           price: 0,
           quantity: 0,
           discount: 0,
-          photoUrl: 'none',
+          photoUrl: [],
         },
       ],
       checkout: [
@@ -83,7 +83,7 @@ export class LoginAndRegistrationService {
           price: 0,
           quantity: 0,
           discount: 0,
-          photoUrl: 'none',
+          photoUrl: [],
         },
       ],
       cart: [
@@ -93,7 +93,7 @@ export class LoginAndRegistrationService {
           price: 0,
           quantity: 0,
           discount: 0,
-          photoUrl: 'none',
+          photoUrl: [],
         },
       ],
     };

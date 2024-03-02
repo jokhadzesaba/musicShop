@@ -2,7 +2,7 @@
 <app-top-products></app-top-products>
 <h1>Our Products</h1>
 <div class="products">
-  <div class="single-product">
+  <div *ngFor="let product of guitarProducts" class="single-product">
     <div class="hover">
       <button>Add to cart</button>
       <div>
@@ -11,57 +11,15 @@
       </div>
     </div>
     <div class="img-placeholder">
-      <div class="discount">-30%</div>
-      <img src="assets/guitar.webp" alt="img" />
+      <div *ngIf="product.product.discount > 0" class="discount">
+        {{ product.product.discount }}
+      </div>
+      <img [src]="product.product.photoUrl[0]" alt="img" />
     </div>
     <div class="info">
-      <span>Guitar</span>
-      <span>Type of Guitar</span>
-      <span>1000$</span>
-    </div>
-  </div>
-  <div class="single-product">
-    <div class="img-placeholder">
-      <div class="discount">-30%</div>
-      <img src="assets/guitar.webp" alt="img" />
-    </div>
-    <div class="info">
-      <span>Guitar</span>
-      <span>Type of Guitar</span>
-      <span>1000$</span>
-    </div>
-  </div>
-  <div class="single-product">
-    <div class="img-placeholder">
-      <div class="discount">-30%</div>
-      <img src="assets/guitar.webp" alt="img" />
-    </div>
-    <div class="info">
-      <span>Guitar</span>
-      <span>Type of Guitar</span>
-      <span>1000$</span>
-    </div>
-  </div>
-  <div class="single-product">
-    <div class="img-placeholder">
-      <div class="discount">-30%</div>
-      <img src="assets/guitar.webp" alt="img" />
-    </div>
-    <div class="info">
-      <span>Guitar</span>
-      <span>Type of Guitar</span>
-      <span>1000$</span>
-    </div>
-  </div>
-  <div class="single-product">
-    <div class="img-placeholder">
-      <div class="discount">-30%</div>
-      <img src="assets/guitar.webp" alt="img" />
-    </div>
-    <div class="info">
-      <span>Guitar</span>
-      <span>Type of Guitar</span>
-      <span>1000$</span>
+      <span>{{ product.product.category }}</span>
+      <span>{{ product.product.model }}</span>
+      <span>{{ product.product.price }}$</span>
     </div>
   </div>
 </div>

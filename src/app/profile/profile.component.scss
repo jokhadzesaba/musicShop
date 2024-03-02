@@ -49,6 +49,25 @@
             background-color: aquamarine;
             border-radius: 5px;
           }
+          > .photos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            > div {
+              position: relative;
+              > img {
+                width: 80px;
+                height: 80px;
+                border-radius: 10px;
+              }
+              > img:nth-child(2) {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                right: 0px;
+              }
+            }
+          }
         }
       }
       > .img-container {

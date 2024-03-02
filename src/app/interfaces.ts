@@ -13,7 +13,11 @@ export interface Product {
   price: number;
   quantity: number;
   discount: number;
-  photoUrl: string;
+  photoUrl: string[];
+}
+export interface ProductKeyValue{
+  key:string,
+  product:Product
 }
 export interface KeyValueUser{
   key:string;

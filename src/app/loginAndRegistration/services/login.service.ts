@@ -66,15 +66,9 @@ export class LoginAndRegistrationService {
       email: email,
       isAdmin: false,
       photoUrl: photoUrl,
-      likedProduct: [
-        {
-          category: 'other',
-          model: 'none',
-          price: 0,
-          quantity: 0,
-          discount: 0,
-          photoUrl: [],
-        },
+      address:"",
+      likedProducts: [
+        "none",
       ],
       checkout: [
         {

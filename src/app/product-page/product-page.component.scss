@@ -24,7 +24,7 @@ h1 {
     > .hover {
       display: none;
       position: absolute;
-      background-color: grey;
+      background-color: rgb(58, 58, 250);
       top: 30%;
       left: 20%;
       z-index: 1;
@@ -33,7 +33,7 @@ h1 {
         height: 40px;
         border: 1px solid gray;
         background-color: white;
-        color: #e89f71;
+        color: #d37a42;
       }
       > div:first-of-type {
         display: flex;
@@ -41,8 +41,8 @@ h1 {
         justify-content: center;
         width: 140px;
         height: 40px;
-        color: rgb(56, 53, 53);
-        font-weight: bold;
+        color: white;
+
         > span {
           display: flex;
           align-items: center;

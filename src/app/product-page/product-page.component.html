@@ -7,7 +7,10 @@
       <button>Add to cart</button>
       <div>
         <span><img src="assets/share.png" alt="img" /> Share</span>
-        <span><img src="assets/heart.png" alt="img" /> Like</span>
+        <span (click)="likeUnlikeProduct(product.key)"
+          ><img (click)="likeUnlikeProduct(product.key)" src="assets/heart.png" alt="img" />
+          Like</span
+        >
       </div>
     </div>
     <div class="img-placeholder">

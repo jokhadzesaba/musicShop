@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { ProductKeyValue } from '../interfaces';
+import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 
 @Component({
   selector: 'app-product-page',
@@ -17,7 +18,8 @@ export class ProductPageComponent implements OnInit {
   public guitarProducts?: ProductKeyValue[];
   constructor(
     private sharedService: SharedServiceService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private authService: LoginAndRegistrationService
   ) {}
   ngOnInit(): void {
     this.sharedService
@@ -26,5 +28,19 @@ export class ProductPageComponent implements OnInit {
         this.guitarProducts = res;
         this.cd.detectChanges();
       });
+  }
+  likeUnlikeProduct(productId: string) {
+    
+    this.authService.loggedUser.subscribe((res) => {
+      if (res !== undefined) {
+        this.sharedService.likeUnlikeProduct(productId, res.key);
+      }
+    }),
+      (err: any) => {
+        console.log('Error productPage: likeUnlikeProduct method: ', err);
+      },
+      () => {
+        console.log('subscription completed');
+      };
   }
 }

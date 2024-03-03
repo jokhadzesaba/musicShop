@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
-import { KeyValueUser, User } from '../interfaces';
+import { KeyValueUser, Product, ProductKeyValue, User } from '../interfaces';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 
@@ -17,6 +17,7 @@ import { SharedServiceService } from '../sharedService/shared-service.service';
 })
 export class ProfileComponent implements OnInit {
   public user?: KeyValueUser;
+  public likedProducts?:ProductKeyValue[]
   public photos: string[] = [];
   public form = this.fb.group({
     category: ['', [Validators.required]],
@@ -34,6 +35,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.authService.loggedUser.subscribe((user) => {
       this.user = user;
+      this.getLikedProducts(user!.key) // array is null xd
       this.form.patchValue({
         category: 'guitar',
       });
@@ -89,5 +91,14 @@ export class ProfileComponent implements OnInit {
           console.log('Subscription completed');
         },
       });
+  }
+  getLikedProducts(userId:string){
+    this.sharedService.getAllLikedProducts(userId).subscribe((res:ProductKeyValue[])=>{
+      this.likedProducts = res
+      console.log(this.likedProducts);
+      
+    })
+  }
+  likeUnlikeProduct(userId:string){
   }
 }

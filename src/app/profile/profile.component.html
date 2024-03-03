@@ -7,9 +7,9 @@
       </div>
       <div class="info">
         <p>Email: {{ user?.user?.email }}</p>
-        <p>Address</p>
-        <button>Add New Product</button>
-        <form [formGroup]="form">
+        <p>Address:{{user?.user?.address}}</p>
+        <button *ngIf="user?.user?.isAdmin">Add New Product</button>
+        <form *ngIf="user?.user?.isAdmin" [formGroup]="form">
           <select formControlName="category">
             <option value="guitar">Guitar</option>
             <option value="drum">Drum</option>
@@ -22,21 +22,43 @@
           <input placeholder="discount" formControlName="discount" />
           <input placeholder="quantity" formControlName="quantity" />
           <input type="file" (change)="onFileChange($event)" />
+
           <div class="photos">
             <div *ngFor="let img of photos">
               <img [src]="img" alt="img" />
               <img (click)="removeImg(img)" src="assets/remove.png" alt="img" />
             </div>
           </div>
+          <button [disabled]="form.invalid" (click)="addNewProduct()">
+            add product
+          </button>
         </form>
-        <button [disabled]="form.invalid" (click)="addNewProduct()">
-          add product
-        </button>
       </div>
-      <div>
-        <button>Liked Products</button>
-        <button>Purchased Product</button>
+      <div class="liked-products" *ngIf="!user?.user?.isAdmin">
+        <div *ngFor="let product of likedProducts" class="single-product">
+          <div class="hover">
+            <button>Add to cart</button>
+            <div>
+              <span><img src="assets/share.png" alt="img" /> Share</span>
+              <!-- <span (click)="likeUnlikeProduct(product.key)" -->
+                <!-- ><img (click)="likeUnlikeProduct(product.key)" src="assets/heart.png" alt="img" /> -->
+                <!-- Like</span -->
+              >
+            </div>
+          </div>
+          <div class="img-placeholder">
+            <!-- <div *ngIf="product.product.discount > 0" class="discount"> -->
+              <!-- {{ product.product.discount }} -->
+            </div>
+            <!-- <img [src]="product.product.photoUrl[0]" alt="img" /> -->
+          </div>
+          <div class="info">
+            <!-- <span>{{ product.product.category }}</span> -->
+            <!-- <span>{{ product.product.model }}</span> -->
+            <!-- <span>{{ product.product.price }}$</span> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<!-- </div> -->

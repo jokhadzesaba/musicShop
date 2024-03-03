@@ -1,11 +1,11 @@
 export interface User {
   email: string|null|undefined;
   isAdmin: boolean;
-  likedProduct: Product[];
+  likedProducts: string[];
   cart: Product[];
   checkout: Product[];
   photoUrl?:string,
-  userId?:string
+  address?:string,
 }
 export interface Product {
   category: 'guitar' | 'drum' | 'bass' | 'piano' | 'other';

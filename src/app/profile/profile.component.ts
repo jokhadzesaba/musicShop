@@ -17,7 +17,7 @@ import { SharedServiceService } from '../sharedService/shared-service.service';
 })
 export class ProfileComponent implements OnInit {
   public user?: KeyValueUser;
-  public likedProducts?:ProductKeyValue[]
+  public likedProducts?: ProductKeyValue[];
   public photos: string[] = [];
   public form = this.fb.group({
     category: ['', [Validators.required]],
@@ -35,7 +35,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.authService.loggedUser.subscribe((user) => {
       this.user = user;
-      this.getLikedProducts(user!.key) // array is null xd
+      this.getLikedProducts(user!.key);
       this.form.patchValue({
         category: 'guitar',
       });
@@ -92,13 +92,13 @@ export class ProfileComponent implements OnInit {
         },
       });
   }
-  getLikedProducts(userId:string){
-    this.sharedService.getAllLikedProducts(userId).subscribe((res:ProductKeyValue[])=>{
-      this.likedProducts = res
-      console.log(this.likedProducts);
-      
-    })
+  getLikedProducts(userId: string) {
+    this.sharedService
+      .getAllLikedProducts(userId)
+      .subscribe((res: ProductKeyValue[]) => {
+        this.likedProducts = res;
+        console.log(this.likedProducts);
+      });
   }
-  likeUnlikeProduct(userId:string){
-  }
+  likeUnlikeProduct(userId: string) {}
 }

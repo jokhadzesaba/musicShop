@@ -7,8 +7,12 @@
       <button>Add to cart</button>
       <div>
         <span><img src="assets/share.png" alt="img" /> Share</span>
-        <span (click)="likeUnlikeProduct(product.key)"
-          ><img (click)="likeUnlikeProduct(product.key)" src="assets/heart.png" alt="img" />
+        <span (click)="likeUnlikeProduct(product.key, product.product.category)"
+          ><img
+            (click)="likeUnlikeProduct(product.key, product.product.category)"
+            src="assets/heart.png"
+            alt="img"
+          />
           Like</span
         >
       </div>

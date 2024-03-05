@@ -68,7 +68,7 @@ export class LoginAndRegistrationService {
       photoUrl: photoUrl,
       address:"",
       likedProducts: [
-        "none",
+        {key:"none", category:"other"}
       ],
       checkout: [
         {

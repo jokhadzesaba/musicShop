@@ -29,11 +29,17 @@ export class ProductPageComponent implements OnInit {
         this.cd.detectChanges();
       });
   }
-  likeUnlikeProduct(productId: string) {
-    
+  likeUnlikeProduct(
+    productId: string,
+    productCategory: 'guitar' | 'drum' | 'bass' | 'piano' | 'other'
+  ) {
     this.authService.loggedUser.subscribe((res) => {
       if (res !== undefined) {
-        this.sharedService.likeUnlikeProduct(productId, res.key);
+        this.sharedService.likeUnlikeProduct(
+          productId,
+          res.key,
+          productCategory
+        );
       }
     }),
       (err: any) => {

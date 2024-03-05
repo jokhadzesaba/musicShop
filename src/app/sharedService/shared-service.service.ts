@@ -1,7 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { KeyValueUser, Product, ProductKeyValue, User } from '../interfaces';
-import { Observable, catchError, map, tap } from 'rxjs';
+import {
+  KeyValueUser,
+  Product,
+  ProductKeyAndType,
+  ProductKeyValue,
+  User,
+} from '../interfaces';
+import { Observable, catchError, forkJoin, map, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +36,9 @@ export class SharedServiceService {
     return this.http.post(`${this.url}/${category}.json`, product);
   }
 
-  getTypeOfProduct(category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'):Observable<ProductKeyValue[]> {
+  getTypeOfProduct(
+    category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
+  ): Observable<ProductKeyValue[]> {
     return this.http.get(`${this.url}/products/${category}.json`).pipe(
       map((responese) => {
         let productsArray: ProductKeyValue[] = [];
@@ -38,14 +46,18 @@ export class SharedServiceService {
           productsArray.push({ key: keys, product: products })
         );
         return productsArray;
-      }),
+      })
     );
   }
-  likeUnlikeProduct(productId: string, userId: string) {
+  likeUnlikeProduct(
+    productId: string,
+    userId: string,
+    productCategory: 'guitar' | 'drum' | 'bass' | 'piano' | 'other'
+  ) {
     return this.http
       .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
       .subscribe((res: User) => {
-        let updatedData: string[] = [];
+        let updatedData: ProductKeyAndType[] = [];
         let updatedUser: User = {
           email: res.email,
           checkout: res.checkout,
@@ -55,11 +67,17 @@ export class SharedServiceService {
           photoUrl: res.photoUrl,
           likedProducts: res.likedProducts,
         };
-        if (!res.likedProducts.includes(productId)) {
-          updatedData = [...res.likedProducts, productId];
+        const check = updatedUser.likedProducts.find(
+          (product) => product.key === productId
+        );
+        if (!check) {
+          updatedData = [
+            ...res.likedProducts,
+            { key: productId, category: productCategory },
+          ];
           updatedUser.likedProducts = updatedData;
         } else {
-          updatedData = res.likedProducts.filter((id) => id !== productId);
+          updatedData = res.likedProducts.filter((id) => id.key !== productId);
           updatedUser.likedProducts = updatedData;
         }
         this.http
@@ -67,18 +85,21 @@ export class SharedServiceService {
           .subscribe();
       });
   }
-  getAllLikedProducts(userId:string){
-   return this.http.get<User>(`${this.url}/musicShopUsers/${userId}.json`).pipe(map((user:User)=>{
-    let likedProducts:ProductKeyValue[] = []
-    user.likedProducts.forEach(productId=>this.getProductById(productId).subscribe(res=>{
-      likedProducts.push(res)
-    }))
-    return likedProducts
-   })
-   )
-  }
-  getProductById(id: string) {
-    return this.http.get<ProductKeyValue>(`${this.url}/products/${id}.json`);
+  getAllLikedProducts(userId: string): Observable<ProductKeyValue[]> {
+    return this.http.get<User>(`${this.url}/musicShopUsers/${userId}.json`).pipe(
+      switchMap((user: User) => {
+        const getProductObservables = user.likedProducts.map((productId) =>
+          this.getProductById(productId.key, productId.category)
+        );
+
+        return forkJoin(getProductObservables);
+      })
+    );
   }
 
+  getProductById(id: string, category: string) {
+    return this.http.get<ProductKeyValue>(
+      `${this.url}/products/${category}/${id}.json`
+    );
+  }
 }

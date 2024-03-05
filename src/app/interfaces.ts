@@ -1,7 +1,7 @@
 export interface User {
   email: string|null|undefined;
   isAdmin: boolean;
-  likedProducts: string[];
+  likedProducts: ProductKeyAndType[];
   cart: Product[];
   checkout: Product[];
   photoUrl?:string,
@@ -23,6 +23,11 @@ export interface KeyValueUser{
   key:string;
   user:User
 }
+export interface ProductKeyAndType{
+  key:string,
+  category:'guitar' | 'drum' | 'bass' | 'piano' | 'other';
+}
+
 export const firebaseConfig = {
   apiKey: 'AIzaSyCbQiRFo1MKF_WTEIwSMYg4rFL0CkKdTDI',
   authDomain: 'exercise-app-9b873.firebaseapp.com',

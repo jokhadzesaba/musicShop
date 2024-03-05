@@ -85,7 +85,7 @@ export class SharedServiceService {
           .subscribe();
       });
   }
-  getAllLikedProducts(userId: string): Observable<ProductKeyValue[]> {
+  getAllLikedProducts(userId: string): Observable<Product[]> {
     return this.http.get<User>(`${this.url}/musicShopUsers/${userId}.json`).pipe(
       switchMap((user: User) => {
         const getProductObservables = user.likedProducts.map((productId) =>
@@ -98,7 +98,7 @@ export class SharedServiceService {
   }
 
   getProductById(id: string, category: string) {
-    return this.http.get<ProductKeyValue>(
+    return this.http.get<Product>(
       `${this.url}/products/${category}/${id}.json`
     );
   }

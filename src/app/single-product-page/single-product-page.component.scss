@@ -1,0 +1,29 @@
+.container {
+  width: 100%;
+  height: 100%;
+  > .content {
+    display: flex;
+    > .images {
+      background-color: red;
+      display: flex;
+      flex-direction: column;
+      > .focused-img {
+        > img {
+          width: 200px;
+          height: 400px;
+        }
+      }
+      > .otherPhotos {
+        display: flex;
+        gap: 4px;
+        background-color: blue;
+        > div {
+          img {
+            width: 60px;
+            height: 100px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -21,6 +21,7 @@
           <input placeholder="price" formControlName="price" />
           <input placeholder="discount" formControlName="discount" />
           <input placeholder="quantity" formControlName="quantity" />
+          <input placeholder="description" formControlName="description" />
           <input type="file" (change)="onFileChange($event)" />
 
           <div class="photos">
@@ -35,6 +36,7 @@
         </form>
       </div>
       <div class="liked-products">
+        <p *ngIf="likedProducts">Liked Products</p>
         <div
           *ngFor="let product of likedProducts; let i = index"
           class="single-product"
@@ -42,11 +44,21 @@
           <div class="hover">
             <button>Add to cart</button>
             <div>
-              <span><img src="assets/share.png" alt="img" /> Share</span>
+              <span>See Product</span>
               <span
-                (click)="likeUnlikeProduct(likedProductsKeys[i].key,likedProductsKeys[i].category)"
+                (click)="
+                  likeUnlikeProduct(
+                    likedProductsKeys[i].key,
+                    likedProductsKeys[i].category
+                  )
+                "
                 ><img
-                  (click)="likeUnlikeProduct(likedProductsKeys[i].key,likedProductsKeys[i].category)"
+                  (click)="
+                    likeUnlikeProduct(
+                      likedProductsKeys[i].key,
+                      likedProductsKeys[i].category
+                    )
+                  "
                   src="assets/heart.png"
                   alt="img"
                 />

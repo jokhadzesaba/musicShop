@@ -1,6 +1,5 @@
 .container {
   width: 100%;
-  height: 1200px;
   display: flex;
   flex-direction: column;
   gap: 100px;
@@ -10,7 +9,7 @@
   }
   > .profile-container {
     width: 100%;
-    height: 600px;
+    height: 1600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,10 +17,13 @@
 
     > .profile {
       width: 75%;
-      height: 99%;
+      height: 100%;
       background-color: white;
       position: relative;
       > .liked-products {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
         > .single-product {
           width: 228px;
           height: 380px;
@@ -29,7 +31,7 @@
           position: relative;
           display: flex;
           flex-direction: column;
-      
+
           &:hover {
             > .hover {
               display: block;
@@ -56,7 +58,7 @@
               width: 140px;
               height: 40px;
               color: white;
-      
+
               > span {
                 display: flex;
                 align-items: center;
@@ -110,7 +112,7 @@
       }
       > .info {
         width: 90%;
-        height: 70%;
+        height: 20%;
         display: flex;
         flex-direction: column;
         justify-content: center;

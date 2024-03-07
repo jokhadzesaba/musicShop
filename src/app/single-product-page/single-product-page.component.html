@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="content">
+    <div class="images">
+      <div class="focused-img">
+        <img *ngIf="images" [src]="images[0]" alt="img" />
+      </div>
+      <div class="otherPhotos">
+        <div *ngFor="let i of images">
+          <img [src]="i" alt="img" />
+        </div>
+      </div>
+    </div>
+    <div class="description payment">
+      <p>Categoty: {{ product?.category }}</p>
+      <p>Model: {{ product?.model }}</p>
+      <p>Description: {{ product?.description }}</p>
+    
+    </div>
+  </div>
+</div>

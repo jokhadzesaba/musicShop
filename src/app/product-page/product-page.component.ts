@@ -7,6 +7,7 @@ import {
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { ProductKeyValue } from '../interfaces';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-page',
@@ -19,7 +20,8 @@ export class ProductPageComponent implements OnInit {
   constructor(
     private sharedService: SharedServiceService,
     private cd: ChangeDetectorRef,
-    private authService: LoginAndRegistrationService
+    private authService: LoginAndRegistrationService,
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.sharedService
@@ -35,11 +37,9 @@ export class ProductPageComponent implements OnInit {
   ) {
     this.authService.loggedUser.subscribe((res) => {
       if (res !== undefined) {
-        this.sharedService.likeUnlikeProduct(
-          productId,
-          res.key,
-          productCategory
-        );
+        this.sharedService
+          .likeUnlikeProduct(productId, res.key, productCategory)
+          .subscribe();
       }
     }),
       (err: any) => {
@@ -48,5 +48,10 @@ export class ProductPageComponent implements OnInit {
       () => {
         console.log('subscription completed');
       };
+  }
+  navigation(productId: string, type: string) {
+    this.router.navigate([`single-product/${productId}`], {
+      queryParams: { type: type, prod:productId },
+    });
   }
 }

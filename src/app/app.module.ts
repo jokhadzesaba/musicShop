@@ -9,6 +9,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { LoginAndRegistrationModule } from './loginAndRegistration/login-and-registration/login-and-registration.module';
 import { ProductPageModule } from './product-page/product-page/product-page.module';
 import { ProfileModuleModule } from './profile/profile-module/profile-module.module';
+import { SingleProductPageModule } from './single-product-page/single-product-page/single-product-page.module';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ProfileModuleModule } from './profile/profile-module/profile-module.mod
     LoginAndRegistrationModule,
     ProductPageModule,
     ProfileModuleModule,
+    SingleProductPageModule,
     AngularFireModule.initializeApp(firebaseConfig),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),

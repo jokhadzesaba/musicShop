@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
     price: ['', Validators.required],
     quantity: ['', Validators.required],
     discount: ['', Validators.required],
+    description: ['', Validators.required],
   });
   constructor(
     private authService: LoginAndRegistrationService,
@@ -81,8 +82,9 @@ export class ProfileComponent implements OnInit {
     const price = this.form.get('price')?.getRawValue();
     const discount = this.form.get('discount')?.getRawValue();
     const quantity = this.form.get('quantity')?.getRawValue();
+    const description = this.form.get('description')?.getRawValue();
     this.sharedService
-      .addProduct(category, model, price, quantity, discount, this.photos)
+      .addProduct(category, model, price, quantity, discount, this.photos,description)
       .subscribe({
         next: () => {
           this.form.get('category')?.setValue('');
@@ -90,6 +92,7 @@ export class ProfileComponent implements OnInit {
           this.form.get('price')?.setValue('');
           this.form.get('discount')?.setValue('');
           this.form.get('quantity')?.setValue('');
+          this.form.get('description')?.setValue('');
           alert('Product was added successfully');
         },
         error: (err) => {
@@ -111,5 +114,22 @@ export class ProfileComponent implements OnInit {
   likeUnlikeProduct(
     productId: string,
     category: 'guitar' | 'drum' | 'bass' | 'piano' | 'other'
-  ) {}
+  ) {
+    this.authService.loggedUser.subscribe((res) => {
+      if (res !== undefined) {
+        this.sharedService
+          .likeUnlikeProduct(productId, res.key, category)
+          .subscribe(() => {
+            this.getLikedProducts(res.key);
+            this.cd.detectChanges()
+          });
+      }
+    }),
+      (err: any) => {
+        console.log('Error productPage: likeUnlikeProduct method: ', err);
+      },
+      () => {
+        console.log('subscription completed');
+      };
+  }
 }

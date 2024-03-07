@@ -6,7 +6,7 @@
     <div class="hover">
       <button>Add to cart</button>
       <div>
-        <span><img src="assets/share.png" alt="img" /> Share</span>
+        <span (click)="navigation(product.key,product.product.category)">See Product</span>
         <span (click)="likeUnlikeProduct(product.key, product.product.category)"
           ><img
             (click)="likeUnlikeProduct(product.key, product.product.category)"

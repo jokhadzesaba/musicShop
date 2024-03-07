@@ -28,6 +28,13 @@ const routes: Routes = [
         (m) => m.ProfileModuleModule
       ),
   },
+  {
+    path: 'single-product/:id',
+    loadChildren: () =>
+      import(
+        './single-product-page/single-product-page/single-product-page.module'
+      ).then((m) => m.SingleProductPageModule),
+  },
 ];
 
 @NgModule({

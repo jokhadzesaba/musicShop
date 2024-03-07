@@ -1,31 +1,32 @@
 export interface User {
-  email: string|null|undefined;
+  email: string | null | undefined;
   isAdmin: boolean;
   likedProducts: ProductKeyAndType[];
   cart: Product[];
   checkout: Product[];
-  photoUrl?:string,
-  address?:string,
+  photoUrl?: string;
+  address?: string;
 }
 export interface Product {
   category: 'guitar' | 'drum' | 'bass' | 'piano' | 'other';
   model: string;
   price: number;
+  description?: string;
   quantity: number;
   discount: number;
   photoUrl: string[];
 }
-export interface ProductKeyValue{
-  key:string,
-  product:Product
+export interface ProductKeyValue {
+  key: string;
+  product: Product;
 }
-export interface KeyValueUser{
-  key:string;
-  user:User
+export interface KeyValueUser {
+  key: string;
+  user: User;
 }
-export interface ProductKeyAndType{
-  key:string,
-  category:'guitar' | 'drum' | 'bass' | 'piano' | 'other';
+export interface ProductKeyAndType {
+  key: string;
+  category: 'guitar' | 'drum' | 'bass' | 'piano' | 'other';
 }
 
 export const firebaseConfig = {

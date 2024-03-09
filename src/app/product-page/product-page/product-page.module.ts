@@ -7,8 +7,8 @@ import { HeaderComponent } from 'src/app/header/header.component';
 import { FooterComponent } from 'src/app/footer/footer.component';
 
 @NgModule({
-  declarations: [ProductPageComponent, TopProductsComponent,HeaderComponent,FooterComponent],
-  imports: [CommonModule, ProductPageRouting],
+  declarations: [ProductPageComponent, TopProductsComponent],
+  imports: [CommonModule, ProductPageRouting, FooterComponent, HeaderComponent],
   exports: [ProductPageComponent],
 })
 export class ProductPageModule {}

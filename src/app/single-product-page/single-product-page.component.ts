@@ -15,8 +15,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SingleProductPageComponent implements OnInit {
-  public product?: Product;
-  public images?:string[]
+  public product?: Product | undefined;
+  public images!: string[];
+  public cuurentIndex: number = 0;
 
   constructor(
     private sharedService: SharedServiceService,
@@ -33,9 +34,23 @@ export class SingleProductPageComponent implements OnInit {
         .getProductById(res['prod'], res['type'])
         .subscribe((product: Product) => {
           this.product = product;
-          this.images = product.photoUrl
+          this.images = product.photoUrl;
           this.cd.detectChanges();
         });
     });
+  }
+  switchImage(index: number) {
+    this.cuurentIndex = index;
+  }
+  scroll(direction: 'left' | 'right') {
+    if (direction === 'right') {
+      const first = [this.images[this.images.length - 1]];
+      const rest = this.images.slice(0, this.images.length - 1);
+      this.images = [...first, ...rest];
+    } else {
+      const first = [this.images[0]];
+      const rest = this.images.slice(1, this.images.length);
+      this.images = [...rest, ...first];
+    }
   }
 }

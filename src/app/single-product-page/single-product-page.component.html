@@ -1,20 +1,36 @@
+<app-header></app-header>
 <div class="container">
   <div class="content">
     <div class="images">
       <div class="focused-img">
-        <img *ngIf="images" [src]="images[0]" alt="img" />
+        <img *ngIf="images" [src]="images[cuurentIndex]" alt="img" />
       </div>
       <div class="otherPhotos">
-        <div *ngFor="let i of images">
-          <img [src]="i" alt="img" />
+        <div>
+          <img (click)="scroll('left')" src="assets/left.png" alt="img" />
+        </div>
+
+        <div *ngFor="let i of images | slice : 2; let j = index">
+          <img (click)="switchImage(j)" [src]="images[j]" alt="img" />
+        </div>
+        <div>
+          <img (click)="scroll('right')" src="assets/right.png" alt="img" />
         </div>
       </div>
     </div>
     <div class="description payment">
-      <p>Categoty: {{ product?.category }}</p>
-      <p>Model: {{ product?.model }}</p>
-      <p>Description: {{ product?.description }}</p>
-    
+      <p><span>Categoty:</span> {{ product?.category }}</p>
+      <p><span>Model:</span> {{ product?.model }}</p>
+      <p>
+        <span>Description: </span> {{ product?.description }} some shit
+        description which i do not know what is over and over again some shit
+        description which i do not know what is over and over again some shit
+        description which i do not know what is over and over againsome shit
+        description which i do not know what is over and over again some shit
+        description which i do not know what is over and over again
+      </p>
+      <p><span>Price:</span> {{ product?.price }}$</p>
     </div>
   </div>
 </div>
+<app-footer></app-footer>

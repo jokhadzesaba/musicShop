@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { SharedServiceService } from '../sharedService/shared-service.service';
-import { ProductKeyValue } from '../interfaces';
+import { KeyValueUser, ProductKeyValue } from '../interfaces';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { Router } from '@angular/router';
 
@@ -51,7 +51,16 @@ export class ProductPageComponent implements OnInit {
   }
   navigation(productId: string, type: string) {
     this.router.navigate([`single-product/${productId}`], {
-      queryParams: { type: type, prod:productId },
+      queryParams: { type: type, prod: productId },
+    });
+  }
+  addInCart(product: ProductKeyValue) {
+    this.authService.loggedUser.subscribe((res: KeyValueUser | undefined) => {
+      if (res) {
+        this.sharedService
+          .cartOperations(product, 'remove', res.key!)
+          .subscribe();
+      }
     });
   }
 }

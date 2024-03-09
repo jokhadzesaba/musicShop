@@ -10,6 +10,7 @@ import { LoginAndRegistrationModule } from './loginAndRegistration/login-and-reg
 import { ProductPageModule } from './product-page/product-page/product-page.module';
 import { ProfileModuleModule } from './profile/profile-module/profile-module.module';
 import { SingleProductPageModule } from './single-product-page/single-product-page/single-product-page.module';
+import { CartComponent } from './cart/cart.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { SingleProductPageModule } from './single-product-page/single-product-pa
     ProductPageModule,
     ProfileModuleModule,
     SingleProductPageModule,
+    CartComponent,
     AngularFireModule.initializeApp(firebaseConfig),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),

@@ -4,7 +4,7 @@
 <div class="products">
   <div *ngFor="let product of guitarProducts" class="single-product">
     <div class="hover">
-      <button>Add to cart</button>
+      <button (click)="addInCart(product)">Add to cart</button>
       <div>
         <span (click)="navigation(product.key,product.product.category)">See Product</span>
         <span (click)="likeUnlikeProduct(product.key, product.product.category)"

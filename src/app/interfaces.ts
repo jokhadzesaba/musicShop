@@ -2,7 +2,7 @@ export interface User {
   email: string | null | undefined;
   isAdmin: boolean;
   likedProducts: ProductKeyAndType[];
-  cart: Product[];
+  cart: ProductKeyValue[];
   checkout: Product[];
   photoUrl?: string;
   address?: string;

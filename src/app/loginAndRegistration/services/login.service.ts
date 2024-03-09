@@ -66,10 +66,8 @@ export class LoginAndRegistrationService {
       email: email,
       isAdmin: false,
       photoUrl: photoUrl,
-      address:"",
-      likedProducts: [
-        {key:"none", category:"other"}
-      ],
+      address: '',
+      likedProducts: [{ key: 'none', category: 'other' }],
       checkout: [
         {
           category: 'other',
@@ -82,12 +80,15 @@ export class LoginAndRegistrationService {
       ],
       cart: [
         {
-          category: 'other',
-          model: 'none',
-          price: 0,
-          quantity: 0,
-          discount: 0,
-          photoUrl: [],
+          key: 'none',
+          product: {
+            category: 'other',
+            model: 'none',
+            price: 0,
+            quantity: 0,
+            discount: 0,
+            photoUrl: [],
+          },
         },
       ],
     };
@@ -123,9 +124,11 @@ export class LoginAndRegistrationService {
       })
     );
   }
-  findUserById(id:string){
-    return this.http.get<User>(`${this.url}/${id}.json`).pipe(map((response:User)=>{
-        return response.email
-    }))
+  findUserById(id: string) {
+    return this.http.get<User>(`${this.url}/${id}.json`).pipe(
+      map((response: User) => {
+        return response.email;
+      })
+    );
   }
 }

@@ -7,7 +7,7 @@ import {
   ProductKeyValue,
   User,
 } from '../interfaces';
-import { Observable, forkJoin, map, switchMap,} from 'rxjs';
+import { Observable, catchError, forkJoin, map, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +24,7 @@ export class SharedServiceService {
     quantity: string,
     discount: string,
     photos: string[],
-    desctiprion:string,
+    desctiprion: string
   ) {
     const product: Product = {
       category: category,
@@ -33,7 +33,7 @@ export class SharedServiceService {
       quantity: parseInt(quantity),
       discount: parseInt(discount),
       photoUrl: photos,
-      description:desctiprion
+      description: desctiprion,
     };
     return this.http.post(`${this.url}/products/${category}.json`, product);
   }
@@ -108,5 +108,42 @@ export class SharedServiceService {
     return this.http.get<Product>(
       `${this.url}/products/${category}/${id}.json`
     );
+  }
+  cartOperations(
+    product: ProductKeyValue,
+    operation: 'add' | 'remove',
+    userId: string
+  ) {
+    return this.http
+      .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
+      .pipe(
+        map((res) => {
+          let updatedData: ProductKeyValue[] = [product];
+          let updatedUser: User = {
+            email: res.email,
+            checkout: res.checkout,
+            address: res.address,
+            cart: res.cart,
+            isAdmin: res.isAdmin,
+            photoUrl: res.photoUrl,
+            likedProducts: res.likedProducts,
+          };
+          if (operation === 'add') {
+            updatedUser.cart = [...res.cart, ...updatedData];
+          } else {
+            const checkProduct = updatedUser.cart.find(
+              (prod) => prod.key === product.key
+            );
+            if (checkProduct) {
+              updatedUser.cart = updatedUser.cart.filter((productKey) => {
+                product.key !== productKey.key;
+              });
+            }
+          }
+          this.http
+            .patch(`${this.url}/musicShopUsers/${userId}.json`, updatedUser)
+            .subscribe();
+        })
+      );
   }
 }

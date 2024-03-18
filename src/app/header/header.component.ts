@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
@@ -9,8 +8,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  standalone:true,
-  imports:[CommonModule],
+  standalone: true,
+  imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
@@ -30,7 +29,10 @@ export class HeaderComponent implements OnInit {
   public changeDropDown() {
     this.dropDown = !this.dropDown;
   }
-  public navigate() {
+  public navigateToProfile() {
     this.router.navigate([`profile/${this.user?.key}`]);
+  }
+  public navigateToCategotyPage(categoty: string) {
+    this.router.navigate([`categoty/${categoty}`]);
   }
 }

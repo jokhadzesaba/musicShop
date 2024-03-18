@@ -5,11 +5,11 @@
       <span (click)="changeDropDown()"
         >Products
         <div *ngIf="dropDown" class="dropdown">
-          <span>Guitar</span>
-          <span>Drums</span>
-          <span>Bass </span>
-          <span>Piano</span>
-          <span>Other</span>
+          <span (click)="navigateToCategotyPage('guitar')">Guitar</span>
+          <span (click)="navigateToCategotyPage('drums')">Drums</span>
+          <span (click)="navigateToCategotyPage('bass')">Bass </span>
+          <span (click)="navigateToCategotyPage('piano')">Piano</span>
+          <span (click)="navigateToCategotyPage('other')">Other</span>
         </div>
       </span>
       <img (click)="changeDropDown()" src="assets/down-arrow.png" alt="img" />
@@ -24,6 +24,6 @@
   <div>
     <img src="assets/heart.png" alt="img" />
     <img src="assets/shopping-cart.png" alt="img" />
-    <img (click)="navigate()" src="assets/profile.png" alt="img" />
+    <img (click)="navigateToProfile()" src="assets/profile.png" alt="img" />
   </div>
 </div>

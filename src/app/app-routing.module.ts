@@ -35,6 +35,13 @@ const routes: Routes = [
         './single-product-page/single-product-page/single-product-page.module'
       ).then((m) => m.SingleProductPageModule),
   },
+  {
+    path: 'categoty/:category',
+    loadChildren: () =>
+      import(
+        './single-category-page/sinle-category-page-module/sinle-category-page-module.module'
+      ).then((m) => m.SinleCategoryPageModuleModule),
+  },
 ];
 
 @NgModule({

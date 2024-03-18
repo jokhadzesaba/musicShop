@@ -41,7 +41,7 @@ export class SharedServiceService {
   getTypeOfProduct(
     category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
   ): Observable<ProductKeyValue[]> {
-    return this.http.get(`${this.url}/products/${category}.json`).pipe(
+    return this.http.get<ProductKeyValue>(`${this.url}/products/${category}.json`).pipe(
       map((responese) => {
         let productsArray: ProductKeyValue[] = [];
         Object.entries(responese).forEach(([keys, products]) =>

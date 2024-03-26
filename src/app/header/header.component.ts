@@ -1,21 +1,23 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { KeyValueUser } from '../interfaces';
 import { CommonModule } from '@angular/common';
+import { CartComponent } from '../cart/cart.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule,CartComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
   public dropDown: boolean = false;
   public user?: KeyValueUser;
   public profilePicture?: string;
+  public cart:boolean =false;
   constructor(
     private router: Router,
     private loginService: LoginAndRegistrationService
@@ -34,5 +36,8 @@ export class HeaderComponent implements OnInit {
   }
   public navigateToCategotyPage(categoty: string) {
     this.router.navigate([`categoty/${categoty}`]);
+  }
+  public openCloseCart(){
+    this.cart = !this.cart
   }
 }

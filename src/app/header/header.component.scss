@@ -6,6 +6,7 @@
   position: sticky;
   top: 5px;
   z-index: 2;
+  position: relative;
 
   > div:first-child {
     width: 60%;
@@ -31,6 +32,11 @@
     > span {
       font-size: 20px;
       cursor: pointer;
+    }
+    .cart {
+      position: absolute;
+      top: 80px;
+      right: 100px;
     }
 
     > span:first-child {

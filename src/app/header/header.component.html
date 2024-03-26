@@ -1,6 +1,6 @@
 <div class="header-container">
   <div>
-    <span>SABAMUSIC.</span>
+    <span routerLink="/products">SABAMUSIC.</span>
     <div class="dropdown-container">
       <span (click)="changeDropDown()"
         >Products
@@ -16,6 +16,7 @@
     </div>
     <span>Contact</span>
     <span>About Us</span>
+    <app-cart class="cart"></app-cart>
     <div>
       <img src="assets/loupe.png" alt="img" />
       <input type="text" placeholder="Search" />
@@ -23,7 +24,7 @@
   </div>
   <div>
     <img src="assets/heart.png" alt="img" />
-    <img src="assets/shopping-cart.png" alt="img" />
+    <img (click)="openCloseCart()" src="assets/shopping-cart.png" alt="img" />
     <img (click)="navigateToProfile()" src="assets/profile.png" alt="img" />
   </div>
 </div>

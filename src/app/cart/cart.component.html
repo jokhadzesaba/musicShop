@@ -1,1 +1,22 @@
-<p>cart works!</p>
+<div *ngIf="showCart" class="container">
+  <div>
+    <h2>Cart</h2>
+  </div>
+  <div class="products">
+    <div class="product">
+      <div class="remove">
+        <img src="assets/remove.png" alt="img" />
+      </div>
+      <div>
+        <img src="../../assets/eguitar.jpg" alt="img" />
+      </div>
+      <div class="description">
+        <span>Type: Guitar</span>
+        <span>Model: Fender</span>
+        <span>Price: 1500$</span>
+        <button>See Product</button>
+        <p>Description: idkMate</p>
+      </div>
+    </div>
+  </div>
+</div>

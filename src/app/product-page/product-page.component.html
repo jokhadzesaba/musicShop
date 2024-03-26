@@ -6,7 +6,9 @@
     <div class="hover">
       <button (click)="addInCart(product)">Add to cart</button>
       <div>
-        <span (click)="navigation(product.key,product.product.category)">See Product</span>
+        <span (click)="navigation(product.key, product.product.category)"
+          >See Product</span
+        >
         <span (click)="likeUnlikeProduct(product.key, product.product.category)"
           ><img
             (click)="likeUnlikeProduct(product.key, product.product.category)"

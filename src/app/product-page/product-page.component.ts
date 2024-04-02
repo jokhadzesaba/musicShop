@@ -57,9 +57,7 @@ export class ProductPageComponent implements OnInit {
   addInCart(product: ProductKeyValue) {
     this.authService.loggedUser.subscribe((res: KeyValueUser | undefined) => {
       if (res) {
-        this.sharedService
-          .cartOperations(product, 'remove', res.key!)
-          .subscribe();
+        this.sharedService.cartOperations(product, 'add', res.key!).subscribe();
       }
     });
   }

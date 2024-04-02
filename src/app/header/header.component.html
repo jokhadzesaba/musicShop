@@ -16,7 +16,7 @@
     </div>
     <span>Contact</span>
     <span>About Us</span>
-    <app-cart class="cart"></app-cart>
+    <app-cart class="cart" [userEmail]="user?.user?.email!" [showCart]="cart"></app-cart>
     <div>
       <img src="assets/loupe.png" alt="img" />
       <input type="text" placeholder="Search" />

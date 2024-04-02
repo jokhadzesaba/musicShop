@@ -1,7 +1,9 @@
 .container {
   width: 600px;
-  min-height: 400px;
+  height: 400px;
   background-color: rgb(152, 192, 224);
+  overflow-y: scroll;
+
   > div:first-child {
     text-align: center;
     padding: 20px;
@@ -10,6 +12,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 5px;
     > .product {
       display: flex;
       gap: 5px;

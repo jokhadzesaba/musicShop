@@ -39,4 +39,16 @@ export class CartComponent implements OnInit {
       queryParams: { type: type, prod: productId },
     });
   }
+  plus(prodId: string, op: 'plus' | 'minus') {
+    let cart = this.sharedService.cart.getValue();
+    const index = cart.findIndex((id) => id.product.key === prodId);
+    if (op === 'plus') {
+      cart[index].quantity++;
+    } else {
+      if (cart[index].quantity > 1) {
+        cart[index].quantity--;
+      }
+    }
+    this.sharedService.cart.next(cart);
+  }
 }

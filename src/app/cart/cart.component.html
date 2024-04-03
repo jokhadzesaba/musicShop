@@ -5,7 +5,11 @@
   <div class="products">
     <div *ngFor="let prod of cart$ | async" class="product">
       <div class="remove">
-        <img (click)="removeFromCart(prod.product)" src="assets/remove.png" alt="img" />
+        <img
+          (click)="removeFromCart(prod.product)"
+          src="assets/remove.png"
+          alt="img"
+        />
       </div>
       <div>
         <img src="../../assets/eguitar.jpg" alt="img" />
@@ -17,7 +21,11 @@
         <button (click)="nav(prod.product.key, prod.product.product.category)">
           See Product
         </button>
-        <p>quantity:{{prod.quantity}}</p>
+        <p>
+          <img  (click)="plus(prod.product.key,'minus')" src="assets/minus.png" alt="img" />{{ prod.quantity }}
+          <img (click)="plus(prod.product.key,'plus')" src="assets/plus.png" alt="img" />
+        </p>
+        <p>{{ prod.quantity * prod.product.product.price }}$</p>
       </div>
     </div>
   </div>

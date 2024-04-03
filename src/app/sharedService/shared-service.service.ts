@@ -116,15 +116,22 @@ export class SharedServiceService {
     );
   }
   public cartOperations(operation: 'add' | 'remove', product: ProductKeyValue) {
-    const currentCart = this.cart.getValue();
-    let newCart = [];
-    if (operation === 'add') {
-      newCart = [...currentCart, {quantity:1,product:product}];
-      this.cart.next(newCart);
+    let currentCart = this.cart.getValue();
+    const checkIfInCart = currentCart.findIndex(
+      (prod) => prod.product.key === product.key
+    );
+    let newCart = [...currentCart];
+
+    if (checkIfInCart !== -1) {
+      if (operation === 'add') {
+        newCart[checkIfInCart].quantity++;
+      } else {
+        newCart.splice(checkIfInCart, 1);
+      }
     } else {
-      newCart = currentCart.filter((x) => {
-        return x.product.key !== product.key;
-      });
+      if (operation === 'add') {
+        newCart.push({ quantity: 1, product: product });
+      }
     }
     this.cart.next(newCart);
   }

@@ -2,7 +2,6 @@ export interface User {
   email: string | null | undefined;
   isAdmin: boolean;
   likedProducts: ProductKeyAndType[];
-  cart: ProductKeyValue[];
   checkout: Product[];
   photoUrl?: string;
   address?: string;
@@ -27,6 +26,10 @@ export interface KeyValueUser {
 export interface ProductKeyAndType {
   key: string;
   category: 'guitar' | 'drum' | 'bass' | 'piano' | 'other';
+}
+export interface Cart{
+  quantity:number,
+  product:ProductKeyValue
 }
 
 export const firebaseConfig = {

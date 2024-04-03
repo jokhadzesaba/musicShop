@@ -1,18 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  KeyValueUser,
+  Cart,
   Product,
   ProductKeyAndType,
   ProductKeyValue,
   User,
 } from '../interfaces';
-import { Observable, catchError, forkJoin, map, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, map, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedServiceService {
+  public detectChanges = new BehaviorSubject<boolean>(false);
+  public cart = new BehaviorSubject<Cart[]>([]);
   public url =
     'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app';
   constructor(private http: HttpClient) {}
@@ -37,19 +39,24 @@ export class SharedServiceService {
     };
     return this.http.post(`${this.url}/products/${category}.json`, product);
   }
-
+  ifDetectChanges() {
+    this.detectChanges.next(!this.detectChanges.value);
+    return this.detectChanges.value;
+  }
   getTypeOfProduct(
     category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
   ): Observable<ProductKeyValue[]> {
-    return this.http.get<ProductKeyValue>(`${this.url}/products/${category}.json`).pipe(
-      map((responese) => {
-        let productsArray: ProductKeyValue[] = [];
-        Object.entries(responese).forEach(([keys, products]) =>
-          productsArray.push({ key: keys, product: products })
-        );
-        return productsArray;
-      })
-    );
+    return this.http
+      .get<ProductKeyValue>(`${this.url}/products/${category}.json`)
+      .pipe(
+        map((responese) => {
+          let productsArray: ProductKeyValue[] = [];
+          Object.entries(responese).forEach(([keys, products]) =>
+            productsArray.push({ key: keys, product: products })
+          );
+          return productsArray;
+        })
+      );
   }
   likeUnlikeProduct(
     productId: string,
@@ -65,7 +72,6 @@ export class SharedServiceService {
             email: res.email,
             checkout: res.checkout,
             address: res.address,
-            cart: res.cart,
             isAdmin: res.isAdmin,
             photoUrl: res.photoUrl,
             likedProducts: res.likedProducts,
@@ -109,41 +115,17 @@ export class SharedServiceService {
       `${this.url}/products/${category}/${id}.json`
     );
   }
-  cartOperations(
-    product: ProductKeyValue,
-    operation: 'add' | 'remove',
-    userId: string
-  ) {
-    return this.http
-      .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
-      .pipe(
-        map((res) => {
-          let updatedData: ProductKeyValue[] = [product];
-          let updatedUser: User = {
-            email: res.email,
-            checkout: res.checkout,
-            address: res.address,
-            cart: res.cart,
-            isAdmin: res.isAdmin,
-            photoUrl: res.photoUrl,
-            likedProducts: res.likedProducts,
-          };
-          if (operation === 'add') {
-            updatedUser.cart = [...res.cart, ...updatedData];
-          } else {
-            const checkProduct = updatedUser.cart.find(
-              (prod) => prod.key === product.key
-            );
-            if (checkProduct) {
-              updatedUser.cart = updatedUser.cart.filter((productKey) => {
-                product.key !== productKey.key;
-              });
-            }
-          }
-          this.http
-            .patch(`${this.url}/musicShopUsers/${userId}.json`, updatedUser)
-            .subscribe();
-        })
-      );
+  public cartOperations(operation: 'add' | 'remove', product: ProductKeyValue) {
+    const currentCart = this.cart.getValue();
+    let newCart = [];
+    if (operation === 'add') {
+      newCart = [...currentCart, {quantity:1,product:product}];
+      this.cart.next(newCart);
+    } else {
+      newCart = currentCart.filter((x) => {
+        return x.product.key !== product.key;
+      });
+    }
+    this.cart.next(newCart);
   }
 }

@@ -78,19 +78,6 @@ export class LoginAndRegistrationService {
           photoUrl: [],
         },
       ],
-      cart: [
-        {
-          key: 'none',
-          product: {
-            category: 'other',
-            model: 'none',
-            price: 0,
-            quantity: 0,
-            discount: 0,
-            photoUrl: [],
-          },
-        },
-      ],
     };
     this.http.post(`${this.url}.json`, newUser).subscribe(
       () => {

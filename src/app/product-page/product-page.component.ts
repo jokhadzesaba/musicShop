@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { SharedServiceService } from '../sharedService/shared-service.service';
-import { KeyValueUser, ProductKeyValue } from '../interfaces';
+import { ProductKeyValue } from '../interfaces';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { Router } from '@angular/router';
 
@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 })
 export class ProductPageComponent implements OnInit {
   public guitarProducts?: ProductKeyValue[];
+
   constructor(
     private sharedService: SharedServiceService,
     private cd: ChangeDetectorRef,
@@ -55,10 +56,6 @@ export class ProductPageComponent implements OnInit {
     });
   }
   addInCart(product: ProductKeyValue) {
-    this.authService.loggedUser.subscribe((res: KeyValueUser | undefined) => {
-      if (res) {
-        this.sharedService.cartOperations(product, 'add', res.key!).subscribe();
-      }
-    });
+    this.sharedService.cartOperations('add', product);
   }
 }

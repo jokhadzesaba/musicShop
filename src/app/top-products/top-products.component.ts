@@ -1,3 +1,4 @@
+import { ChangeDetectorRef } from '@angular/core';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
 
@@ -5,7 +6,7 @@ import { Subscription, interval } from 'rxjs';
   selector: 'app-top-products',
   templateUrl: './top-products.component.html',
   styleUrls: ['./top-products.component.scss'],
-  changeDetection:ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopProductsComponent implements OnInit {
   public index = 0;
@@ -15,14 +16,17 @@ export class TopProductsComponent implements OnInit {
     'assets/drum.avif',
     'assets/bass.webp',
   ];
+  constructor(private cdr: ChangeDetectorRef) {}
   public img = this.imgUrls[0];
   private intervalSubscription: Subscription | undefined;
+
   ngOnInit(): void {
     this.startTimeChangeInterval();
   }
   startTimeChangeInterval() {
-    this.intervalSubscription = interval(5000).subscribe(() => {
+    this.intervalSubscription = interval(4000).subscribe(() => {
       this.changeImgUp();
+      this.cdr.detectChanges();
     });
   }
   changeImgUp() {

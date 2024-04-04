@@ -12,7 +12,7 @@
         />
       </div>
       <div>
-        <img src="../../assets/eguitar.jpg" alt="img" />
+        <img [src]="prod.product.product.photoUrl[0]" alt="img" />
       </div>
       <div class="description">
         <span>Type: {{ prod.product.product.category }}</span>
@@ -22,11 +22,25 @@
           See Product
         </button>
         <p>
-          <img  (click)="plus(prod.product.key,'minus')" src="assets/minus.png" alt="img" />{{ prod.quantity }}
-          <img (click)="plus(prod.product.key,'plus')" src="assets/plus.png" alt="img" />
+          <img
+            (click)="plus(prod.product.key, 'minus')"
+            src="assets/minus.png"
+            alt="img"
+          />{{ prod.quantity }}
+          <img
+            (click)="plus(prod.product.key, 'plus')"
+            src="assets/plus.png"
+            alt="img"
+          />
         </p>
         <p>{{ prod.quantity * prod.product.product.price }}$</p>
       </div>
+    </div>
+  </div>
+  <div *ngIf="calculateTotalPrice() > 0" class="payment">
+    <h2>Total Price: {{ calculateTotalPrice() }}$</h2>
+    <div id="paypalbutton">
+      <button>Paypal Button</button>
     </div>
   </div>
 </div>

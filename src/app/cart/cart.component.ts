@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Input,
@@ -22,17 +23,18 @@ import { Observable } from 'rxjs';
 export class CartComponent implements OnInit {
   @Input() showCart?: boolean = true;
   @Input() userEmail?: string;
-
   public cart$?: Observable<Cart[]>;
   constructor(
     private sharedService: SharedServiceService,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
     this.cart$ = this.sharedService.cart.asObservable();
   }
   removeFromCart(product: ProductKeyValue) {
     this.sharedService.cartOperations('remove', product);
+    this.calculateTotalPrice();
   }
   nav(productId: string, type: string) {
     this.router.navigate([`single-product/${productId}`], {
@@ -50,5 +52,12 @@ export class CartComponent implements OnInit {
       }
     }
     this.sharedService.cart.next(cart);
+  }
+  calculateTotalPrice() {
+    let sum = 0;
+    this.sharedService.cart.getValue().forEach((x) => {
+      sum += x.quantity * x.product.product.price;
+    });
+    return sum;
   }
 }

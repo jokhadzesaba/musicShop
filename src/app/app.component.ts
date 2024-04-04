@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { render } from 'creditcardpayments/creditCardPayments';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,14 +6,7 @@ import { render } from 'creditcardpayments/creditCardPayments';
 })
 export class AppComponent {
   title = 'musicShop';
-  // constructor() {
-  //   render({
-  //     id: '#paypalbutton',
-  //     currency: 'USD',
-  //     value: '00.1',
-  //     onApprove: () => {
-  //       alert('payment successfull');
-  //     },
-  //   });
-  // }
+  constructor() {
+
+  }
 }

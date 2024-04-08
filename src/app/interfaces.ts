@@ -6,6 +6,15 @@ export interface User {
   photoUrl?: string;
   address?: string;
 }
+export interface Admin extends Omit<User, 'checkout'> {
+  purchasedProducts: Purchase[];
+}
+export interface Purchase {
+  userId: string;
+  // date:Date,
+  totalPrice:number,
+  products: Cart[];
+}
 export interface Product {
   category: 'guitar' | 'drum' | 'bass' | 'piano' | 'other';
   model: string;
@@ -27,9 +36,9 @@ export interface ProductKeyAndType {
   key: string;
   category: 'guitar' | 'drum' | 'bass' | 'piano' | 'other';
 }
-export interface Cart{
-  quantity:number,
-  product:ProductKeyValue
+export interface Cart {
+  quantity: number;
+  product: ProductKeyValue;
 }
 
 export const firebaseConfig = {

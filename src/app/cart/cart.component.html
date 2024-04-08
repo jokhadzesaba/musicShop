@@ -39,8 +39,10 @@
   </div>
   <div *ngIf="calculateTotalPrice() > 0" class="payment">
     <h2>Total Price: {{ calculateTotalPrice() }}$</h2>
-    <div id="paypalbutton">
-      <button>Paypal Button</button>
+    <div>
+      <div>
+        <button (click)="makePayment()">Buy Now</button>
+      </div>
     </div>
   </div>
 </div>

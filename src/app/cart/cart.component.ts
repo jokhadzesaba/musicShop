@@ -1,9 +1,10 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  ElementRef,
   Input,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { Component } from '@angular/core';
 import { Cart, ProductKeyValue } from '../interfaces';
@@ -11,6 +12,10 @@ import { CommonModule } from '@angular/common';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
+import {
+  NgxPayPalModule,
+  IPayPalConfig,
+} from 'ngx-paypal';
 
 @Component({
   selector: 'app-cart',
@@ -18,12 +23,14 @@ import { Observable } from 'rxjs';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NgxPayPalModule],
 })
 export class CartComponent implements OnInit {
   @Input() showCart?: boolean = true;
   @Input() userEmail?: string;
+  @ViewChild('paymentRef', { static: true }) paymentRef!: ElementRef;
   public cart$?: Observable<Cart[]>;
+  public payPalConfig?: IPayPalConfig;
   constructor(
     private sharedService: SharedServiceService,
     private router: Router,
@@ -31,6 +38,10 @@ export class CartComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.cart$ = this.sharedService.cart.asObservable();
+  }
+
+  makePayment() {
+    this.sharedService.buyProducts(this.sharedService.cart.getValue())
   }
   removeFromCart(product: ProductKeyValue) {
     this.sharedService.cartOperations('remove', product);

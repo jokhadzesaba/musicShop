@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+  Admin,
   Cart,
   Product,
   ProductKeyAndType,
   ProductKeyValue,
+  Purchase,
   User,
 } from '../interfaces';
 import { BehaviorSubject, Observable, forkJoin, map, switchMap } from 'rxjs';
@@ -134,5 +136,18 @@ export class SharedServiceService {
       }
     }
     this.cart.next(newCart);
+  }
+  buyProducts(items:Cart[]){
+   return this.http.get<Admin>(`${this.url}/musicShopUsers/-NuXpA60vhxIavACAs53.json`).subscribe((res:Admin)=>{
+    const newPurchase:Purchase = {
+      userId:'idk',
+      // date:new Date(),
+      totalPrice:1000,
+      products:items
+    }
+    res.purchasedProducts = [...res.purchasedProducts, newPurchase];
+    this.http.patch(`${this.url}/musicShopUsers/-NuXpA60vhxIavACAs53.json`,res).subscribe()
+
+   }) 
   }
 }

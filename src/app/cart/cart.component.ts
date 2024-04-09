@@ -12,10 +12,8 @@ import { CommonModule } from '@angular/common';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
-import {
-  NgxPayPalModule,
-  IPayPalConfig,
-} from 'ngx-paypal';
+import { NgxPayPalModule, IPayPalConfig } from 'ngx-paypal';
+import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 
 @Component({
   selector: 'app-cart',
@@ -34,6 +32,7 @@ export class CartComponent implements OnInit {
   constructor(
     private sharedService: SharedServiceService,
     private router: Router,
+    private authService: LoginAndRegistrationService,
     private cd: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
@@ -41,7 +40,11 @@ export class CartComponent implements OnInit {
   }
 
   makePayment() {
-    this.sharedService.buyProducts(this.sharedService.cart.getValue())
+    this.sharedService.buyProducts(
+      this.sharedService.cart.getValue(),
+      this.calculateTotalPrice(),
+      this.authService.loggedUser.getValue()?.key
+    );
   }
   removeFromCart(product: ProductKeyValue) {
     this.sharedService.cartOperations('remove', product);

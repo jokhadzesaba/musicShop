@@ -2,16 +2,15 @@ export interface User {
   email: string | null | undefined;
   isAdmin: boolean;
   likedProducts: ProductKeyAndType[];
-  checkout: Product[];
+  checkout: Purchase[];
   photoUrl?: string;
   address?: string;
+  purchasedProducts?: Purchase[];
 }
-export interface Admin extends Omit<User, 'checkout'> {
-  purchasedProducts: Purchase[];
-}
+
 export interface Purchase {
-  userId: string;
-  // date:Date,
+  userId?: string;
+  date:Date,
   totalPrice:number,
   products: Cart[];
 }

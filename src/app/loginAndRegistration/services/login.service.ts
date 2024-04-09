@@ -70,12 +70,25 @@ export class LoginAndRegistrationService {
       likedProducts: [{ key: 'none', category: 'other' }],
       checkout: [
         {
-          category: 'other',
-          model: 'none',
-          price: 0,
-          quantity: 0,
-          discount: 0,
-          photoUrl: [],
+          userId: 'unknown',
+          date: new Date(),
+          totalPrice: 0,
+          products: [
+            {
+              quantity: 0,
+              product: {
+                key: 'idk',
+                product: {
+                  category: 'other',
+                  price: 0,
+                  model: 'unknown',
+                  discount: 0,
+                  quantity: 0,
+                  photoUrl: ['idk'],
+                },
+              },
+            },
+          ],
         },
       ],
     };

@@ -1,176 +1,85 @@
 .container {
   width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 100px;
-  > .background {
-    height: 20%;
-    background-color: pink;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  > .img-container {
+    position: absolute;
+    top: 0px;
+    img {
+      width: 100px;
+      height: 100px;
+    }
   }
-  > .profile-container {
-    width: 100%;
-    height: 1600px;
+  > .box {
+    width: 85%;
+    height: 85%;
+    background-color: white;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    > .profile {
-      width: 75%;
-      height: 100%;
-      background-color: white;
-      position: relative;
-      > .liked-products {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        > .single-product {
-          width: 228px;
-          height: 380px;
-          background-color: #e6e9f0;
-          position: relative;
-          display: flex;
-          flex-direction: column;
-
-          &:hover {
-            > .hover {
-              display: block;
-            }
-          }
-          > .hover {
-            display: none;
-            position: absolute;
-            background-color: rgb(58, 58, 250);
-            top: 30%;
-            left: 20%;
-            z-index: 1;
-            > button {
-              width: 140px;
-              height: 40px;
-              border: 1px solid gray;
-              background-color: white;
-              color: #d37a42;
-            }
-            > div:first-of-type {
-              display: flex;
-              gap: 10px;
-              justify-content: center;
-              width: 140px;
-              height: 40px;
-              color: white;
-
-              > span {
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                > img {
-                  width: 20px;
-                  height: 20px;
-                  margin-right: 3px;
-                  cursor: pointer;
-                }
-              }
-            }
-          }
-          > .img-placeholder {
-            width: 100%;
-            height: 260px;
-            position: relative;
-            > .discount {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 40px;
-              height: 40px;
-              position: absolute;
-              top: 20px;
-              right: 40px;
-              background-color: #e97171;
-              border-radius: 50%;
-              color: white;
-            }
-            img {
-              width: 100%;
-              height: 260px;
-            }
-          }
-          > .info {
-            width: 100%;
-            height: 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            span {
-              margin-left: 10px;
-            }
-            > span:not(:nth-child(2)) {
-              font-size: 20px;
-              font-weight: bold;
-            }
-          }
+    gap: 60px;
+    .info {
+      padding: 8%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      > p,
+      span {
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+        font-size: 18px;
+        > span {
+          font-weight: bold;
         }
       }
-      > .info {
-        width: 90%;
-        height: 20%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 10px;
-        margin: 0 auto;
-        > p {
-          font-size: 20px;
+      > button {
+        width: 200px;
+        height: 50px;
+        cursor: pointer;
+        --b: 2px;
+        --s: 0.45em;
+        --color: #373b44;
+
+        padding: calc(0.5em + var(--s)) calc(0.9em + var(--s));
+        color: var(--color);
+        --_p: var(--s);
+        background: conic-gradient(
+            from 90deg at var(--b) var(--b),
+            #0000 90deg,
+            var(--color) 0
+          )
+          var(--_p) var(--_p) / calc(100% - var(--b) - 2 * var(--_p))
+          calc(100% - var(--b) - 2 * var(--_p));
+        transition: 0.3s linear, color 0s, background-color 0s;
+        outline: var(--b) solid #0000;
+        outline-offset: 0.6em;
+        font-size: 16px;
+
+        border: 0;
+
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        &:hover,
+        &:focus-visible {
+          --_p: 0px;
+          outline-color: var(--color);
+          outline-offset: 0.05em;
         }
-        button {
-          width: 100px;
-          height: 30px;
-          background-color: rgb(100, 163, 142);
-          color: white;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-        > form {
-          display: flex;
-          flex-direction: column;
-          margin: 0 auto;
-          gap: 10px;
-          input,
-          select {
-            width: 250px;
-            height: 25px;
-            background-color: aquamarine;
-            border-radius: 5px;
-          }
-          > .photos {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            > div {
-              position: relative;
-              > img {
-                width: 80px;
-                height: 80px;
-                border-radius: 10px;
-              }
-              > img:nth-child(2) {
-                position: absolute;
-                width: 20px;
-                height: 20px;
-                right: 0px;
-              }
-            }
-          }
+
+        &:active {
+          background: var(--color);
+          color: #fff;
         }
       }
-      > .img-container {
-        top: -80px;
-        left: 43%;
-        position: absolute;
-        img {
-          width: 150px;
-          height: 150px;
-        }
-      }
+
+    }
+    form{
+      display: grid;
+      grid-template-columns: repeat(2,200px);
+      grid-template-rows: repeat(4,30px);
+      padding-top: 13%;
     }
   }
 }

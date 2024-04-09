@@ -4,7 +4,7 @@ import { ProfileComponent } from '../profile.component';
 import { ProfileGuard } from '../profile.guard';
 
 const routes: Routes = [
-  { path: '', component: ProfileComponent, canActivate: [ProfileGuard] },
+  { path: '', component: ProfileComponent, }, // canActivate: [ProfileGuard] 
 ];
 
 @NgModule({

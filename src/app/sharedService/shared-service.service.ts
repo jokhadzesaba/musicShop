@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  Admin,
   Cart,
   Product,
   ProductKeyAndType,
@@ -9,7 +8,16 @@ import {
   Purchase,
   User,
 } from '../interfaces';
-import { BehaviorSubject, Observable, forkJoin, map, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  forkJoin,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
+import { user } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -137,17 +145,50 @@ export class SharedServiceService {
     }
     this.cart.next(newCart);
   }
-  buyProducts(items:Cart[]){
-   return this.http.get<Admin>(`${this.url}/musicShopUsers/-NuXpA60vhxIavACAs53.json`).subscribe((res:Admin)=>{
-    const newPurchase:Purchase = {
-      userId:'idk',
-      // date:new Date(),
-      totalPrice:1000,
-      products:items
-    }
-    res.purchasedProducts = [...res.purchasedProducts, newPurchase];
-    this.http.patch(`${this.url}/musicShopUsers/-NuXpA60vhxIavACAs53.json`,res).subscribe()
+  buyProducts(items: Cart[], totalPrice: number, userId?: string) {
+    const newPurchase: Purchase = {
+      userId: userId,
+      date: new Date(),
+      totalPrice: totalPrice,
+      products: items,
+    };
 
-   }) 
+    const adminUpdate$ = this.http
+      .get<User>(`${this.url}/musicShopUsers/-NuXpA60vhxIavACAs53.json`)
+      .pipe(
+        switchMap((res: User) => {
+          res.purchasedProducts = [...res.purchasedProducts!, newPurchase];
+          return this.http.patch(
+            `${this.url}/musicShopUsers/-NuXpA60vhxIavACAs53.json`,
+            res
+          );
+        }),
+        catchError((error) => {
+          console.error('Error in adminUpdate$', error);
+          return of(null);
+        })
+      );
+
+    let userUpdate$: Observable<any> = of(null);
+
+    if (userId) {
+      userUpdate$ = this.http
+        .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
+        .pipe(
+          switchMap((res: User) => {
+            res.checkout = [...res.checkout, newPurchase];
+            return this.http.patch(
+              `${this.url}/musicShopUsers/${userId}.json`,
+              res
+            );
+          }),
+          catchError((error) => {
+            console.error('Error in userUpdate$', error);
+            return of(null);
+          })
+        );
+    }
+
+    forkJoin([adminUpdate$, userUpdate$]).subscribe();
   }
 }

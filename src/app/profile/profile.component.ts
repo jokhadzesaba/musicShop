@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
   public likedProducts?: Product[];
   public likedProductsKeys: ProductKeyAndType[] = [];
   public photos: string[] = [];
+  public addingProduct: boolean = false;
   public form = this.fb.group({
     category: ['', [Validators.required]],
     model: ['', Validators.required],
@@ -40,7 +41,7 @@ export class ProfileComponent implements OnInit {
     private sharedService: SharedServiceService
   ) {}
   ngOnInit(): void {
-    this.authService.loggedUser.subscribe((user) => {
+    this.authService.findUser('sabaadmin@gmail.com').subscribe((user) => {
       this.user = user;
       this.likedProductsKeys = user?.user.likedProducts.slice(1)!;
       this.getLikedProducts(user!.key);
@@ -49,6 +50,7 @@ export class ProfileComponent implements OnInit {
       });
       this.cd.detectChanges();
     });
+    // this.authService.loggedUser.subscribe((user) => {});
   }
 
   public update() {
@@ -71,6 +73,9 @@ export class ProfileComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+  addingProd() {
+    this.addingProduct = !this.addingProduct;
+  }
   removeImg(url: string) {
     const photoIndex = this.photos.findIndex((x) => x === url);
     this.photos.splice(photoIndex, photoIndex);
@@ -84,7 +89,15 @@ export class ProfileComponent implements OnInit {
     const quantity = this.form.get('quantity')?.getRawValue();
     const description = this.form.get('description')?.getRawValue();
     this.sharedService
-      .addProduct(category, model, price, quantity, discount, this.photos,description)
+      .addProduct(
+        category,
+        model,
+        price,
+        quantity,
+        discount,
+        this.photos,
+        description
+      )
       .subscribe({
         next: () => {
           this.form.get('category')?.setValue('');
@@ -121,7 +134,7 @@ export class ProfileComponent implements OnInit {
           .likeUnlikeProduct(productId, res.key, category)
           .subscribe(() => {
             this.getLikedProducts(res.key);
-            this.cd.detectChanges()
+            this.cd.detectChanges();
           });
       }
     }),

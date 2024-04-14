@@ -17,7 +17,6 @@ import {
   of,
   switchMap,
 } from 'rxjs';
-import { user } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -154,12 +153,12 @@ export class SharedServiceService {
     };
 
     const adminUpdate$ = this.http
-      .get<User>(`${this.url}/musicShopUsers/-NuXpA60vhxIavACAs53.json`)
+      .get<User>(`${this.url}/musicShopUsers/-NuwyYV_Xx3Z9YdV7qOv.json`)
       .pipe(
         switchMap((res: User) => {
           res.purchasedProducts = [...res.purchasedProducts!, newPurchase];
           return this.http.patch(
-            `${this.url}/musicShopUsers/-NuXpA60vhxIavACAs53.json`,
+            `${this.url}/musicShopUsers/-NuwyYV_Xx3Z9YdV7qOv.json`,
             res
           );
         }),

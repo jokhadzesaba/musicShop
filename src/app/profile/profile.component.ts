@@ -26,6 +26,7 @@ export class ProfileComponent implements OnInit {
   public likedProductsKeys: ProductKeyAndType[] = [];
   public photos: string[] = [];
   public addingProduct: boolean = false;
+  public showMoreItems:boolean[] = [];
   public form = this.fb.group({
     category: ['', [Validators.required]],
     model: ['', Validators.required],

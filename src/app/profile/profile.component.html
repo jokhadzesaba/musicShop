@@ -2,44 +2,84 @@
   <div class="img-container">
     <img src="../../assets/profile.png" alt="img" />
   </div>
-  <div class="box">
-    <div class="info">
-      <p><span> Email:</span> {{ user?.user?.email }}</p>
-      <p><span>Address:</span> {{ user?.user?.address }}Some Adrress</p>
-      <button>Change Password</button>
-      <button (click)="addingProd()" *ngIf="user?.user?.isAdmin">
-        Add New Product
-      </button>
-    </div>
-    <form *ngIf="user?.user?.isAdmin && addingProduct" [formGroup]="form">
-      <select formControlName="category">
-        <option value="guitar">Guitar</option>
-        <option value="drum">Drum</option>
-        <option value="bass">Bass</option>
-        <option value="piano">Piano</option>
-        <option value="other">Other</option>
-      </select>
-      <input placeholder="Model" formControlName="model" />
-      <input placeholder="Price" formControlName="price" />
-      <input placeholder="Discount" formControlName="discount" />
-      <input placeholder="Quantity" formControlName="quantity" />
-      <input placeholder="Description" formControlName="description" />
-      <input type="file" (change)="onFileChange($event)" />
-      <button [disabled]="form.invalid" (click)="addNewProduct()">
-        add product
-      </button>
+  <div class="wrapper">
+    <div class="box">
+      <div class="info">
+        <p><span> Email:</span> {{ user?.user?.email }}</p>
+        <p><span>Address:</span> {{ user?.user?.address }}Some Adrress</p>
+        <button>Change Password</button>
+        <button (click)="addingProd()" *ngIf="user?.user?.isAdmin">
+          Add New Product
+        </button>
+      </div>
+      <form *ngIf="user?.user?.isAdmin && addingProduct" [formGroup]="form">
+        <select formControlName="category">
+          <option value="guitar">Guitar</option>
+          <option value="drum">Drum</option>
+          <option value="bass">Bass</option>
+          <option value="piano">Piano</option>
+          <option value="other">Other</option>
+        </select>
+        <input placeholder="Model" formControlName="model" />
+        <input placeholder="Price" formControlName="price" />
+        <input placeholder="Discount" formControlName="discount" />
+        <input placeholder="Quantity" formControlName="quantity" />
+        <input placeholder="Description" formControlName="description" />
+        <input type="file" (change)="onFileChange($event)" />
+        <button [disabled]="form.invalid" (click)="addNewProduct()">
+          add product
+        </button>
 
-      <div class="photos">
-        <div *ngFor="let img of photos">
-          <img [src]="img" alt="img" />
-          <img (click)="removeImg(img)" src="assets/remove.png" alt="img" />
+        <div class="photos">
+          <div *ngFor="let img of photos">
+            <img [src]="img" alt="img" />
+            <img (click)="removeImg(img)" src="assets/remove.png" alt="img" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div
+      class="purchased-products"
+      *ngFor="
+        let purchase of user?.user?.purchasedProducts | slice : 1;
+        let i = index
+      "
+    >
+      <div class="purchase-wrapper">
+        <div
+          class="purchase"
+          *ngFor="let item of purchase.products | slice : 0 : 1"
+        >
+          <div>
+            <img [src]="item.product.product.photoUrl[0]" alt="img" />
+          </div>
+          <div class="grid-container">
+            <span>{{ purchase.userId }}</span>
+            <span>{{ purchase.date }}</span>
+            <span>{{ purchase.totalPrice }}</span>
+            <span>{{ item.product.product.model }}</span>
+            <span>{{ item.product.product.price }}</span>
+            <button (click)="showMoreItems[i] = !showMoreItems[i]">See More</button>
+          </div>
+        </div>
+        <div *ngIf="showMoreItems[i]">
+          <div
+            class="other-items purchase"
+            *ngFor="let item of purchase.products | slice : 1"
+          >
+            <div>
+              <img [src]="item.product.product.photoUrl[0]" alt="img" />
+            </div>
+            <div class="grid-container">
+              <span>{{ purchase.userId }}</span>
+              <span>{{ purchase.date }}</span>
+              <span>{{ purchase.totalPrice }}</span>
+              <span>{{ item.product.product.model }}</span>
+              <span>{{ item.product.product.price }}</span>
+            </div>
+          </div>
         </div>
       </div>
-    </form>
-  </div>
-  <div class="purchased-products">
-    <div>
-      
     </div>
   </div>
 </div>

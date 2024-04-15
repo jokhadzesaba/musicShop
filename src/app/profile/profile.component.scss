@@ -6,17 +6,10 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  > .img-container {
-    position: absolute;
-    top: 0px;
-    img {
-      width: 100px;
-      height: 100px;
-    }
-  }
+  
   .wrapper {
     width: 85%;
-    height: 100%;
+
     background-color: white;
     > .box {
       display: flex;
@@ -84,7 +77,16 @@
       }
     }
     .purchased-products {
+      padding-left: 90px;
       > .purchase-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding-top: 10px;
+        border: 1px solid black;
+        width: 520px;
+        margin-bottom: 30px;
         .purchase {
           display: flex;
           gap: 3%;
@@ -92,6 +94,7 @@
           width: 500px;
           height: 120px;
           padding: 10px;
+          margin-bottom: 20px;
           > div:first-child {
             width: 13%;
             height: 100%;

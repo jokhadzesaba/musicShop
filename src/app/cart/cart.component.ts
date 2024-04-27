@@ -43,7 +43,8 @@ export class CartComponent implements OnInit {
     this.sharedService.buyProducts(
       this.sharedService.cart.getValue(),
       this.calculateTotalPrice(),
-      this.authService.loggedUser.getValue()?.key
+      this.authService.loggedUser.getValue()?.user.email!,
+      this.authService.loggedUser.getValue()?.key,
     );
   }
   removeFromCart(product: ProductKeyValue) {

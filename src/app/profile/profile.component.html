@@ -43,6 +43,24 @@
       "
     >
       <div class="purchase-wrapper">
+        <span>{{ convertDate(purchase.date) }}</span>
+        <span>total price: {{ purchase.totalPrice }}</span>
+        <div class="see-more-arrow">
+          <img
+            *ngIf="!changeArrow[i]"
+            (click)="showMoreItems[i] = !showMoreItems[i]"
+            (click)="changeArrow[i] = !changeArrow[i]"
+            src="assets/arrow-down.png"
+            alt="img"
+          />
+          <img
+            *ngIf="changeArrow[i]"
+            (click)="showMoreItems[i] = !showMoreItems[i] && !changeArrow"
+            (click)="changeArrow[i] = !changeArrow[i]"
+            src="assets/arrow-up.png"
+            alt="img"
+          />
+        </div>
         <div
           class="purchase"
           *ngFor="let item of purchase.products | slice : 0 : 1"
@@ -51,12 +69,14 @@
             <img [src]="item.product.product.photoUrl[0]" alt="img" />
           </div>
           <div class="grid-container">
-            <span>{{ purchase.userId }}</span>
-            <span>{{ purchase.date }}</span>
-            <span>{{ purchase.totalPrice }}</span>
+            <span>{{ purchase.email ? purchase.email : "unknown" }}</span>
+            <span>{{
+              upperCaseFirstLetter(item.product.product.category)
+            }}</span>
+
             <span>{{ item.product.product.model }}</span>
-            <span>{{ item.product.product.price }}</span>
-            <button (click)="showMoreItems[i] = !showMoreItems[i]">See More</button>
+            <span>Price: {{ item.product.product.price }}$</span>
+            <span>Dicsount: {{ item.product.product.discount }}%</span>
           </div>
         </div>
         <div *ngIf="showMoreItems[i]">
@@ -68,83 +88,62 @@
               <img [src]="item.product.product.photoUrl[0]" alt="img" />
             </div>
             <div class="grid-container">
-              <span>{{ purchase.userId }}</span>
-              <span>{{ purchase.date }}</span>
-              <span>{{ purchase.totalPrice }}</span>
+              <span>{{ purchase.email ? purchase.email : "unknown" }}</span>
+              <span>{{
+                upperCaseFirstLetter(item.product.product.category)
+              }}</span>
+
               <span>{{ item.product.product.model }}</span>
-              <span>{{ item.product.product.price }}</span>
+              <span>Price: {{ item.product.product.price }}</span>
+              <span>Dicsount: {{ item.product.product.discount }}%</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- <div class="container">
-  <div class="background"></div>
-  <div class="profile-container">
-    <div class="profile">
-      <div class="img-container">
-        <img src="../../assets/profile.png" alt="img" />
-      </div>
-      <div class="info">
-        <p>Email: {{ user?.user?.email }}</p>
-        <p>Address:{{ user?.user?.address }}</p>
-        <button *ngIf="user?.user?.isAdmin">Add New Product</button>
-      
-      </div>
-      <div class="purchasedItems">
-        <div *ngFor="let i of user?.user?.purchasedProducts">
-            <p>Purchased:{{i.date}}</p>
-            <p>User:{{i.userId}}</p>
-        </div>
-      </div>
-
-      <div *ngIf="!user?.user?.isAdmin" class="liked-products">
-        <p *ngIf="likedProducts">Liked Products</p>
-        <div
-          *ngFor="let product of likedProducts; let i = index"
-          class="single-product"
-        >
-          <div class="hover">
-            <button>Add to cart</button>
-            <div>
-              <span>See Product</span>
-              <span
+    <div class="liked-products">
+      <p *ngIf="likedProducts">Liked Products</p>
+      <div
+        *ngFor="let product of likedProducts; let i = index"
+        class="single-product"
+      >
+        <div class="hover">
+          <button>Add to cart</button>
+          <div>
+            <span>See Product</span>
+            <span
+              (click)="
+                likeUnlikeProduct(
+                  likedProductsKeys[i].key,
+                  likedProductsKeys[i].category
+                )
+              "
+              ><img
                 (click)="
                   likeUnlikeProduct(
                     likedProductsKeys[i].key,
                     likedProductsKeys[i].category
                   )
                 "
-                ><img
-                  (click)="
-                    likeUnlikeProduct(
-                      likedProductsKeys[i].key,
-                      likedProductsKeys[i].category
-                    )
-                  "
-                  src="assets/heart.png"
-                  alt="img"
-                />
-                Like</span
-              >
-            </div>
+                src="assets/heart.png"
+                alt="img"
+              />
+              Like</span
+            >
           </div>
-          <div class="img-placeholder">
-            <div *ngIf="product.discount > 0" class="discount">
-              {{ product.discount }}
-            </div>
-            <img [src]="product.photoUrl[0]" alt="img" />
+        </div>
+        <div class="img-placeholder">
+          <div *ngIf="product.discount > 0" class="discount">
+            {{ product.discount }}
           </div>
-          <div class="info">
-            <span>{{ product.category }}</span>
-            <span>{{ product.model }}</span>
-            <span>{{ product.price }}$</span>
-          </div>
+          <img [src]="product.photoUrl[0]" alt="img" />
+        </div>
+        <div class="info">
+          <span>{{ product.category }}</span>
+          <span>{{ product.model }}</span>
+          <span>{{ product.price }}$</span>
         </div>
       </div>
     </div>
   </div>
-</div>  -->
+</div>

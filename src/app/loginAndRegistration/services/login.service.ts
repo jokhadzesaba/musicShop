@@ -68,23 +68,24 @@ export class LoginAndRegistrationService {
       photoUrl: photoUrl,
       address: '',
       likedProducts: [{ key: 'none', category: 'other' }],
-      checkout: [
+      purchasedProducts: [
         {
-          userId: 'unknown',
+          email: email,
+          userId: email,
           date: new Date(),
           totalPrice: 0,
           products: [
             {
-              quantity: 0,
+              quantity: -1,
               product: {
-                key: 'idk',
+                key: 'unknown',
                 product: {
                   category: 'other',
-                  price: 0,
-                  model: 'unknown',
-                  discount: 0,
-                  quantity: 0,
-                  photoUrl: ['idk'],
+                  model: 'none',
+                  price: -1,
+                  quantity: -1,
+                  discount: -1,
+                  photoUrl: ['none'],
                 },
               },
             },

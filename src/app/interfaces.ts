@@ -2,14 +2,14 @@ export interface User {
   email: string | null | undefined;
   isAdmin: boolean;
   likedProducts: ProductKeyAndType[];
-  checkout: Purchase[];
   photoUrl?: string;
   address?: string;
-  purchasedProducts?: Purchase[];
+  purchasedProducts: Purchase[];
 }
 
 export interface Purchase {
-  userId?: string;
+  email?: string;
+  userId?:string,
   date:Date,
   totalPrice:number,
   products: Cart[];

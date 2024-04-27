@@ -16,6 +16,7 @@ import {
   map,
   of,
   switchMap,
+  tap,
 } from 'rxjs';
 
 @Injectable({
@@ -79,11 +80,11 @@ export class SharedServiceService {
           let updatedData: ProductKeyAndType[] = [];
           let updatedUser: User = {
             email: res.email,
-            checkout: res.checkout,
             address: res.address,
             isAdmin: res.isAdmin,
             photoUrl: res.photoUrl,
             likedProducts: res.likedProducts,
+            purchasedProducts:res.purchasedProducts
           };
           const check = updatedUser.likedProducts.find(
             (product) => product.key === productId
@@ -144,9 +145,15 @@ export class SharedServiceService {
     }
     this.cart.next(newCart);
   }
-  buyProducts(items: Cart[], totalPrice: number, userId?: string) {
+  buyProducts(
+    items: Cart[],
+    totalPrice: number,
+    email: string,
+    userId?: string
+  ) {
     const newPurchase: Purchase = {
       userId: userId,
+      email: email,
       date: new Date(),
       totalPrice: totalPrice,
       products: items,
@@ -175,7 +182,7 @@ export class SharedServiceService {
         .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
         .pipe(
           switchMap((res: User) => {
-            res.checkout = [...res.checkout, newPurchase];
+            res.purchasedProducts = [...res.purchasedProducts, newPurchase];
             return this.http.patch(
               `${this.url}/musicShopUsers/${userId}.json`,
               res

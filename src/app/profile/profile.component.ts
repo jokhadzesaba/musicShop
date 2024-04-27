@@ -13,6 +13,8 @@ import {
 } from '../interfaces';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedServiceService } from '../sharedService/shared-service.service';
+import { TimeInterval } from 'rxjs/internal/operators/timeInterval';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -27,6 +29,7 @@ export class ProfileComponent implements OnInit {
   public photos: string[] = [];
   public addingProduct: boolean = false;
   public showMoreItems:boolean[] = [];
+  public changeArrow:boolean[] = [];
   public form = this.fb.group({
     category: ['', [Validators.required]],
     model: ['', Validators.required],
@@ -145,5 +148,12 @@ export class ProfileComponent implements OnInit {
       () => {
         console.log('subscription completed');
       };
+  }
+  convertDate(date:Date){
+    let newDate = new Date(date)
+    return `${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`;
+  }
+  upperCaseFirstLetter(word:string){
+    return word.charAt(0).toUpperCase() + word.slice(1)
   }
 }

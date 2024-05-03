@@ -5,6 +5,7 @@ import {
   Product,
   ProductKeyAndType,
   ProductKeyValue,
+  ProductTypes,
   Purchase,
   User,
 } from '../interfaces';
@@ -69,6 +70,15 @@ export class SharedServiceService {
         })
       );
   }
+  getAllTypeOfProduct() {
+    const data1 = this.http.get<ProductKeyValue>(`${this.url}/products/guitar.json`)
+    const data2 = this.http.get<ProductKeyValue>(`${this.url}/products/piano.json`)
+    const data3 = this.http.get<ProductKeyValue>(`${this.url}/products/bass.json`)
+    const data4 = this.http.get<ProductKeyValue>(`${this.url}/products/drum.json`)
+    return forkJoin<ProductKeyValue[]>([data1,data2,data3,data4]).pipe(map(results=>{
+      return results
+    }))
+  }
   likeUnlikeProduct(
     productId: string,
     userId: string,
@@ -85,7 +95,7 @@ export class SharedServiceService {
             isAdmin: res.isAdmin,
             photoUrl: res.photoUrl,
             likedProducts: res.likedProducts,
-            purchasedProducts:res.purchasedProducts
+            purchasedProducts: res.purchasedProducts,
           };
           const check = updatedUser.likedProducts.find(
             (product) => product.key === productId

@@ -1,34 +1,158 @@
 <app-header></app-header>
 <app-top-products></app-top-products>
 <h1>Our Products</h1>
-<div class="products">
-  <div *ngFor="let product of guitarProducts" class="single-product">
-    <div class="hover">
-      <button (click)="addInCart(product)">Add to cart</button>
-      <div>
-        <span (click)="navigation(product.key, product.product.category)"
-          >See Product</span
-        >
-        <span (click)="likeUnlikeProduct(product.key, product.product.category)"
-          ><img
-            (click)="likeUnlikeProduct(product.key, product.product.category)"
-            src="assets/heart.png"
-            alt="img"
-          />
-          Like</span
-        >
+<div  *ngIf="loading" class="loading-container">
+  <div class="loader">
+  </div>
+  <p>Loading...</p>
+</div>
+<div *ngIf="!loading" class="products">
+  <div class="products-container">
+    <p>Guitars</p>
+    <div class="product">
+      <div *ngFor="let product of guitarProducts" class="single-product">
+        <div class="hover">
+          <button (click)="addInCart(product)">Add to cart</button>
+          <div>
+            <span (click)="navigation(product.key, product.product.category)"
+              >See Product</span
+            >
+            <span
+              (click)="likeUnlikeProduct(product.key, product.product.category)"
+              ><img
+                (click)="
+                  likeUnlikeProduct(product.key, product.product.category)
+                "
+                src="assets/heart.png"
+                alt="img"
+              />
+              Like</span
+            >
+          </div>
+        </div>
+        <div class="img-placeholder">
+          <div *ngIf="product.product.discount > 0" class="discount">
+            {{ product.product.discount }}
+          </div>
+          <img [src]="product.product.photoUrl[0]" alt="img" />
+        </div>
+        <div class="info">
+          <span>{{ product.product.category }}</span>
+          <span>{{ product.product.model }}</span>
+          <span>{{ product.product.price }}$</span>
+        </div>
       </div>
     </div>
-    <div class="img-placeholder">
-      <div *ngIf="product.product.discount > 0" class="discount">
-        {{ product.product.discount }}
+  </div>
+  <div class="products-container">
+    <p>Drums</p>
+    <div class="product">
+      <div *ngFor="let product of drumProducts" class="single-product">
+        <div class="hover">
+          <button (click)="addInCart(product)">Add to cart</button>
+          <div>
+            <span (click)="navigation(product.key, product.product.category)"
+              >See Product</span
+            >
+            <span
+              (click)="likeUnlikeProduct(product.key, product.product.category)"
+              ><img
+                (click)="
+                  likeUnlikeProduct(product.key, product.product.category)
+                "
+                src="assets/heart.png"
+                alt="img"
+              />
+              Like</span
+            >
+          </div>
+        </div>
+        <div class="img-placeholder">
+          <div *ngIf="product.product.discount > 0" class="discount">
+            {{ product.product.discount }}
+          </div>
+          <img [src]="product.product.photoUrl[0]" alt="img" />
+        </div>
+        <div class="info">
+          <span>{{ product.product.category }}</span>
+          <span>{{ product.product.model }}</span>
+          <span>{{ product.product.price }}$</span>
+        </div>
       </div>
-      <img [src]="product.product.photoUrl[0]" alt="img" />
     </div>
-    <div class="info">
-      <span>{{ product.product.category }}</span>
-      <span>{{ product.product.model }}</span>
-      <span>{{ product.product.price }}$</span>
+  </div>
+  <div class="products-container">
+    <p>Pianos</p>
+    <div class="product">
+      <div *ngFor="let product of pianoProducts" class="single-product">
+        <div class="hover">
+          <button (click)="addInCart(product)">Add to cart</button>
+          <div>
+            <span (click)="navigation(product.key, product.product.category)"
+              >See Product</span
+            >
+            <span
+              (click)="likeUnlikeProduct(product.key, product.product.category)"
+              ><img
+                (click)="
+                  likeUnlikeProduct(product.key, product.product.category)
+                "
+                src="assets/heart.png"
+                alt="img"
+              />
+              Like</span
+            >
+          </div>
+        </div>
+        <div class="img-placeholder">
+          <div *ngIf="product.product.discount > 0" class="discount">
+            {{ product.product.discount }}
+          </div>
+          <img [src]="product.product.photoUrl[0]" alt="img" />
+        </div>
+        <div class="info">
+          <span>{{ product.product.category }}</span>
+          <span>{{ product.product.model }}</span>
+          <span>{{ product.product.price }}$</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="products-container">
+    <p>Basses</p>
+    <div class="product">
+      <div *ngFor="let product of bassProducts" class="single-product">
+        <div class="hover">
+          <button (click)="addInCart(product)">Add to cart</button>
+          <div>
+            <span (click)="navigation(product.key, product.product.category)"
+              >See Product</span
+            >
+            <span
+              (click)="likeUnlikeProduct(product.key, product.product.category)"
+              ><img
+                (click)="
+                  likeUnlikeProduct(product.key, product.product.category)
+                "
+                src="assets/heart.png"
+                alt="img"
+              />
+              Like</span
+            >
+          </div>
+        </div>
+        <div class="img-placeholder">
+          <div *ngIf="product.product.discount > 0" class="discount">
+            {{ product.product.discount }}
+          </div>
+          <img [src]="product.product.photoUrl[0]" alt="img" />
+        </div>
+        <div class="info">
+          <span>{{ product.product.category }}</span>
+          <span>{{ product.product.model }}</span>
+          <span>{{ product.product.price }}$</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

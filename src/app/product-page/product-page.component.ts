@@ -16,7 +16,12 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPageComponent implements OnInit {
-  public guitarProducts?: ProductKeyValue[];
+  public guitarProducts: ProductKeyValue[] = [];
+  public pianoProducts: ProductKeyValue[] = [];
+  public bassProducts: ProductKeyValue[] = [];
+  public drumProducts: ProductKeyValue[] = [];
+  public otherProducts: ProductKeyValue[] = [];
+  public loading:boolean = true
 
   constructor(
     private sharedService: SharedServiceService,
@@ -25,12 +30,23 @@ export class ProductPageComponent implements OnInit {
     private router: Router
   ) {}
   ngOnInit(): void {
-    this.sharedService
-      .getTypeOfProduct('guitar')
-      .subscribe((res: ProductKeyValue[]) => {
-        this.guitarProducts = res;
+    this.sharedService.getAllTypeOfProduct().subscribe((res) => {
+      for (let index = 0; index < res.length; index++) {
+        Object.entries(res[index]).forEach(([keys, products]) => {
+          if (index === 0) {
+            this.guitarProducts.push({ key: keys, product: products });
+          } else if (index === 1) {
+            this.pianoProducts.push({ key: keys, product: products });
+          } else if (index === 2) {
+            this.bassProducts.push({ key: keys, product: products });
+          } else if (index === 3) {
+            this.drumProducts.push({ key: keys, product: products });
+          }
+        });
+        this.loading = false;
         this.cd.detectChanges();
-      });
+      }
+    });
   }
   likeUnlikeProduct(
     productId: string,
@@ -59,3 +75,4 @@ export class ProductPageComponent implements OnInit {
     this.sharedService.cartOperations('add', product);
   }
 }
+

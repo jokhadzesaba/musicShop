@@ -39,6 +39,13 @@ export interface Cart {
   quantity: number;
   product: ProductKeyValue;
 }
+export interface ProductTypes {
+  guitar: ProductKeyValue[];
+  bass: ProductKeyValue[];
+  piano: ProductKeyValue[];
+  drum: ProductKeyValue[];
+  // other: ProductKeyValue[];
+}
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCbQiRFo1MKF_WTEIwSMYg4rFL0CkKdTDI',

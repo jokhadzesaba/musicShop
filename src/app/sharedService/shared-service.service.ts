@@ -53,6 +53,7 @@ export class SharedServiceService {
     this.detectChanges.next(!this.detectChanges.value);
     return this.detectChanges.value;
   }
+
   getTypeOfProduct(
     category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
   ): Observable<ProductKeyValue[]> {

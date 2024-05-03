@@ -19,12 +19,13 @@ export class SingleCategoryPageComponent implements OnInit {
   public products!: ProductKeyValue[];
   ngOnInit(): void {
     this.route.params.subscribe((res) => {
+      console.log(res['category']);
       this.sharedService.getTypeOfProduct(res['category']).subscribe((res) => {
         this.products = res;
-        console.log(res);
       });
     });
   }
+
   likeUnlikeProduct(
     productId: string,
     productCategory: 'guitar' | 'drum' | 'bass' | 'piano' | 'other'

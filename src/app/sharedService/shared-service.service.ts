@@ -76,7 +76,7 @@ export class SharedServiceService {
     return this.http
       .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
       .pipe(
-        map((res: User) => {
+        tap((res: User) => {
           let updatedData: ProductKeyAndType[] = [];
           let updatedUser: User = {
             email: res.email,

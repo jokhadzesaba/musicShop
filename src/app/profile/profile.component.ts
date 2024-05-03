@@ -5,16 +5,9 @@ import {
   OnInit,
 } from '@angular/core';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
-import {
-  KeyValueUser,
-  Product,
-  ProductKeyAndType,
-  ProductKeyValue,
-} from '../interfaces';
+import { KeyValueUser, Product, ProductKeyAndType } from '../interfaces';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedServiceService } from '../sharedService/shared-service.service';
-import { TimeInterval } from 'rxjs/internal/operators/timeInterval';
-import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -28,8 +21,8 @@ export class ProfileComponent implements OnInit {
   public likedProductsKeys: ProductKeyAndType[] = [];
   public photos: string[] = [];
   public addingProduct: boolean = false;
-  public showMoreItems:boolean[] = [];
-  public changeArrow:boolean[] = [];
+  public showMoreItems: boolean[] = [];
+  public changeArrow: boolean[] = [];
   public form = this.fb.group({
     category: ['', [Validators.required]],
     model: ['', Validators.required],
@@ -45,7 +38,7 @@ export class ProfileComponent implements OnInit {
     private sharedService: SharedServiceService
   ) {}
   ngOnInit(): void {
-    this.authService.findUser('sabaadmin@gmail.com').subscribe((user) => {
+    this.authService.loggedUser.subscribe((user) => {
       this.user = user;
       this.likedProductsKeys = user?.user.likedProducts.slice(1)!;
       this.getLikedProducts(user!.key);
@@ -54,13 +47,13 @@ export class ProfileComponent implements OnInit {
       });
       this.cd.detectChanges();
     });
-    // this.authService.loggedUser.subscribe((user) => {});
   }
 
   public update() {
     if (this.user?.user.email) {
       this.authService.findUser(this.user?.user.email).subscribe((res) => {
         this.user = res;
+        this.cd.detectChanges();
       });
     } else {
       throw new Error('no user email found');
@@ -138,7 +131,7 @@ export class ProfileComponent implements OnInit {
           .likeUnlikeProduct(productId, res.key, category)
           .subscribe(() => {
             this.getLikedProducts(res.key);
-            this.cd.detectChanges();
+            this.update();
           });
       }
     }),
@@ -149,11 +142,13 @@ export class ProfileComponent implements OnInit {
         console.log('subscription completed');
       };
   }
-  convertDate(date:Date){
-    let newDate = new Date(date)
-    return `${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`;
+  convertDate(date: Date) {
+    let newDate = new Date(date);
+    return `${newDate.getDate()}/${
+      newDate.getMonth() + 1
+    }/${newDate.getFullYear()}`;
   }
-  upperCaseFirstLetter(word:string){
-    return word.charAt(0).toUpperCase() + word.slice(1)
+  upperCaseFirstLetter(word: string) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
   }
 }

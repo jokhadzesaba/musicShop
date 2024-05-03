@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="container">
   <div class="wrapper">
     <div class="box">
@@ -102,48 +103,51 @@
       </div>
     </div>
     <div class="liked-products">
-      <p *ngIf="likedProducts">Liked Products</p>
-      <div
-        *ngFor="let product of likedProducts; let i = index"
-        class="single-product"
-      >
-        <div class="hover">
-          <button>Add to cart</button>
-          <div>
-            <span>See Product</span>
-            <span
-              (click)="
-                likeUnlikeProduct(
-                  likedProductsKeys[i].key,
-                  likedProductsKeys[i].category
-                )
-              "
-              ><img
+      <p *ngIf="likedProducts">Liked Products:</p>
+      <div class="products">
+        <div
+          *ngFor="let product of likedProducts; let i = index"
+          class="single-product"
+        >
+          <div class="hover">
+            <button>Add to cart</button>
+            <div>
+              <span>See Product</span>
+              <span
                 (click)="
                   likeUnlikeProduct(
                     likedProductsKeys[i].key,
                     likedProductsKeys[i].category
                   )
                 "
-                src="assets/heart.png"
-                alt="img"
-              />
-              Like</span
-            >
+                ><img
+                  (click)="
+                    likeUnlikeProduct(
+                      likedProductsKeys[i].key,
+                      likedProductsKeys[i].category
+                    )
+                  "
+                  src="assets/heart.png"
+                  alt="img"
+                />
+                Like</span
+              >
+            </div>
           </div>
-        </div>
-        <div class="img-placeholder">
-          <div *ngIf="product.discount > 0" class="discount">
-            {{ product.discount }}
+          <div class="img-placeholder">
+            <div *ngIf="product.discount > 0" class="discount">
+              {{ product.discount }}
+            </div>
+            <img [src]="product.photoUrl[0]" alt="img" />
           </div>
-          <img [src]="product.photoUrl[0]" alt="img" />
-        </div>
-        <div class="info">
-          <span>{{ product.category }}</span>
-          <span>{{ product.model }}</span>
-          <span>{{ product.price }}$</span>
+          <div class="info">
+            <span>{{ product.category }}</span>
+            <span>{{ product.model }}</span>
+            <span>{{ product.price }}$</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<app-footer></app-footer>

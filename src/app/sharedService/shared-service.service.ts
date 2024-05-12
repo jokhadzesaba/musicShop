@@ -5,7 +5,6 @@ import {
   Product,
   ProductKeyAndType,
   ProductKeyValue,
-  ProductTypes,
   Purchase,
   User,
 } from '../interfaces';

@@ -4,7 +4,7 @@ import { GoogleAuthProvider, user } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
-import { KeyValueUser, User } from 'src/app/interfaces';
+import { KeyValueUser, ProductKeyAndType, User } from 'src/app/interfaces';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,6 +17,7 @@ export class LoginAndRegistrationService {
     private http: HttpClient,
     private router: Router
   ) {}
+  likedProducts = new BehaviorSubject<ProductKeyAndType[]>([]);
   public loginWithGoogle() {
     this.auth.signInWithPopup(new GoogleAuthProvider()).then(
       (res) => {
@@ -27,6 +28,7 @@ export class LoginAndRegistrationService {
           } else {
             this.findUser(res.user?.email!).subscribe((user) => {
               this.loggedUser.next(user);
+              this.likedProducts.next(user?.user.likedProducts!)
               this.router.navigate(['/products']);
             });
           }
@@ -37,11 +39,13 @@ export class LoginAndRegistrationService {
       }
     );
   }
+
   public loginWithEmailAndPassword(email: string, password: string) {
     this.auth.signInWithEmailAndPassword(email, password).then(
       (res) => {
         this.findUser(res.user?.email!).subscribe((user) => {
           this.loggedUser.next(user);
+          this.likedProducts.next(user?.user.likedProducts!)
           this.router.navigate(['/products']);
         });
       },

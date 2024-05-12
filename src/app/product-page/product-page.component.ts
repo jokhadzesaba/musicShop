@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { SharedServiceService } from '../sharedService/shared-service.service';
-import { ProductKeyValue } from '../interfaces';
+import { ProductKeyAndType, ProductKeyValue } from '../interfaces';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { Router } from '@angular/router';
 
@@ -22,6 +22,7 @@ export class ProductPageComponent implements OnInit {
   public drumProducts: ProductKeyValue[] = [];
   public otherProducts: ProductKeyValue[] = [];
   public loading:boolean = true
+  public likedProducts:ProductKeyAndType[] = [];
 
   constructor(
     private sharedService: SharedServiceService,
@@ -44,6 +45,9 @@ export class ProductPageComponent implements OnInit {
           }
         });
         this.loading = false;
+        this.authService.likedProducts.subscribe((likedProducts: ProductKeyAndType[]) => {
+          this.likedProducts = likedProducts;
+        });
         this.cd.detectChanges();
       }
     });
@@ -73,6 +77,13 @@ export class ProductPageComponent implements OnInit {
   }
   addInCart(product: ProductKeyValue) {
     this.sharedService.cartOperations('add', product);
+  }
+
+  checkIfliked(productKey: string) {
+    return this.likedProducts.some(prod => prod.key === productKey);
+  }
+  navigateToCategotyPage(categoty: string) {
+    this.router.navigate([`categoty/${categoty}`]);
   }
 }
 

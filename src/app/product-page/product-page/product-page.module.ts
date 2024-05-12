@@ -6,10 +6,11 @@ import { TopProductsComponent } from 'src/app/top-products/top-products.componen
 import { HeaderComponent } from 'src/app/header/header.component';
 import { FooterComponent } from 'src/app/footer/footer.component';
 import { CartComponent } from 'src/app/cart/cart.component';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [ProductPageComponent, TopProductsComponent],
-  imports: [CommonModule, ProductPageRouting, FooterComponent, HeaderComponent,CartComponent],
+  imports: [CommonModule, ProductPageRouting, FooterComponent, HeaderComponent,CartComponent,RouterModule,RouterLink],
   exports: [ProductPageComponent],
 })
 export class ProductPageModule {}

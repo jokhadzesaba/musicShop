@@ -1,14 +1,13 @@
 <app-header></app-header>
 <app-top-products></app-top-products>
 <h1>Our Products</h1>
-<div  *ngIf="loading" class="loading-container">
-  <div class="loader">
-  </div>
+<div *ngIf="loading" class="loading-container">
+  <div class="loader"></div>
   <p>Loading...</p>
 </div>
 <div *ngIf="!loading" class="products">
   <div class="products-container">
-    <p>Guitars</p>
+    <p (click)='navigateToCategotyPage("guitar")'>Guitars</p>
     <div class="product">
       <div *ngFor="let product of guitarProducts" class="single-product">
         <div class="hover">
@@ -19,15 +18,24 @@
             >
             <span
               (click)="likeUnlikeProduct(product.key, product.product.category)"
-              ><img
+            >
+              <img
+                *ngIf="!checkIfliked(product.key)"
                 (click)="
                   likeUnlikeProduct(product.key, product.product.category)
                 "
                 src="assets/heart.png"
                 alt="img"
               />
-              Like</span
-            >
+              <img
+                *ngIf="checkIfliked(product.key)"
+                (click)="
+                  likeUnlikeProduct(product.key, product.product.category)
+                "
+                src="assets/heart-red.png"
+                alt="img"
+              />
+            </span>
           </div>
         </div>
         <div class="img-placeholder">
@@ -45,7 +53,7 @@
     </div>
   </div>
   <div class="products-container">
-    <p>Drums</p>
+    <p (click)='navigateToCategotyPage("drum")'>Drums</p>
     <div class="product">
       <div *ngFor="let product of drumProducts" class="single-product">
         <div class="hover">
@@ -56,15 +64,24 @@
             >
             <span
               (click)="likeUnlikeProduct(product.key, product.product.category)"
-              ><img
+            >
+              <img
+                *ngIf="!checkIfliked(product.key)"
                 (click)="
                   likeUnlikeProduct(product.key, product.product.category)
                 "
                 src="assets/heart.png"
                 alt="img"
               />
-              Like</span
-            >
+              <img
+                *ngIf="checkIfliked(product.key)"
+                (click)="
+                  likeUnlikeProduct(product.key, product.product.category)
+                "
+                src="assets/heart-red.png"
+                alt="img"
+              />
+            </span>
           </div>
         </div>
         <div class="img-placeholder">
@@ -82,7 +99,7 @@
     </div>
   </div>
   <div class="products-container">
-    <p>Pianos</p>
+    <p (click)='navigateToCategotyPage("piano")'>Pianos</p>
     <div class="product">
       <div *ngFor="let product of pianoProducts" class="single-product">
         <div class="hover">
@@ -93,15 +110,24 @@
             >
             <span
               (click)="likeUnlikeProduct(product.key, product.product.category)"
-              ><img
+            >
+              <img
+                *ngIf="!checkIfliked(product.key)"
                 (click)="
                   likeUnlikeProduct(product.key, product.product.category)
                 "
                 src="assets/heart.png"
                 alt="img"
               />
-              Like</span
-            >
+              <img
+                *ngIf="checkIfliked(product.key)"
+                (click)="
+                  likeUnlikeProduct(product.key, product.product.category)
+                "
+                src="assets/heart-red.png"
+                alt="img"
+              />
+            </span>
           </div>
         </div>
         <div class="img-placeholder">
@@ -119,7 +145,7 @@
     </div>
   </div>
   <div class="products-container">
-    <p>Basses</p>
+    <p (click)='navigateToCategotyPage("bass")'>Basses</p>
     <div class="product">
       <div *ngFor="let product of bassProducts" class="single-product">
         <div class="hover">
@@ -130,15 +156,24 @@
             >
             <span
               (click)="likeUnlikeProduct(product.key, product.product.category)"
-              ><img
+            >
+              <img
+                *ngIf="!checkIfliked(product.key)"
                 (click)="
                   likeUnlikeProduct(product.key, product.product.category)
                 "
                 src="assets/heart.png"
                 alt="img"
               />
-              Like</span
-            >
+              <img
+                *ngIf="checkIfliked(product.key)"
+                (click)="
+                  likeUnlikeProduct(product.key, product.product.category)
+                "
+                src="assets/heart-red.png"
+                alt="img"
+              />
+            </span>
           </div>
         </div>
         <div class="img-placeholder">

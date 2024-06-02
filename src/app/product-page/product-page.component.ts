@@ -21,8 +21,8 @@ export class ProductPageComponent implements OnInit {
   public bassProducts: ProductKeyValue[] = [];
   public drumProducts: ProductKeyValue[] = [];
   public otherProducts: ProductKeyValue[] = [];
-  public loading:boolean = true
-  public likedProducts:ProductKeyAndType[] = [];
+  public loading: boolean = true;
+  public likedProducts: ProductKeyAndType[] = [];
 
   constructor(
     private sharedService: SharedServiceService,
@@ -45,9 +45,11 @@ export class ProductPageComponent implements OnInit {
           }
         });
         this.loading = false;
-        this.authService.likedProducts.subscribe((likedProducts: ProductKeyAndType[]) => {
-          this.likedProducts = likedProducts;
-        });
+        this.authService.likedProducts.subscribe(
+          (likedProducts: ProductKeyAndType[]) => {
+            this.likedProducts = likedProducts;
+          }
+        );
         this.cd.detectChanges();
       }
     });
@@ -80,10 +82,12 @@ export class ProductPageComponent implements OnInit {
   }
 
   checkIfliked(productKey: string) {
-    return this.likedProducts.some(prod => prod.key === productKey);
+    return this.likedProducts.some((prod) => prod.key === productKey);
   }
   navigateToCategotyPage(categoty: string) {
     this.router.navigate([`categoty/${categoty}`]);
   }
+  calculateDiscount(price: number, discount: number) {
+    return Math.round((price * discount) / 100);
+  }
 }
-

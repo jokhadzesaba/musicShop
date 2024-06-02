@@ -44,7 +44,7 @@ export class CartComponent implements OnInit {
       this.sharedService.cart.getValue(),
       this.calculateTotalPrice(),
       this.authService.loggedUser.getValue()?.user.email!,
-      this.authService.loggedUser.getValue()?.key,
+      this.authService.loggedUser.getValue()?.key
     );
   }
   removeFromCart(product: ProductKeyValue) {
@@ -71,8 +71,22 @@ export class CartComponent implements OnInit {
   calculateTotalPrice() {
     let sum = 0;
     this.sharedService.cart.getValue().forEach((x) => {
-      sum += x.quantity * x.product.product.price;
+      if (x.product.product.discount > 0) {
+        const discount =
+          x.quantity *
+          (x.product.product.price -
+            this.calculateDiscount(
+              x.product.product.price,
+              x.product.product.discount
+            ));
+            sum += discount
+      } else {
+        sum += x.quantity * x.product.product.price;
+      }
     });
     return sum;
+  }
+  calculateDiscount(price: number, discount: number) {
+    return Math.round((price * discount) / 100);
   }
 }

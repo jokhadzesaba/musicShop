@@ -112,4 +112,7 @@ export class SingleCategoryPageComponent implements OnInit {
     );    
     this.cd.detectChanges()
   }
+  calculateDiscount(price: number, discount: number) {
+    return Math.round((price * discount) / 100);
+  }
 }

@@ -21,6 +21,7 @@
         <button (click)="nav(prod.product.key, prod.product.product.category)">
           See Product
         </button>
+        <p>Discount -{{prod.product.product.discount}}%</p>
         <p>
           <img
             (click)="plus(prod.product.key, 'minus')"
@@ -33,7 +34,6 @@
             alt="img"
           />
         </p>
-        <p>{{ prod.quantity * prod.product.product.price }}$</p>
       </div>
     </div>
   </div>

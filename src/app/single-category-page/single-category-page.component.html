@@ -41,14 +41,22 @@
     </div>
     <div class="img-placeholder">
       <div *ngIf="product.product.discount > 0" class="discount">
-        {{ product.product.discount }}
+        -{{ product.product.discount }}%
       </div>
       <img [src]="product.product.photoUrl[0]" alt="img" />
     </div>
     <div class="info">
       <span>{{ product.product.category }}</span>
       <span>{{ product.product.model }}</span>
-      <span>{{ product.product.price }}$</span>
+      <span *ngIf="product.product.discount === 0">{{product.product.price}}$</span>
+      <div class="if-discount" *ngIf="product.product.discount > 0">
+        <span>
+          {{ product.product.price }}$
+        </span>
+        <span>{{
+          calculateDiscount(product.product.price, product.product.discount)
+        }}$</span>
+      </div>
     </div>
   </div>
 </div>

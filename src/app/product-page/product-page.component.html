@@ -7,7 +7,7 @@
 </div>
 <div *ngIf="!loading" class="products">
   <div class="products-container">
-    <p (click)='navigateToCategotyPage("guitar")'>Guitars</p>
+    <p (click)="navigateToCategotyPage('guitar')">Guitars</p>
     <div class="product">
       <div *ngFor="let product of guitarProducts" class="single-product">
         <div class="hover">
@@ -47,13 +47,23 @@
         <div class="info">
           <span>{{ product.product.category }}</span>
           <span>{{ product.product.model }}</span>
-          <span>{{ product.product.price }}$</span>
+          <div class="if-discount" *ngIf="product.product.discount > 0">
+            <span> {{ product.product.price }}$ </span>
+            <span
+              >{{
+                calculateDiscount(
+                  product.product.price,
+                  product.product.discount
+                )
+              }}$</span
+            >
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="products-container">
-    <p (click)='navigateToCategotyPage("drum")'>Drums</p>
+    <p (click)="navigateToCategotyPage('drum')">Drums</p>
     <div class="product">
       <div *ngFor="let product of drumProducts" class="single-product">
         <div class="hover">
@@ -93,13 +103,23 @@
         <div class="info">
           <span>{{ product.product.category }}</span>
           <span>{{ product.product.model }}</span>
-          <span>{{ product.product.price }}$</span>
+          <div class="if-discount" *ngIf="product.product.discount > 0">
+            <span> {{ product.product.price }}$ </span>
+            <span
+              >{{
+                calculateDiscount(
+                  product.product.price,
+                  product.product.discount
+                )
+              }}$</span
+            >
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="products-container">
-    <p (click)='navigateToCategotyPage("piano")'>Pianos</p>
+    <p (click)="navigateToCategotyPage('piano')">Pianos</p>
     <div class="product">
       <div *ngFor="let product of pianoProducts" class="single-product">
         <div class="hover">
@@ -139,13 +159,23 @@
         <div class="info">
           <span>{{ product.product.category }}</span>
           <span>{{ product.product.model }}</span>
-          <span>{{ product.product.price }}$</span>
+          <div class="if-discount" *ngIf="product.product.discount > 0">
+            <span> {{ product.product.price }}$ </span>
+            <span
+              >{{
+                calculateDiscount(
+                  product.product.price,
+                  product.product.discount
+                )
+              }}$</span
+            >
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="products-container">
-    <p (click)='navigateToCategotyPage("bass")'>Basses</p>
+    <p (click)="navigateToCategotyPage('bass')">Basses</p>
     <div class="product">
       <div *ngFor="let product of bassProducts" class="single-product">
         <div class="hover">
@@ -178,14 +208,27 @@
         </div>
         <div class="img-placeholder">
           <div *ngIf="product.product.discount > 0" class="discount">
-            {{ product.product.discount }}
+            -{{ product.product.discount }}%
           </div>
           <img [src]="product.product.photoUrl[0]" alt="img" />
         </div>
         <div class="info">
           <span>{{ product.product.category }}</span>
           <span>{{ product.product.model }}</span>
-          <span>{{ product.product.price }}$</span>
+          <span *ngIf="product.product.discount === 0">{{
+            product.product.price
+          }}</span>
+          <div class="if-discount" *ngIf="product.product.discount > 0">
+            <span> {{ product.product.price }}$ </span>
+            <span
+              >{{
+                calculateDiscount(
+                  product.product.price,
+                  product.product.discount
+                )
+              }}$</span
+            >
+          </div>
         </div>
       </div>
     </div>

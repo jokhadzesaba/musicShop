@@ -166,3 +166,15 @@ input[type="range"] {
   background-size: 100% 2px;
   pointer-events: none;
 }
+
+.if-discount{
+  >span:first-of-type{
+    text-decoration: line-through;
+  }
+  span{
+    font-weight: bold;
+  }
+  >span:last-child{
+    font-size: 20px;
+  }
+}

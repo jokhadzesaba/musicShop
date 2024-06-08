@@ -88,6 +88,6 @@ export class ProductPageComponent implements OnInit {
     this.router.navigate([`categoty/${categoty}`]);
   }
   calculateDiscount(price: number, discount: number) {
-    return Math.round((price * discount) / 100);
+    return price - Math.round((price * discount) / 100);
   }
 }

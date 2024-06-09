@@ -49,4 +49,8 @@ export class HeaderComponent implements OnInit {
   public openCloseCart() {
     this.cart = !this.cart;
   }
+  public logOut(){
+    this.loginService.logOut()
+    this.router.navigate(['/products'])
+  }
 }

@@ -15,9 +15,9 @@ export class LoginAndRegistrationService {
   constructor(
     private auth: AngularFireAuth,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {}
-  likedProducts = new BehaviorSubject<ProductKeyAndType[]>([]);
+  public likedProducts = new BehaviorSubject<ProductKeyAndType[]>([]);
   public loginWithGoogle() {
     this.auth.signInWithPopup(new GoogleAuthProvider()).then(
       (res) => {
@@ -28,8 +28,9 @@ export class LoginAndRegistrationService {
           } else {
             this.findUser(res.user?.email!).subscribe((user) => {
               this.loggedUser.next(user);
-              this.likedProducts.next(user?.user.likedProducts!)
+              this.likedProducts.next(user?.user.likedProducts!);
               this.router.navigate(['/products']);
+              localStorage.setItem('currentUser', JSON.stringify(user));
             });
           }
         });
@@ -45,8 +46,9 @@ export class LoginAndRegistrationService {
       (res) => {
         this.findUser(res.user?.email!).subscribe((user) => {
           this.loggedUser.next(user);
-          this.likedProducts.next(user?.user.likedProducts!)
+          this.likedProducts.next(user?.user.likedProducts!);
           this.router.navigate(['/products']);
+          localStorage.setItem('currentUser', JSON.stringify(user));
         });
       },
       (err) => {
@@ -135,5 +137,17 @@ export class LoginAndRegistrationService {
         return response.email;
       })
     );
+  }
+  checkIfLoggedIn() {
+    if (localStorage.getItem('currentUser')) {
+      let user = JSON.parse(localStorage.getItem('currentUser')!);
+      this.loggedUser.next(user);
+      console.log(user);
+    }
+  }
+  logOut() {
+    localStorage.removeItem('currentUser');
+    this.likedProducts.next([]);
+    this.loggedUser.next(undefined);
   }
 }

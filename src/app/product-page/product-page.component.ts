@@ -29,9 +29,12 @@ export class ProductPageComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private authService: LoginAndRegistrationService,
     private router: Router
-  ) {}
+  ) {
+    
+  }
   ngOnInit(): void {
     this.sharedService.getAllTypeOfProduct().subscribe((res) => {
+      this.authService.checkIfLoggedIn()
       for (let index = 0; index < res.length; index++) {
         Object.entries(res[index]).forEach(([keys, products]) => {
           if (index === 0) {

@@ -15,6 +15,12 @@ const routes: Routes = [
       ).then((m) => m.LoginAndRegistrationModule),
   },
   {
+    path: 'about-us',
+    loadComponent: () =>
+      import('./about-us/about-us.component').then((m) => m.AboutUsComponent),
+  },
+
+  {
     path: 'products',
     loadChildren: () =>
       import('./product-page/product-page/product-page.module').then(

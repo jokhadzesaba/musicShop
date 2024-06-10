@@ -9,6 +9,7 @@ import { LoginAndRegistrationService } from '../loginAndRegistration/services/lo
 import { KeyValueUser } from '../interfaces';
 import { CommonModule } from '@angular/common';
 import { CartComponent } from '../cart/cart.component';
+import { AboutUsComponent } from '../about-us/about-us.component';
 
 @Component({
   selector: 'app-header',
@@ -34,8 +35,6 @@ export class HeaderComponent implements OnInit {
       this.profilePicture = this.user?.user.photoUrl;
       this.cd.detectChanges();
     });
-
-    
   }
   public changeDropDown() {
     this.dropDown = !this.dropDown;
@@ -49,8 +48,15 @@ export class HeaderComponent implements OnInit {
   public openCloseCart() {
     this.cart = !this.cart;
   }
-  public logOut(){
-    this.loginService.logOut()
-    this.router.navigate(['/products'])
+  public logOut() {
+    this.loginService.logOut();
+    this.router.navigate(['/products']);
+  }
+  public navigate(where: string) {
+    if (where === 'about-us') {
+      this.router.navigate(['/about-us']);
+    } else if (where === 'contact') {
+      this.router.navigate(['/contact']);
+    }
   }
 }

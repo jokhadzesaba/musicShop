@@ -14,8 +14,8 @@
       </span>
       <img (click)="changeDropDown()" src="assets/down-arrow.png" alt="img" />
     </div>
-    <span>Contact</span>
-    <span>About Us</span>
+    <span routerLink="/contact">Contact</span>
+    <span (click)="navigate('about-us')" >About Us</span>
     <app-cart class="cart" [userEmail]="user?.user?.email!" [showCart]="cart"></app-cart>
     <div>
       <img src="assets/loupe.png" alt="img" />

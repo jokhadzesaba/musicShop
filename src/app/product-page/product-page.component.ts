@@ -22,6 +22,8 @@ export class ProductPageComponent implements OnInit {
   public drumProducts: ProductKeyValue[] = [];
   public otherProducts: ProductKeyValue[] = [];
   public loading: boolean = true;
+  public isAdmin?: boolean = false;
+  public isEditing?:string = '';
   public likedProducts: ProductKeyAndType[] = [];
 
   constructor(
@@ -29,12 +31,13 @@ export class ProductPageComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private authService: LoginAndRegistrationService,
     private router: Router
-  ) {
-    
-  }
+  ) {}
   ngOnInit(): void {
+    this.authService.checkIfLoggedIn();
+    this.getAllTypeOfProduct();
+  }
+  getAllTypeOfProduct() {
     this.sharedService.getAllTypeOfProduct().subscribe((res) => {
-      this.authService.checkIfLoggedIn()
       for (let index = 0; index < res.length; index++) {
         Object.entries(res[index]).forEach(([keys, products]) => {
           if (index === 0) {
@@ -53,6 +56,9 @@ export class ProductPageComponent implements OnInit {
             this.likedProducts = likedProducts;
           }
         );
+        this.authService.loggedUser.subscribe((user) => {
+          this.isAdmin = user?.user.isAdmin;
+        });
         this.cd.detectChanges();
       }
     });
@@ -92,5 +98,32 @@ export class ProductPageComponent implements OnInit {
   }
   calculateDiscount(price: number, discount: number) {
     return price - Math.round((price * discount) / 100);
+  }
+  removeProduct(
+    productType: 'guitar' | 'piano' | 'bass' | 'drum' | 'other',
+    prodId: string
+  ) {
+    this.sharedService.removeProduct(productType, prodId).subscribe(() => {
+      if (productType === 'guitar') {
+        this.guitarProducts = this.guitarProducts.filter(
+          (x) => x.key !== prodId
+        );
+      } else if (productType === 'bass') {
+        this.bassProducts = this.bassProducts.filter((x) => x.key !== prodId);
+      } else if (productType === 'piano') {
+        this.pianoProducts = this.pianoProducts.filter((x) => x.key !== prodId);
+      } else if (productType === 'drum') {
+        this.drumProducts = this.drumProducts.filter((x) => x.key !== prodId);
+      } else if (productType === 'other') {
+        this.otherProducts = this.otherProducts.filter((x) => x.key !== prodId);
+      }
+      this.cd.detectChanges();
+    });
+  }
+  editing(productId:string){
+    this.isEditing = productId
+  }
+  cancelEditing(){
+    this.isEditing = '';
   }
 }

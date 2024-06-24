@@ -18,6 +18,9 @@
 </div>
 <div class="products">
   <div *ngFor="let product of products" class="single-product">
+    <div class="delete-button" *ngIf="isAdmin">
+      <img (click)="removeProduct(product.product.category,product.key)" src="assets/remove.png" alt="img">
+    </div>
     <div class="hover">
       <button (click)="addInCart(product)">Add to cart</button>
       <div>

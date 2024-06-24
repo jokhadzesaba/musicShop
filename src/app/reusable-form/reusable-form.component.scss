@@ -1,0 +1,11 @@
+.edit{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 60px;
+    >input,textarea{
+      width: 80%;
+      height: 26px;
+    }
+  }

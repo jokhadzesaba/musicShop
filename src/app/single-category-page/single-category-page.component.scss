@@ -72,7 +72,15 @@
     position: relative;
     display: flex;
     flex-direction: column;
-
+    >.delete-button{
+      position: absolute;
+      z-index: 2;
+      >img{
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+      }
+    }
     &:hover {
       > .hover {
         display: block;

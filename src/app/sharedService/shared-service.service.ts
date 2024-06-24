@@ -70,13 +70,23 @@ export class SharedServiceService {
       );
   }
   getAllTypeOfProduct() {
-    const data1 = this.http.get<ProductKeyValue>(`${this.url}/products/guitar.json`)
-    const data2 = this.http.get<ProductKeyValue>(`${this.url}/products/piano.json`)
-    const data3 = this.http.get<ProductKeyValue>(`${this.url}/products/bass.json`)
-    const data4 = this.http.get<ProductKeyValue>(`${this.url}/products/drum.json`)
-    return forkJoin<ProductKeyValue[]>([data1,data2,data3,data4]).pipe(map(results=>{
-      return results
-    }))
+    const data1 = this.http.get<ProductKeyValue>(
+      `${this.url}/products/guitar.json`
+    );
+    const data2 = this.http.get<ProductKeyValue>(
+      `${this.url}/products/piano.json`
+    );
+    const data3 = this.http.get<ProductKeyValue>(
+      `${this.url}/products/bass.json`
+    );
+    const data4 = this.http.get<ProductKeyValue>(
+      `${this.url}/products/drum.json`
+    );
+    return forkJoin<ProductKeyValue[]>([data1, data2, data3, data4]).pipe(
+      map((results) => {
+        return results;
+      })
+    );
   }
   likeUnlikeProduct(
     productId: string,
@@ -168,7 +178,6 @@ export class SharedServiceService {
       totalPrice: totalPrice,
       products: items,
     };
-
     const adminUpdate$ = this.http
       .get<User>(`${this.url}/musicShopUsers/-NuwyYV_Xx3Z9YdV7qOv.json`)
       .pipe(
@@ -204,7 +213,12 @@ export class SharedServiceService {
           })
         );
     }
-
     forkJoin([adminUpdate$, userUpdate$]).subscribe();
+  }
+  public removeProduct(
+    productType: 'guitar' | 'piano' | 'bass' | 'drum' | 'other',
+    prodId: string
+  ) {
+    return this.http.delete(`${this.url}/products/${productType}/${prodId}.json`);
   }
 }

@@ -15,6 +15,7 @@ export class SingleCategoryPageComponent implements OnInit {
   public leftSlider = 0;
   public rightSlider = 10000;
   public searchWords = '';
+  public isAdmin:boolean = false;
   public products!: ProductKeyValue[];
   public UnChangedProducts!: ProductKeyValue[];
 
@@ -27,10 +28,23 @@ export class SingleCategoryPageComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.getProducts();
+    let user = JSON.parse(localStorage.getItem('currentUser')!);
+    if (user) {
+      this.isAdmin = user.user.isAdmin;
+    }
     this.cd.detectChanges()
+    console.log(this.isAdmin);
     
   }
-
+  removeProduct(
+    productType: 'guitar' | 'piano' | 'bass' | 'drum' | 'other',
+    prodId: string
+  ) {
+    this.sharedService.removeProduct(productType, prodId).subscribe(() => {
+      this.products = this.products.filter(x => x.key !== prodId);
+      this.cd.detectChanges()
+  })
+}
   getProducts() {
     this.route.params.subscribe((res) => {
       this.sharedService.getTypeOfProduct(res['category']).subscribe((res) => {

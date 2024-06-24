@@ -1,0 +1,7 @@
+<form class="edit" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <input formControlName="model" type="text" placeholder="New model-name" />
+  <input formControlName="price" type="text" placeholder="New price" />
+  <input formControlName="discount" type="text" placeholder="New Discount" />
+  <input formControlName="quantity" type="text" placeholder="New Quantity" />
+  <textarea formControlName placeholder="New Description"></textarea>
+</form>

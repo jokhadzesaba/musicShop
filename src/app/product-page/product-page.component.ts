@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { SharedServiceService } from '../sharedService/shared-service.service';
-import { ProductKeyAndType, ProductKeyValue } from '../interfaces';
+import { ProductForm, ProductKeyAndType, ProductKeyValue } from '../interfaces';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { Router } from '@angular/router';
 
@@ -125,5 +125,37 @@ export class ProductPageComponent implements OnInit {
   }
   cancelEditing(){
     this.isEditing = '';
+  }
+  onFormSubmitted(formData: any,prodId:string, categoty:'guitar'|'bass'|'piano'|'drum'|'other') {
+    this.sharedService.editProduct(formData,prodId,categoty).subscribe(()=>{
+      if (categoty === 'guitar') {;
+        this.updateProductArray(formData, this.guitarProducts,prodId);
+      }else if(categoty === 'bass'){
+        this.updateProductArray(formData, this.bassProducts,prodId);
+      }else if(categoty === 'piano'){
+        this.updateProductArray(formData, this.pianoProducts,prodId);
+      }else if(categoty === 'drum'){
+        this.updateProductArray(formData, this.drumProducts,prodId);
+      }
+    })
+  }
+  updateProductArray(formData:any,array:ProductKeyValue[],prodId:string){
+    let index = array.findIndex(x=>x.key === prodId);
+    if (formData.discount) {
+      array[index].product.discount = formData.discount
+    }
+    if (formData.model) {
+      array[index].product.model = formData.model
+    }
+    if (formData.price) {
+      array[index].product.price = formData.price
+    }
+    if (formData.description) {
+      array[index].product.description = formData.description
+    }
+    if (formData.quantity) {
+      array[index].product.quantity = formData.quantity
+    }
+    this.cd.detectChanges()
   }
 }

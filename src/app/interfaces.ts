@@ -46,6 +46,14 @@ export interface ProductTypes {
   drum: ProductKeyValue[];
   // other: ProductKeyValue[];
 }
+export interface ProductForm {
+  model: string;
+  price: string;
+  discount: string;
+  quantity: string;
+  description: string;
+}
+
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCbQiRFo1MKF_WTEIwSMYg4rFL0CkKdTDI',

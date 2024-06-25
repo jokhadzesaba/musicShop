@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProductKeyValue } from '../interfaces';
+import { Component, EventEmitter, Output,} from '@angular/core';
+import { FormGroup, FormBuilder,ReactiveFormsModule, Validators } from '@angular/forms';import { ProductForm } from '../interfaces';
+;
 
 @Component({
   selector: 'app-reusable-form',
@@ -10,37 +10,20 @@ import { ProductKeyValue } from '../interfaces';
   styleUrl: './reusable-form.component.scss'
 })
 export class ReusableFormComponent {
-  @Input() product?: ProductKeyValue;
-  @Output() formSubmit = new EventEmitter<any>();
-
   productForm: FormGroup;
+  @Output() formSubmitted = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder) {
     this.productForm = this.fb.group({
       model: [''],
-      price: [''],
-      discount: [''],
-      quantity: [''],
+      price: ['',Validators.pattern('^[0-9]*$')],
+      discount: ['',Validators.pattern('^[0-9]*$')],
+      quantity: ['',Validators.pattern('^[0-9]*$')],
       description:['']
     });
   }
 
-  ngOnChanges() {
-    if (this.product) {
-      this.productForm.patchValue({
-        model: this.product.product.model,
-        price: this.product.product.price,
-        discount: this.product.product.discount,
-        quantity: this.product.product.quantity,
-        description:this.product.product.description
-      });
-    }
-  }
-
   onSubmit() {
-    if (this.productForm.valid) {
-      this.formSubmit.emit(this.productForm.value);
-    }
+      this.formSubmitted.emit(this.productForm.value);
   }
-
 }

@@ -1,7 +1,8 @@
-<form class="edit" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+<form class="edit" [formGroup]="productForm">
   <input formControlName="model" type="text" placeholder="New model-name" />
   <input formControlName="price" type="text" placeholder="New price" />
   <input formControlName="discount" type="text" placeholder="New Discount" />
   <input formControlName="quantity" type="text" placeholder="New Quantity" />
-  <textarea formControlName placeholder="New Description"></textarea>
+  <textarea formControlName="description" placeholder="New Description"></textarea>
+  <button (click)="onSubmit()">Confirm Changes</button>
 </form>

@@ -16,15 +16,12 @@
     </div>
     <span routerLink="/contact">Contact</span>
     <span (click)="navigate('about-us')" >About Us</span>
+    <span *ngIf="!user"(click)="navigate('login')">Log In</span>
     <app-cart class="cart" [userEmail]="user?.user?.email!" [showCart]="cart"></app-cart>
-    <div>
-      <img src="assets/loupe.png" alt="img" />
-      <input type="text" placeholder="Search" />
-    </div>
   </div>
   <div>
-    <img (click)="logOut()" src="assets/logout.png" alt="img" />
+    <img *ngIf="user" (click)="logOut()" src="assets/logout.png" alt="img" />
     <img (click)="openCloseCart()" src="assets/shopping-cart.png" alt="img" />
-    <img (click)="navigateToProfile()" src="assets/profile.png" alt="img" />
+    <img *ngIf="user" (click)="navigateToProfile()" src="assets/profile.png" alt="img" />
   </div>
 </div>

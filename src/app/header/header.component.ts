@@ -53,10 +53,6 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/products']);
   }
   public navigate(where: string) {
-    if (where === 'about-us') {
-      this.router.navigate(['/about-us']);
-    } else if (where === 'contact') {
-      this.router.navigate(['/contact']);
-    }
+    this.router.navigate([`/${where}`])
   }
 }

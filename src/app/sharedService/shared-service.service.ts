@@ -219,6 +219,34 @@ export class SharedServiceService {
     productType: 'guitar' | 'piano' | 'bass' | 'drum' | 'other',
     prodId: string
   ) {
-    return this.http.delete(`${this.url}/products/${productType}/${prodId}.json`);
+    return this.http.delete(
+      `${this.url}/products/${productType}/${prodId}.json`
+    );
+  }
+  public editProduct(
+    formData: any,
+    prodId: string,
+    category: 'guitar' | 'bass' | 'piano' | 'drum' | 'other'
+  ) {
+    return this.http.get<Product>(`${this.url}/products/${category}/${prodId}.json`).pipe(
+      tap((res: Product) => {
+        if (formData.model) {
+          res.model = formData.model;
+        }
+        if (formData.price) {
+          res.price = formData.price;
+        }
+        if (formData.discount) {
+          res.discount = formData.discount;
+        }
+        if (formData.quantity) {
+          res.quantity = formData.quantity;
+        }
+        if (formData.description) {
+          res.description = formData.description;
+        }
+        this.http.patch<Product>(`${this.url}/products/${category}/${prodId}.json`,res).subscribe();
+      })
+    );
   }
 }

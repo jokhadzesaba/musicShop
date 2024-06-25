@@ -58,11 +58,14 @@
           </div>
         </div>
         <div class="edit" *ngIf="isEditing === product.key">
-            <app-reusable-form></app-reusable-form>
-            <div>
-              <button>Confirm Changes</button>
-              <button (click)="cancelEditing()">Cancel</button>
-            </div>
+          <app-reusable-form
+            (formSubmitted)="
+              onFormSubmitted($event, product.key, product.product.category)
+            "
+          ></app-reusable-form>
+          <div>
+            <button (click)="cancelEditing()">Cancel</button>
+          </div>
         </div>
         <div
           [ngClass]="
@@ -77,16 +80,17 @@
         <div class="info">
           <span>{{ product.product.category }}</span>
           <span>{{ product.product.model }}</span>
-          <div class="if-discount" *ngIf="product.product.discount > 0">
+          <span *ngIf="!product.product.discount">{{ product.product.price }}</span>
+          <div *ngIf="product.product.discount>0" class="if-discount">
             <span> {{ product.product.price }}$ </span>
-            <span
-              >{{
-                calculateDiscount(
-                  product.product.price,
-                  product.product.discount
-                )
-              }}$</span
-            >
+            <span>   
+                {{
+                  calculateDiscount(
+                    product.product.price,
+                    product.product.discount
+                  )
+                }}$
+              </span>
           </div>
         </div>
       </div>
@@ -144,13 +148,12 @@
           </div>
         </div>
         <div class="edit" *ngIf="isEditing === product.key">
-          <input type="text" placeholder="new name" />
-          <input type="text" placeholder="new price" />
-          <input type="text" placeholder="discount" />
-          <input type="text" placeholder="quantity" />
-          <textarea placeholder="description"></textarea>
+          <app-reusable-form
+            (formSubmitted)="
+              onFormSubmitted($event, product.key, product.product.category)
+            "
+          ></app-reusable-form>
           <div>
-            <button>Confirm Changes</button>
             <button (click)="cancelEditing()">Cancel</button>
           </div>
         </div>
@@ -167,16 +170,17 @@
         <div class="info">
           <span>{{ product.product.category }}</span>
           <span>{{ product.product.model }}</span>
-          <div class="if-discount" *ngIf="product.product.discount > 0">
+          <span *ngIf="!product.product.discount">{{ product.product.price }}</span>
+          <div *ngIf="product.product.discount>0" class="if-discount">
             <span> {{ product.product.price }}$ </span>
-            <span
-              >{{
-                calculateDiscount(
-                  product.product.price,
-                  product.product.discount
-                )
-              }}$</span
-            >
+            <span *ngIf="product.product.discount > 0">   
+                {{
+                  calculateDiscount(
+                    product.product.price,
+                    product.product.discount
+                  )
+                }}$
+              </span>
           </div>
         </div>
       </div>
@@ -234,13 +238,12 @@
           </div>
         </div>
         <div class="edit" *ngIf="isEditing === product.key">
-          <input type="text" placeholder="new name" />
-          <input type="text" placeholder="new price" />
-          <input type="text" placeholder="discount" />
-          <input type="text" placeholder="quantity" />
-          <textarea placeholder="description"></textarea>
+          <app-reusable-form
+            (formSubmitted)="
+              onFormSubmitted($event, product.key, product.product.category)
+            "
+          ></app-reusable-form>
           <div>
-            <button>Confirm Changes</button>
             <button (click)="cancelEditing()">Cancel</button>
           </div>
         </div>
@@ -250,23 +253,24 @@
           "
         >
           <div *ngIf="product.product.discount > 0" class="discount">
-            {{ product.product.discount }}
+            -{{ product.product.discount }}%
           </div>
           <img [src]="product.product.photoUrl[0]" alt="img" />
         </div>
         <div class="info">
           <span>{{ product.product.category }}</span>
           <span>{{ product.product.model }}</span>
-          <div class="if-discount" *ngIf="product.product.discount > 0">
+          <span *ngIf="!product.product.discount">{{ product.product.price }}</span>
+          <div *ngIf="product.product.discount>0" class="if-discount">
             <span> {{ product.product.price }}$ </span>
-            <span
-              >{{
-                calculateDiscount(
-                  product.product.price,
-                  product.product.discount
-                )
-              }}$</span
-            >
+            <span *ngIf="product.product.discount > 0">   
+                {{
+                  calculateDiscount(
+                    product.product.price,
+                    product.product.discount
+                  )
+                }}$
+              </span>
           </div>
         </div>
       </div>
@@ -324,13 +328,12 @@
           </div>
         </div>
         <div class="edit" *ngIf="isEditing === product.key">
-          <input type="text" placeholder="new name" />
-          <input type="text" placeholder="new price" />
-          <input type="text" placeholder="discount" />
-          <input type="text" placeholder="quantity" />
-          <textarea placeholder="description"></textarea>
+          <app-reusable-form
+            (formSubmitted)="
+              onFormSubmitted($event, product.key, product.product.category)
+            "
+          ></app-reusable-form>
           <div>
-            <button>Confirm Changes</button>
             <button (click)="cancelEditing()">Cancel</button>
           </div>
         </div>
@@ -347,19 +350,17 @@
         <div class="info">
           <span>{{ product.product.category }}</span>
           <span>{{ product.product.model }}</span>
-          <span *ngIf="product.product.discount === 0">{{
-            product.product.price
-          }}</span>
-          <div class="if-discount" *ngIf="product.product.discount > 0">
+          <span *ngIf="!product.product.discount">{{ product.product.price }}</span>
+          <div *ngIf="product.product.discount>0" class="if-discount">
             <span> {{ product.product.price }}$ </span>
-            <span
-              >{{
-                calculateDiscount(
-                  product.product.price,
-                  product.product.discount
-                )
-              }}$</span
-            >
+            <span *ngIf="product.product.discount > 0">   
+                {{
+                  calculateDiscount(
+                    product.product.price,
+                    product.product.discount
+                  )
+                }}$
+              </span>
           </div>
         </div>
       </div>

@@ -142,7 +142,6 @@ export class LoginAndRegistrationService {
     if (localStorage.getItem('currentUser')) {
       let user = JSON.parse(localStorage.getItem('currentUser')!);
       this.loggedUser.next(user);
-      console.log(user);
     }
   }
   logOut() {

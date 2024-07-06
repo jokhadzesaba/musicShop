@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { ProductKeyAndType, ProductKeyValue } from '../interfaces';
@@ -15,9 +20,10 @@ export class SingleCategoryPageComponent implements OnInit {
   public leftSlider = 0;
   public rightSlider = 10000;
   public searchWords = '';
-  public isAdmin:boolean = false;
+  public isAdmin: boolean = false;
   public products!: ProductKeyValue[];
   public UnChangedProducts!: ProductKeyValue[];
+  public isEditing: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -32,19 +38,17 @@ export class SingleCategoryPageComponent implements OnInit {
     if (user) {
       this.isAdmin = user.user.isAdmin;
     }
-    this.cd.detectChanges()
+    this.cd.detectChanges();
     console.log(this.isAdmin);
-    
   }
-  removeProduct(
-    productType: 'guitar' | 'piano' | 'bass' | 'drum' | 'other',
-    prodId: string
+  onRemove(
+    data: { prodId: string; prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other' }
   ) {
-    this.sharedService.removeProduct(productType, prodId).subscribe(() => {
-      this.products = this.products.filter(x => x.key !== prodId);
-      this.cd.detectChanges()
-  })
-}
+    this.sharedService.removeProduct(data.prodCategory, data.prodId).subscribe(() => {
+      this.products = this.products.filter((x) => x.key !== data.prodId);
+      this.cd.detectChanges();
+    });
+  }
   getProducts() {
     this.route.params.subscribe((res) => {
       this.sharedService.getTypeOfProduct(res['category']).subscribe((res) => {
@@ -60,39 +64,9 @@ export class SingleCategoryPageComponent implements OnInit {
       );
     });
   }
-  checkIfliked(productKey: string) {
-    return this.likedProducts.some((prod) => prod.key === productKey);
-  }
-
-  likeUnlikeProduct(
-    productId: string,
-    productCategory: 'guitar' | 'drum' | 'bass' | 'piano' | 'other'
-  ) {
-    this.authService.loggedUser.subscribe((res) => {
-      if (res !== undefined) {
-        this.sharedService
-          .likeUnlikeProduct(productId, res.key, productCategory)
-          .subscribe();
-      }
-    }),
-      (err: any) => {
-        console.log('Error productPage: likeUnlikeProduct method: ', err);
-      },
-      () => {
-        console.log('subscription completed');
-      };
-  }
-  navigation(productId: string, type: string) {
-    this.router.navigate([`single-product/${productId}`], {
-      queryParams: { type: type, prod: productId },
-    });
-  }
-  addInCart(product: ProductKeyValue) {
-    this.sharedService.cartOperations('add', product);
-  }
 
   searchWordInSentence(sentence: string) {
-    const words = this.searchWords.toUpperCase().split(' ');    
+    const words = this.searchWords.toUpperCase().split(' ');
     let check = true;
     for (let i of words) {
       if (!sentence.toUpperCase().includes(i)) {
@@ -122,11 +96,19 @@ export class SingleCategoryPageComponent implements OnInit {
       (pr) =>
         this.searchByRange(pr.product.price) &&
         this.searchWordInSentence(pr.product.model)
-        
-    );    
-    this.cd.detectChanges()
+    );
+    this.cd.detectChanges();
   }
-  calculateDiscount(price: number, discount: number) {
-    return price - Math.round((price * discount) / 100);
+  onEdit(
+    data: {
+      form: any;
+      prodId: string;
+      prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
+    }
+  ) {
+    this.sharedService.editProduct(data.form, data.prodId, data.prodCategory).subscribe(() => {
+      this.sharedService.updateProductArray(data.form, this.products, data.prodId);
+      this.cd.detectChanges()
+    });
   }
 }

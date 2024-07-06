@@ -1,0 +1,62 @@
+<div class="single-product">
+  <div class="delete-button" *ngIf="isAdmin">
+    <img (click)="removeProduct()" src="assets/remove.png" alt="img" />
+    <img
+      *ngIf="isEditing === ''"
+      (click)="editing()"
+      src="assets/pen.png"
+      alt="img"
+    />
+    <img
+      *ngIf="isEditing !== ''"
+      (click)="cancelEditing()"
+      src="assets/pen.png"
+      alt="img"
+    />
+  </div>
+  <div [ngClass]="isEditing ? 'display-none' : 'hover'">
+    <button (click)="addInCart()">Add to cart</button>
+    <div>
+      <span (click)="navigation()">See Product</span>
+      <span (click)="likeUnlikeProduct()">
+        <img
+          *ngIf="!checkIfliked()"
+          (click)="likeUnlikeProduct()"
+          src="assets/heart.png"
+          alt="img"
+        />
+        <img
+          *ngIf="checkIfliked()"
+          (click)="likeUnlikeProduct()"
+          src="assets/heart-red.png"
+          alt="img"
+        />
+      </span>
+    </div>
+  </div>
+  <div class="edit" *ngIf="isEditing === product?.key">
+    <app-reusable-form
+      (formSubmitted)="onFormSubmit($event)"
+    ></app-reusable-form>
+    <div>
+      <button (click)="cancelEditing()">Cancel</button>
+    </div>
+  </div>
+  <div
+    [ngClass]="isEditing === product.key ? 'display-none' : 'img-placeholder'"
+  >
+    <div *ngIf="product?.product?.discount" class="discount">
+      -{{ product.product.discount }}%
+    </div>
+    <img [src]="product.product.photoUrl[0]" alt="img" />
+  </div>
+  <div class="info">
+    <span>{{ product.product.category }}</span>
+    <span>{{ product.product.model }}</span>
+    <span *ngIf="!product.product.discount">{{ product.product.price }}</span>
+    <div *ngIf="product.product.discount" class="if-discount">
+      <span> {{ product.product.price }}$ </span>
+      <span> {{ calculateDiscount() }}$ </span>
+    </div>
+  </div>
+</div>

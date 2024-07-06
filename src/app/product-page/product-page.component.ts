@@ -23,7 +23,7 @@ export class ProductPageComponent implements OnInit {
   public otherProducts: ProductKeyValue[] = [];
   public loading: boolean = true;
   public isAdmin?: boolean = false;
-  public isEditing?:string = '';
+  public isEditing?: string = '';
   public likedProducts: ProductKeyAndType[] = [];
 
   constructor(
@@ -63,99 +63,64 @@ export class ProductPageComponent implements OnInit {
       }
     });
   }
-  likeUnlikeProduct(
-    productId: string,
-    productCategory: 'guitar' | 'drum' | 'bass' | 'piano' | 'other'
-  ) {
-    this.authService.loggedUser.subscribe((res) => {
-      if (res !== undefined) {
-        this.sharedService
-          .likeUnlikeProduct(productId, res.key, productCategory)
-          .subscribe();
-      }
-    }),
-      (err: any) => {
-        console.log('Error productPage: likeUnlikeProduct method: ', err);
-      },
-      () => {
-        console.log('subscription completed');
-      };
+  onFormSubmitted(data: {
+    form: any;
+    prodId: string;
+    prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
+  }) {
+    this.sharedService
+      .editProduct(data.form, data.prodId, data.prodCategory)
+      .subscribe(() => {
+        if (data.prodCategory === 'guitar') {
+          this.sharedService.updateProductArray(
+            data.form,
+            this.guitarProducts,
+            data.prodId
+          );
+        } else if (data.prodCategory === 'bass') {
+          this.sharedService.updateProductArray(
+            data.form,
+            this.bassProducts,
+            data.prodId
+          );
+        } else if (data.prodCategory === 'piano') {
+          this.sharedService.updateProductArray(
+            data.form,
+            this.pianoProducts,
+            data.prodId
+          );
+        } else if (data.prodCategory === 'drum') {
+          this.sharedService.updateProductArray(
+            data.form,
+            this.drumProducts,
+            data.prodId
+          );
+        }
+        this.cd.detectChanges()
+      });
   }
-  navigation(productId: string, type: string) {
-    this.router.navigate([`single-product/${productId}`], {
-      queryParams: { type: type, prod: productId },
-    });
-  }
-  addInCart(product: ProductKeyValue) {
-    this.sharedService.cartOperations('add', product);
-  }
-
-  checkIfliked(productKey: string) {
-    return this.likedProducts.some((prod) => prod.key === productKey);
-  }
-  navigateToCategotyPage(categoty: string) {
-    this.router.navigate([`categoty/${categoty}`]);
-  }
-  calculateDiscount(price: number, discount: number) {
-    return price - Math.round((price * discount) / 100);
-  }
-  removeProduct(
-    productType: 'guitar' | 'piano' | 'bass' | 'drum' | 'other',
-    prodId: string
-  ) {
-    this.sharedService.removeProduct(productType, prodId).subscribe(() => {
-      if (productType === 'guitar') {
-        this.guitarProducts = this.guitarProducts.filter(
-          (x) => x.key !== prodId
-        );
-      } else if (productType === 'bass') {
-        this.bassProducts = this.bassProducts.filter((x) => x.key !== prodId);
-      } else if (productType === 'piano') {
-        this.pianoProducts = this.pianoProducts.filter((x) => x.key !== prodId);
-      } else if (productType === 'drum') {
-        this.drumProducts = this.drumProducts.filter((x) => x.key !== prodId);
-      } else if (productType === 'other') {
-        this.otherProducts = this.otherProducts.filter((x) => x.key !== prodId);
-      }
-      this.cd.detectChanges();
-    });
-  }
-  editing(productId:string){
-    this.isEditing = productId
-  }
-  cancelEditing(){
-    this.isEditing = '';
-  }
-  onFormSubmitted(formData: any,prodId:string, categoty:'guitar'|'bass'|'piano'|'drum'|'other') {
-    this.sharedService.editProduct(formData,prodId,categoty).subscribe(()=>{
-      if (categoty === 'guitar') {;
-        this.updateProductArray(formData, this.guitarProducts,prodId);
-      }else if(categoty === 'bass'){
-        this.updateProductArray(formData, this.bassProducts,prodId);
-      }else if(categoty === 'piano'){
-        this.updateProductArray(formData, this.pianoProducts,prodId);
-      }else if(categoty === 'drum'){
-        this.updateProductArray(formData, this.drumProducts,prodId);
-      }
-    })
-  }
-  updateProductArray(formData:any,array:ProductKeyValue[],prodId:string){
-    let index = array.findIndex(x=>x.key === prodId);
-    if (formData.discount) {
-      array[index].product.discount = formData.discount
+  removeHandler(data: { prodId: string; prodCategory: string }) {
+    if (data.prodCategory === 'guitar') {
+      this.guitarProducts = this.guitarProducts.filter(
+        (x) => x.key !== data.prodId
+      );
+    } else if (data.prodCategory === 'bass') {
+      this.bassProducts = this.bassProducts.filter(
+        (x) => x.key !== data.prodId
+      );
+    } else if (data.prodCategory === 'piano') {
+      this.pianoProducts = this.pianoProducts.filter(
+        (x) => x.key !== data.prodId
+      );
+    } else if (data.prodCategory === 'drum') {
+      this.drumProducts = this.drumProducts.filter(
+        (x) => x.key !== data.prodId
+      );
+    } else if (data.prodCategory === 'other') {
+      this.otherProducts = this.otherProducts.filter(
+        (x) => x.key !== data.prodId
+      );
     }
-    if (formData.model) {
-      array[index].product.model = formData.model
-    }
-    if (formData.price) {
-      array[index].product.price = formData.price
-    }
-    if (formData.description) {
-      array[index].product.description = formData.description
-    }
-    if (formData.quantity) {
-      array[index].product.quantity = formData.quantity
-    }
-    this.cd.detectChanges()
+    this.cd.detectChanges();
   }
 }

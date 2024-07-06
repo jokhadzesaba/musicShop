@@ -2,65 +2,35 @@
 <div class="filter">
   <div class="slider">
     <div class="left">
-      <input type="range" min="0" max="10000" [(ngModel)]="leftSlider" id="lower">
-      <input type="text" [value]="leftSlider" [(ngModel)]="leftSlider">
+      <input
+        type="range"
+        min="0"
+        max="10000"
+        [(ngModel)]="leftSlider"
+        id="lower"
+      />
+      <input type="text" [value]="leftSlider" [(ngModel)]="leftSlider" />
     </div>
     <div class="right">
-      <input type="range" min="0" max="10000" [(ngModel)]="rightSlider" id="upper">   
-      <input type="text" [value]="rightSlider" [(ngModel)]="rightSlider" >
+      <input
+        type="range"
+        min="0"
+        max="10000"
+        [(ngModel)]="rightSlider"
+        id="upper"
+      />
+      <input type="text" [value]="rightSlider" [(ngModel)]="rightSlider" />
     </div>
   </div>
   <div class="search">
-    <input type="text" [(ngModel)]="searchWords" placeholder="model">
-    <img (click)="filter()" src="assets/loupe.png" alt="img">
+    <input type="text" [(ngModel)]="searchWords" placeholder="model" />
+    <img (click)="filter()" src="assets/loupe.png" alt="img" />
   </div>
-  <br>
+  <br />
 </div>
 <div class="products">
-  <div *ngFor="let product of products" class="single-product">
-    <div class="delete-button" *ngIf="isAdmin">
-      <img (click)="removeProduct(product.product.category,product.key)" src="assets/remove.png" alt="img">
-    </div>
-    <div class="hover">
-      <button (click)="addInCart(product)">Add to cart</button>
-      <div>
-        <span (click)="navigation(product.key, product.product.category)"
-          >See Product</span
-        >
-        <span (click)="likeUnlikeProduct(product.key, product.product.category)"
-          ><img *ngIf="!checkIfliked(product.key)"
-            (click)="likeUnlikeProduct(product.key, product.product.category)"
-            src="assets/heart.png"
-            alt="img"
-          />  
-          <img *ngIf="checkIfliked(product.key)"
-          (click)="likeUnlikeProduct(product.key, product.product.category)"
-          src="assets/heart-red.png"
-          alt="img"
-        />
-          </span
-        >
-      </div>
-    </div>
-    <div class="img-placeholder">
-      <div *ngIf="product.product.discount > 0" class="discount">
-        -{{ product.product.discount }}%
-      </div>
-      <img [src]="product.product.photoUrl[0]" alt="img" />
-    </div>
-    <div class="info">
-      <span>{{ product.product.category }}</span>
-      <span>{{ product.product.model }}</span>
-      <span *ngIf="product.product.discount === 0">{{product.product.price}}$</span>
-      <div class="if-discount" *ngIf="product.product.discount > 0">
-        <span>
-          {{ product.product.price }}$
-        </span>
-        <span>{{
-          calculateDiscount(product.product.price, product.product.discount)
-        }}$</span>
-      </div>
-    </div>
-  </div>
+  <app-card [product]="product" (removeEvent)="onRemove($event)" (editEvent)="onEdit($event)"  *ngFor="let product of products" class="single-product">
+
+  </app-card>
 </div>
 <app-footer></app-footer>

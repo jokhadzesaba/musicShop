@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import {
   Cart,
   Product,
@@ -228,25 +228,51 @@ export class SharedServiceService {
     prodId: string,
     category: 'guitar' | 'bass' | 'piano' | 'drum' | 'other'
   ) {
-    return this.http.get<Product>(`${this.url}/products/${category}/${prodId}.json`).pipe(
-      tap((res: Product) => {
-        if (formData.model) {
-          res.model = formData.model;
-        }
-        if (formData.price) {
-          res.price = formData.price;
-        }
-        if (formData.discount) {
-          res.discount = formData.discount;
-        }
-        if (formData.quantity) {
-          res.quantity = formData.quantity;
-        }
-        if (formData.description) {
-          res.description = formData.description;
-        }
-        this.http.patch<Product>(`${this.url}/products/${category}/${prodId}.json`,res).subscribe();
-      })
-    );
+    return this.http
+      .get<Product>(`${this.url}/products/${category}/${prodId}.json`)
+      .pipe(
+        tap((res: Product) => {
+          if (formData.model) {
+            res.model = formData.model;
+          }
+          if (formData.price) {
+            res.price = formData.price;
+          }
+          if (formData.discount) {
+            res.discount = formData.discount;
+          }
+          if (formData.quantity) {
+            res.quantity = formData.quantity;
+          }
+          if (formData.description) {
+            res.description = formData.description;
+          }
+          this.http
+            .patch<Product>(
+              `${this.url}/products/${category}/${prodId}.json`,
+              res
+            )
+            .subscribe();
+        })
+      );
+  }
+  updateProductArray(formData: any, array: ProductKeyValue[], prodId: string) {
+    let index = array.findIndex((x) => x.key === prodId);
+    if (formData.discount) {
+      array[index].product.discount = formData.discount;
+
+      if (formData.model) {
+        array[index].product.model = formData.model;
+      }
+      if (formData.price) {
+        array[index].product.price = formData.price;
+      }
+      if (formData.description) {
+        array[index].product.description = formData.description;
+      }
+      if (formData.quantity) {
+        array[index].product.quantity = formData.quantity;
+      }
+    }
   }
 }

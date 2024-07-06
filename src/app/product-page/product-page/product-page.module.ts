@@ -8,6 +8,7 @@ import { FooterComponent } from 'src/app/footer/footer.component';
 import { CartComponent } from 'src/app/cart/cart.component';
 import { RouterLink, RouterModule } from '@angular/router';
 import { ReusableFormComponent } from 'src/app/reusable-form/reusable-form.component';
+import { CardComponent } from 'src/app/card/card.component';
 
 @NgModule({
   declarations: [ProductPageComponent, TopProductsComponent],
@@ -20,6 +21,7 @@ import { ReusableFormComponent } from 'src/app/reusable-form/reusable-form.compo
     RouterModule,
     RouterLink,
     ReusableFormComponent,
+    CardComponent
   ],
   exports: [ProductPageComponent],
 })

@@ -24,6 +24,7 @@ import {
 })
 export class SharedServiceService {
   public detectChanges = new BehaviorSubject<boolean>(false);
+  public likedProducts = new BehaviorSubject<ProductKeyValue[]>([]);
   public cart = new BehaviorSubject<Cart[]>([]);
   public url =
     'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app';
@@ -127,19 +128,16 @@ export class SharedServiceService {
         })
       );
   }
-  getAllLikedProducts(userId: string): Observable<Product[]> {
-    return this.http
-      .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
-      .pipe(
-        switchMap((user: User) => {
-          const getProductObservables = user.likedProducts.map((productId) =>
-            this.getProductById(productId.key, productId.category)
-          );
-
-          return forkJoin(getProductObservables);
-        })
-      );
+  getAllLikedProducts(userId: string) {
+    
   }
+  
+  getProduct(id: string, category: string):Observable<ProductKeyValue> {
+    return this.http.get<ProductKeyValue>(
+      `${this.url}/products/${category}/${id}.json`
+    );
+  }
+  
   getProductById(id: string, category: string) {
     return this.http.get<Product>(
       `${this.url}/products/${category}/${id}.json`

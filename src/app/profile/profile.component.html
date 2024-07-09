@@ -105,47 +105,12 @@
     <div class="liked-products">
       <p *ngIf="likedProducts">Liked Products:</p>
       <div class="products">
-        <div
-          *ngFor="let product of likedProducts; let i = index"
+        <app-card
+          [product]="product"
+          *ngFor="let product of likedProducts |slice:1"
           class="single-product"
         >
-          <div class="hover">
-            <button>Add to cart</button>
-            <div>
-              <span>See Product</span>
-              <span
-                (click)="
-                  likeUnlikeProduct(
-                    likedProductsKeys[i].key,
-                    likedProductsKeys[i].category
-                  )
-                "
-                ><img
-                  (click)="
-                    likeUnlikeProduct(
-                      likedProductsKeys[i].key,
-                      likedProductsKeys[i].category
-                    )
-                  "
-                  src="assets/heart.png"
-                  alt="img"
-                />
-                Like</span
-              >
-            </div>
-          </div>
-          <div class="img-placeholder">
-            <div *ngIf="product.discount > 0" class="discount">
-              {{ product.discount }}
-            </div>
-            <img [src]="product.photoUrl[0]" alt="img" />
-          </div>
-          <div class="info">
-            <span>{{ product.category }}</span>
-            <span>{{ product.model }}</span>
-            <span>{{ product.price }}$</span>
-          </div>
-        </div>
+        </app-card>
       </div>
     </div>
   </div>

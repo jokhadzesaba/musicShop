@@ -5,9 +5,10 @@ import {
   OnInit,
 } from '@angular/core';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
-import { KeyValueUser, Product, ProductKeyAndType } from '../interfaces';
+import { KeyValueUser, Product, ProductKeyAndType, ProductKeyValue } from '../interfaces';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedServiceService } from '../sharedService/shared-service.service';
+import { forkJoin, map } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -17,8 +18,7 @@ import { SharedServiceService } from '../sharedService/shared-service.service';
 })
 export class ProfileComponent implements OnInit {
   public user?: KeyValueUser;
-  public likedProducts?: Product[];
-  public likedProductsKeys: ProductKeyAndType[] = [];
+  public likedProducts?: ProductKeyValue[];
   public photos: string[] = [];
   public addingProduct: boolean = false;
   public showMoreItems: boolean[] = [];
@@ -40,11 +40,10 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.authService.loggedUser.subscribe((user) => {
       this.user = user;
-      this.likedProductsKeys = user?.user.likedProducts.slice(1)!;
-      this.getLikedProducts(user!.key);
       this.form.patchValue({
         category: 'guitar',
       });
+      this.getLikedProducts()
       this.cd.detectChanges();
     });
   }
@@ -113,35 +112,24 @@ export class ProfileComponent implements OnInit {
         },
       });
   }
-  getLikedProducts(userId: string) {
-    this.sharedService
-      .getAllLikedProducts(userId)
-      .subscribe((res: Product[]) => {
-        this.likedProducts = res.slice(1);
+getLikedProducts() {
+    if (this.user && this.user.user.likedProducts && this.user.user.likedProducts.length) {
+      const requests = this.user.user.likedProducts.map((productKeyAndType: ProductKeyAndType) => {
+        return this.sharedService.getProduct(productKeyAndType.key,productKeyAndType.category).pipe(
+          map(product => ({ key: productKeyAndType.key, product }))
+        );
+      });
+
+      forkJoin(requests).subscribe((products: any) => {
+        this.likedProducts = products;
+        console.log('Liked Products:', this.likedProducts);
         this.cd.detectChanges();
       });
+    }
   }
-  likeUnlikeProduct(
-    productId: string,
-    category: 'guitar' | 'drum' | 'bass' | 'piano' | 'other'
-  ) {
-    this.authService.loggedUser.subscribe((res) => {
-      if (res !== undefined) {
-        this.sharedService
-          .likeUnlikeProduct(productId, res.key, category)
-          .subscribe(() => {
-            this.getLikedProducts(res.key);
-            this.update();
-          });
-      }
-    }),
-      (err: any) => {
-        console.log('Error productPage: likeUnlikeProduct method: ', err);
-      },
-      () => {
-        console.log('subscription completed');
-      };
-  }
+
+
+
   convertDate(date: Date) {
     let newDate = new Date(date);
     return `${newDate.getDate()}/${

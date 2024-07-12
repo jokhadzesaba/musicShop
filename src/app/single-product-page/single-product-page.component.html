@@ -2,8 +2,8 @@
 <div class="container">
   <div class="content">
     <div class="images">
-      <div class="focused-img">
-        <img *ngIf="images" [src]="images[cuurentIndex]" alt="img" />
+      <div  class="focused-img">
+        <img #myImage *ngIf="images" [src]="images[cuurentIndex]" alt="img" />
       </div>
       <div class="otherPhotos">
         <div>

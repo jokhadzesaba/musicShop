@@ -1,8 +1,11 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { Product } from '../interfaces';
@@ -14,10 +17,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './single-product-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SingleProductPageComponent implements OnInit {
+export class SingleProductPageComponent implements OnInit{
   public product?: Product | undefined;
   public images!: string[];
   public cuurentIndex: number = 0;
+  public minSize = 0;
+  public maxSize = 0;
+  public focusedImg = this.product?.photoUrl[0];
 
   constructor(
     private sharedService: SharedServiceService,
@@ -47,10 +53,13 @@ export class SingleProductPageComponent implements OnInit {
       const first = [this.images[this.images.length - 1]];
       const rest = this.images.slice(0, this.images.length - 1);
       this.images = [...first, ...rest];
+      
     } else {
       const first = [this.images[0]];
       const rest = this.images.slice(1, this.images.length);
       this.images = [...rest, ...first];
+      
+
     }
   }
 }

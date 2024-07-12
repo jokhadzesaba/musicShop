@@ -7,13 +7,14 @@ import { HeaderComponent } from 'src/app/header/header.component';
 import { FooterComponent } from 'src/app/footer/footer.component';
 
 
+
 @NgModule({
   declarations: [SingleProductPageComponent],
   imports: [
     CommonModule,
     HeaderComponent,
     FooterComponent,
-    SingleProductPageRoutingModule
+    SingleProductPageRoutingModule,
   ],
   exports:[SingleProductPageComponent]
 })

@@ -14,7 +14,7 @@
       </span>
       <img (click)="changeDropDown()" src="assets/down-arrow.png" alt="img" />
     </div>
-    <span routerLink="/contact">Contact</span>
+    <span (click)="navigate('contact')">Contact</span>
     <span (click)="navigate('about-us')" >About Us</span>
     <span *ngIf="!user"(click)="navigate('login')">Log In</span>
     <app-cart class="cart" [userEmail]="user?.user?.email!" [showCart]="cart"></app-cart>

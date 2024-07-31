@@ -12,7 +12,7 @@ import { ProfileModuleModule } from './profile/profile-module/profile-module.mod
 import { SingleProductPageModule } from './single-product-page/single-product-page/single-product-page.module';
 import { CartComponent } from './cart/cart.component';
 import { CommonModule } from '@angular/common';
-import { AboutUsComponent } from './about-us/about-us.component';
+
 
 
 @NgModule({

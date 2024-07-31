@@ -19,6 +19,11 @@ const routes: Routes = [
     loadComponent: () =>
       import('./about-us/about-us.component').then((m) => m.AboutUsComponent),
   },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./contanct/contanct.component').then((m) => m.ContanctComponent),
+  },
 
   {
     path: 'products',

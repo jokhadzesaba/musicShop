@@ -42,6 +42,7 @@ export class CardComponent implements OnInit {
     private cd: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
+    this.authService.checkIfLoggedIn();
     this.authService.likedProducts.subscribe((res) => {
       this.likeProducts = res;
       

@@ -2,7 +2,7 @@
 <div class="container">
   <div class="content">
     <div class="images">
-      <div  class="focused-img">
+      <div class="focused-img">
         <img #myImage *ngIf="images" [src]="images[cuurentIndex]" alt="img" />
       </div>
       <div class="otherPhotos">
@@ -19,17 +19,28 @@
       </div>
     </div>
     <div class="description payment">
-      <p><span>Categoty:</span> {{ product?.category }}</p>
-      <p><span>Model:</span> {{ product?.model }}</p>
-      <p>
-        <span>Description: </span> {{ product?.description }} some shit
-        description which i do not know what is over and over again some shit
-        description which i do not know what is over and over again some shit
-        description which i do not know what is over and over againsome shit
-        description which i do not know what is over and over again some shit
-        description which i do not know what is over and over again
-      </p>
-      <p><span>Price:</span> {{ product?.price }}$</p>
+      <div>
+        <p><span>Categoty:</span> {{ product?.category }}</p>
+        <div (click)="likeUnlikeProduct()" *ngIf="checkIfliked()">
+          <img  src="assets/heart.png" alt="img" />
+        </div>
+        <div *ngIf="!checkIfliked()">
+          <img (click)="likeUnlikeProduct()" src="assets/heart-red.png" alt="img" />
+        </div>
+      </div>
+      <div>
+        <p><span>Model:</span> {{ product?.model }}</p>
+        <p>
+          <span>Description: </span> {{ product?.description }} some shit
+          description which i do not know what is over and over again some shit
+          description which i do not know what is over and over again some shit
+          description which i do not know what is over and over againsome shit
+          description which i do not know what is over and over again some shit
+          description which i do not know what is over and over again
+        </p>
+        <p><span>Price:</span> {{ product?.price }}$</p>
+        <button (click)="addInCart()">Add to Cart</button>
+      </div>
     </div>
   </div>
 </div>

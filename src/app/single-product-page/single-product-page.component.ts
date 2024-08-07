@@ -8,8 +8,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { SharedServiceService } from '../sharedService/shared-service.service';
-import { Product } from '../interfaces';
+import { Product, ProductKeyAndType } from '../interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 
 @Component({
   selector: 'app-single-product-page',
@@ -24,14 +25,21 @@ export class SingleProductPageComponent implements OnInit{
   public minSize = 0;
   public maxSize = 0;
   public focusedImg = this.product?.photoUrl[0];
+  public likeProducts: ProductKeyAndType[] = [];
+  private prodId = '';
 
   constructor(
     private sharedService: SharedServiceService,
+    private authService:LoginAndRegistrationService,
     private router: Router,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
+    this.authService.checkIfLoggedIn();
+    this.authService.likedProducts.subscribe((res) => {
+      this.likeProducts = res;
+    });
     this.getProductInfo();
   }
   getProductInfo() {
@@ -41,7 +49,9 @@ export class SingleProductPageComponent implements OnInit{
         .subscribe((product: Product) => {
           this.product = product;
           this.images = product.photoUrl;
+          this.prodId = res['prod']
           this.cd.detectChanges();
+
         });
     });
   }
@@ -61,5 +71,31 @@ export class SingleProductPageComponent implements OnInit{
       
 
     }
+  }
+  addInCart() {
+    this.sharedService.cartOperations('add', {key:this.prodId, product: this.product!});
+  }
+  checkIfliked() {
+    return this.likeProducts.some((prod) => prod.key === this.prodId);
+  }
+  likeUnlikeProduct() {
+    this.authService.loggedUser.subscribe((res) => {
+      if (res !== undefined) {
+        this.sharedService
+          .likeUnlikeProduct(
+            this.prodId,
+            res.key,
+            this.product?.category!
+          )
+          .subscribe();
+      }
+    }),
+      (err: any) => {
+        console.log('Error productPage: likeUnlikeProduct method: ', err);
+      },
+      () => {
+        console.log('subscription completed');
+      };
+      this.cd.detectChanges()
   }
 }

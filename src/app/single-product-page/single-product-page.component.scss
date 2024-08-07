@@ -16,12 +16,12 @@
         align-items: center;
         width: 350px;
         height: 350px;
-        img{  
+        img {
           max-width: 350px;
           max-height: 350px;
         }
       }
-      
+
       > .otherPhotos {
         display: flex;
         gap: 4px;
@@ -50,12 +50,34 @@
       flex-direction: column;
       gap: 20px;
       width: 400px;
-      > p {
-        > span {
-          font-weight: bold;
+      > div:first-child {
+        display: flex;
+        justify-content: space-between;
+        div {
+          cursor: pointer;
+          img {
+            width: 23px;
+          }
         }
-        word-wrap: break-word;
-        font-size: 20px;
+      }
+      div {
+        > p {
+          > span {
+            font-weight: bold;
+          }
+          word-wrap: break-word;
+          font-size: 20px;
+        }
+        button{
+          width: 90px;
+          height: 30px;
+          border: none;
+          text-align: center;
+          color: white;
+          background-color: rgb(122, 122, 240);
+          border-radius: 3px;
+          cursor: pointer;
+        }
       }
     }
   }

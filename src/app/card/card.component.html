@@ -21,14 +21,13 @@
         <span (click)="navigation()">See Product</span>
         <span (click)="likeUnlikeProduct()">
           <img
-            *ngIf="!checkIfliked()"
-            (click)="likeUnlikeProduct()"
+          *ngIf="!checkIfliked()"
             src="assets/heart.png"
             alt="img"
           />
           <img
             *ngIf="checkIfliked()"
-            (click)="likeUnlikeProduct()"
+          
             src="assets/heart-red.png"
             alt="img"
           />

@@ -18,17 +18,20 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedServiceService {
   public detectChanges = new BehaviorSubject<boolean>(false);
-  public likedProducts = new BehaviorSubject<ProductKeyValue[]>([]);
   public cart = new BehaviorSubject<Cart[]>([]);
   public url =
     'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app';
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private service: LoginAndRegistrationService
+  ) {}
 
   addProduct(
     category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other',
@@ -98,46 +101,48 @@ export class SharedServiceService {
       .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
       .pipe(
         tap((res: User) => {
-          let updatedData: ProductKeyAndType[] = [];
-          let updatedUser: User = {
-            email: res.email,
-            address: res.address,
-            isAdmin: res.isAdmin,
-            photoUrl: res.photoUrl,
-            likedProducts: res.likedProducts,
-            purchasedProducts: res.purchasedProducts,
-          };
-          const check = updatedUser.likedProducts.find(
-            (product) => product.key === productId
-          );
-          if (!check) {
-            updatedData = [
-              ...res.likedProducts,
-              { key: productId, category: productCategory },
-            ];
-            updatedUser.likedProducts = updatedData;
-          } else {
-            updatedData = res.likedProducts.filter(
-              (id) => id.key !== productId
+          let updatedUser = this.service.loggedUser.value?.user;
+          let updatedData = this.service.likedProducts.value;
+  
+          if (updatedUser) {
+            const check = updatedUser.likedProducts.find(
+              (product) => product.key === productId
             );
-            updatedUser.likedProducts = updatedData;
+            if (!check) {
+              updatedData = [
+                ...res.likedProducts,
+                { key: productId, category: productCategory },
+              ];
+              updatedUser.likedProducts = updatedData;
+            } else {
+              updatedData = res.likedProducts.filter(
+                (id) => id.key !== productId
+              );
+              updatedUser.likedProducts = updatedData;
+            }
+  
+            // Update the service's likedProducts with the new data
+            this.service.likedProducts.next(updatedData);
+  
+            // The service doesn't handle change detection, that's done in the component
           }
+  
+          // Update the user in the database
           this.http
             .patch(`${this.url}/musicShopUsers/${userId}.json`, updatedUser)
             .subscribe();
         })
       );
   }
-  getAllLikedProducts(userId: string) {
-    
-  }
   
-  getProduct(id: string, category: string):Observable<ProductKeyValue> {
+  getAllLikedProducts(userId: string) {}
+
+  getProduct(id: string, category: string): Observable<ProductKeyValue> {
     return this.http.get<ProductKeyValue>(
       `${this.url}/products/${category}/${id}.json`
     );
   }
-  
+
   getProductById(id: string, category: string) {
     return this.http.get<Product>(
       `${this.url}/products/${category}/${id}.json`

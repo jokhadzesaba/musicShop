@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
@@ -13,11 +14,14 @@ import { SharedServiceService } from '../sharedService/shared-service.service';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-card',
   standalone: true,
   imports: [FormsModule, CommonModule, ReusableFormComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
 })
@@ -32,8 +36,7 @@ export class CardComponent implements OnInit {
     prodId: string;
     prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
   }>();
-  public isAdmin?:boolean = false;
-  public likeProducts: ProductKeyAndType[] = [];
+  public isAdmin?: boolean = false;
   public isEditing: string = '';
   constructor(
     private sharedService: SharedServiceService,
@@ -43,11 +46,8 @@ export class CardComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
-    this.authService.likedProducts.subscribe((res) => {
-      this.likeProducts = res;
-      
-    });
-    this.isAdmin = this.authService.loggedUser.value?.user.isAdmin
+    this.isAdmin = this.authService.loggedUser.value?.user.isAdmin;
+    console.log(this.authService.likedProducts.value);
   }
   removeProduct() {
     this.sharedService
@@ -61,7 +61,7 @@ export class CardComponent implements OnInit {
       });
   }
   likeUnlikeProduct() {
-    this.authService.loggedUser.subscribe((res) => {
+    this.authService.loggedUser.pipe(take(1)).subscribe((res) => {
       if (res !== undefined) {
         this.sharedService
           .likeUnlikeProduct(
@@ -69,16 +69,17 @@ export class CardComponent implements OnInit {
             res.key,
             this.product?.product.category!
           )
-          .subscribe();
+          .subscribe(() => {
+            this.cd.detectChanges();
+          });
       }
-    }),
-      (err: any) => {
-        console.log('Error productPage: likeUnlikeProduct method: ', err);
-      },
-      () => {
-        console.log('subscription completed');
-      };
+    }, (err: any) => {
+      console.error('Error in likeUnlikeProduct:', err);
+      this.cd.detectChanges();
+    });
   }
+  
+
   navigation() {
     this.router.navigate([`single-product/${this.product?.key}`], {
       queryParams: {
@@ -91,7 +92,9 @@ export class CardComponent implements OnInit {
     this.sharedService.cartOperations('add', this.product!);
   }
   checkIfliked() {
-    return this.likeProducts.some((prod) => prod.key === this.product?.key);
+    return this.authService.likedProducts.value.some(
+      (prod) => prod.key === this.product?.key
+    );
   }
   navigateToCategotyPage() {
     this.router.navigate([`categoty/${this.product?.product.category}`]);
@@ -112,7 +115,7 @@ export class CardComponent implements OnInit {
   }
   onFormSubmit(formData: any) {
     this.editEvent.emit({
-      form:formData,
+      form: formData,
       prodId: this.product?.key!,
       prodCategory: this.product?.product?.category!,
     });
@@ -131,7 +134,6 @@ export class CardComponent implements OnInit {
     if (formData.description) {
       this.product.product.description = formData.description;
     }
-    this.cancelEditing()
-    
+    this.cancelEditing();
   }
 }

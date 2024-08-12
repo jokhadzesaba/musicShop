@@ -8,7 +8,7 @@ import { LoginAndRegistrationService } from '../loginAndRegistration/services/lo
 import { KeyValueUser, Product, ProductKeyAndType, ProductKeyValue } from '../interfaces';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedServiceService } from '../sharedService/shared-service.service';
-import { forkJoin, map } from 'rxjs';
+import { forkJoin, map, take } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -38,13 +38,11 @@ export class ProfileComponent implements OnInit {
     private sharedService: SharedServiceService
   ) {}
   ngOnInit(): void {
-    this.authService.loggedUser.subscribe((user) => {
+    this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
       this.user = user;
       this.form.patchValue({
         category: 'guitar',
       });
-      this.getLikedProducts()
-      this.cd.detectChanges();
     });
   }
 
@@ -112,21 +110,7 @@ export class ProfileComponent implements OnInit {
         },
       });
   }
-getLikedProducts() {
-    if (this.user && this.user.user.likedProducts && this.user.user.likedProducts.length) {
-      const requests = this.user.user.likedProducts.map((productKeyAndType: ProductKeyAndType) => {
-        return this.sharedService.getProduct(productKeyAndType.key,productKeyAndType.category).pipe(
-          map(product => ({ key: productKeyAndType.key, product }))
-        );
-      });
 
-      forkJoin(requests).subscribe((products: any) => {
-        this.likedProducts = products;
-        console.log('Liked Products:', this.likedProducts);
-        this.cd.detectChanges();
-      });
-    }
-  }
 
 
 

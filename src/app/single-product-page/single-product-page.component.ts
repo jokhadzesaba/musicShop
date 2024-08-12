@@ -11,6 +11,7 @@ import { SharedServiceService } from '../sharedService/shared-service.service';
 import { Product, ProductKeyAndType } from '../interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-single-product-page',
@@ -25,7 +26,6 @@ export class SingleProductPageComponent implements OnInit{
   public minSize = 0;
   public maxSize = 0;
   public focusedImg = this.product?.photoUrl[0];
-  public likeProducts: ProductKeyAndType[] = [];
   private prodId = '';
 
   constructor(
@@ -37,9 +37,6 @@ export class SingleProductPageComponent implements OnInit{
   ) {}
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
-    this.authService.likedProducts.subscribe((res) => {
-      this.likeProducts = res;
-    });
     this.getProductInfo();
   }
   getProductInfo() {
@@ -76,10 +73,12 @@ export class SingleProductPageComponent implements OnInit{
     this.sharedService.cartOperations('add', {key:this.prodId, product: this.product!});
   }
   checkIfliked() {
-    return this.likeProducts.some((prod) => prod.key === this.prodId);
+    console.log(this.authService.likedProducts.value);
+    
+    return this.authService.likedProducts.value.some((prod) => prod.key === this.prodId);
   }
   likeUnlikeProduct() {
-    this.authService.loggedUser.subscribe((res) => {
+    this.authService.loggedUser.pipe((take(1))).subscribe((res) => {
       if (res !== undefined) {
         this.sharedService
           .likeUnlikeProduct(
@@ -87,15 +86,10 @@ export class SingleProductPageComponent implements OnInit{
             res.key,
             this.product?.category!
           )
-          .subscribe();
+          .subscribe(()=>{
+            this.cd.detectChanges
+          });
       }
-    }),
-      (err: any) => {
-        console.log('Error productPage: likeUnlikeProduct method: ', err);
-      },
-      () => {
-        console.log('subscription completed');
-      };
-      this.cd.detectChanges()
+    })
   }
 }

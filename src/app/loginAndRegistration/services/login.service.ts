@@ -140,8 +140,9 @@ export class LoginAndRegistrationService {
   }
   checkIfLoggedIn() {
     if (localStorage.getItem('currentUser')) {
-      let user = JSON.parse(localStorage.getItem('currentUser')!);
+      let user:KeyValueUser | undefined = JSON.parse(localStorage.getItem('currentUser')!);
       this.loggedUser.next(user);
+      this.likedProducts.next(user?.user.likedProducts as ProductKeyAndType[])
     }
   }
   logOut() {

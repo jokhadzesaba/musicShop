@@ -27,6 +27,7 @@ import { take } from 'rxjs';
 })
 export class CardComponent implements OnInit {
   @Input() product!: ProductKeyValue;
+  @Input() singleProdPage:boolean = false;
   @Output() removeEvent = new EventEmitter<{
     prodId: string;
     prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
@@ -36,8 +37,10 @@ export class CardComponent implements OnInit {
     prodId: string;
     prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
   }>();
+  
   public isAdmin?: boolean = false;
   public isEditing: string = '';
+  public likedProds?:ProductKeyAndType[];
   constructor(
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
@@ -47,7 +50,9 @@ export class CardComponent implements OnInit {
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
     this.isAdmin = this.authService.loggedUser.value?.user.isAdmin;
-    console.log(this.authService.likedProducts.value);
+    this.authService.likedProducts.subscribe((res) => {
+      this.likedProds = res
+    });
   }
   removeProduct() {
     this.sharedService
@@ -61,6 +66,7 @@ export class CardComponent implements OnInit {
       });
   }
   likeUnlikeProduct() {
+    
     this.authService.loggedUser.pipe(take(1)).subscribe((res) => {
       if (res !== undefined) {
         this.sharedService
@@ -92,7 +98,7 @@ export class CardComponent implements OnInit {
     this.sharedService.cartOperations('add', this.product!);
   }
   checkIfliked() {
-    return this.authService.likedProducts.value.some(
+    return this.likedProds?.some(
       (prod) => prod.key === this.product?.key
     );
   }

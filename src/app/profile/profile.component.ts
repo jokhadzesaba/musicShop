@@ -110,10 +110,6 @@ export class ProfileComponent implements OnInit {
         },
       });
   }
-
-
-
-
   convertDate(date: Date) {
     let newDate = new Date(date);
     return `${newDate.getDate()}/${

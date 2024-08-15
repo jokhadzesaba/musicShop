@@ -21,10 +21,10 @@
     <div class="description payment">
       <div>
         <p><span>Categoty:</span> {{ product?.category }}</p>
-        <div (click)="likeUnlikeProduct()" *ngIf="checkIfliked()">
+        <div (click)="likeUnlikeProduct()" *ngIf="!checkIfliked()">
           <img  src="assets/heart.png" alt="img" />
         </div>
-        <div *ngIf="!checkIfliked()">
+        <div *ngIf="checkIfliked()">
           <img (click)="likeUnlikeProduct()" src="assets/heart-red.png" alt="img" />
         </div>
       </div>

@@ -120,14 +120,8 @@ export class SharedServiceService {
               );
               updatedUser.likedProducts = updatedData;
             }
-  
-            // Update the service's likedProducts with the new data
             this.service.likedProducts.next(updatedData);
-  
-            // The service doesn't handle change detection, that's done in the component
           }
-  
-          // Update the user in the database
           this.http
             .patch(`${this.url}/musicShopUsers/${userId}.json`, updatedUser)
             .subscribe();

@@ -53,7 +53,7 @@
     <div class="info">
       <span>{{ product.product.category }}</span>
       <span>{{ product.product.model }}</span>
-      <span *ngIf="!product.product.discount">{{ product.product.price }}</span>
+      <span *ngIf="!product.product.discount">{{ product.product.price }}$</span>
       <div *ngIf="product.product.discount" class="if-discount">
         <span> {{ product.product.price }}$ </span>
         <span> {{ calculateDiscount() }}$ </span>
@@ -61,3 +61,4 @@
     </div>
   </div>
 </div>
+

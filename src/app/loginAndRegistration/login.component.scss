@@ -10,6 +10,7 @@
     border-radius: 4px;
     background-image: url("../../assets/background.webp");
     background-size: cover;
+    transition: transform 0.3s ease-in-out;
     > div {
       display: flex;
       gap: 20px;

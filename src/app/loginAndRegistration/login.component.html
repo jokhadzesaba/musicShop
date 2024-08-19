@@ -5,7 +5,7 @@
       <p (click)="select()" [ngClass]="selected ? '' : 'selected'">SIGN UP</p>
     </div>
 
-    <form [formGroup]="form">
+    <form [formGroup]="form" [@toggleState]="selected ? 'login' : 'signup'">
       <div class="inputs">
         <input formControlName="email" placeholder="Email" />
         <span

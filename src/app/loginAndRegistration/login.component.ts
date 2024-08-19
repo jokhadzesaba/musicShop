@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { LoginAndRegistrationService } from './services/login.service';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-
+import { trigger, state, style, transition, animate } from '@angular/animations';
 const passwordMatchValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
   const password = formGroup.get('password')?.value;
   const confirmPassword = formGroup.get('confirmPassword')?.value;
@@ -14,6 +14,19 @@ const passwordMatchValidator: ValidatorFn = (formGroup: AbstractControl): Valida
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  animations: [
+    trigger('toggleState', [
+      state('login', style({
+        transform: 'translateX(0)'
+      })),
+      state('signup', style({
+        transform: 'translateY(-10%)'
+      })),
+      transition('login <=> signup', [
+        animate('0.4s ease-in-out')
+      ])
+    ])
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {

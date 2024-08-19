@@ -12,6 +12,7 @@ import { ProfileModuleModule } from './profile/profile-module/profile-module.mod
 import { SingleProductPageModule } from './single-product-page/single-product-page/single-product-page.module';
 import { CartComponent } from './cart/cart.component';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -28,6 +29,7 @@ import { CommonModule } from '@angular/common';
     ProductPageModule,
     ProfileModuleModule,
     SingleProductPageModule,
+    BrowserAnimationsModule,
     CartComponent,
     AngularFireModule.initializeApp(firebaseConfig),
     provideAuth(() => getAuth()),

@@ -3,6 +3,12 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { LoginAndRegistrationService } from './services/login.service';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
+const passwordMatchValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
+  const password = formGroup.get('password')?.value;
+  const confirmPassword = formGroup.get('confirmPassword')?.value;
+
+  return password && confirmPassword && password !== confirmPassword ? { passwordsMismatch: true } : null;
+};
 
 @Component({
   selector: 'app-login',
@@ -77,10 +83,3 @@ export class LoginComponent implements OnInit {
     this.form.get('confirmPassword')?.markAsUntouched();
   }
 }
-
-const passwordMatchValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
-  const password = formGroup.get('password')?.value;
-  const confirmPassword = formGroup.get('confirmPassword')?.value;
-
-  return password && confirmPassword && password !== confirmPassword ? { passwordsMismatch: true } : null;
-};

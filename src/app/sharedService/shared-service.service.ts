@@ -24,6 +24,7 @@ import { LoginAndRegistrationService } from '../loginAndRegistration/services/lo
   providedIn: 'root',
 })
 export class SharedServiceService {
+  public detectChanges = new BehaviorSubject<boolean>(false);
   public cart = new BehaviorSubject<Cart[]>([]);
   public url =
     'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app';
@@ -52,7 +53,10 @@ export class SharedServiceService {
     };
     return this.http.post(`${this.url}/products/${category}.json`, product);
   }
-
+  ifDetectChanges() {
+    this.detectChanges.next(!this.detectChanges.value);
+    return this.detectChanges.value;
+  }
 
   getTypeOfProduct(
     category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
@@ -97,31 +101,33 @@ export class SharedServiceService {
       .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
       .pipe(
         tap((res: User) => {
-          const updatedUser = { ...res };
-          let updatedData = [...this.service.likedProducts.value];
+          let updatedUser = this.service.loggedUser.value?.user;
+          let updatedData = this.service.likedProducts.value;
   
-          const productIndex = updatedData.findIndex((product) => product.key === productId);
-  
-          if (productIndex === -1) {
-            updatedData.push({ key: productId, category: productCategory });
-          } else {
-            updatedData.splice(productIndex, 1);
+          if (updatedUser) {
+            const check = updatedUser.likedProducts.find(
+              (product) => product.key === productId
+            );
+            if (!check) {
+              updatedData = [
+                ...res.likedProducts,
+                { key: productId, category: productCategory },
+              ];
+              updatedUser.likedProducts = updatedData;
+            } else {
+              updatedData = res.likedProducts.filter(
+                (id) => id.key !== productId
+              );
+              updatedUser.likedProducts = updatedData;
+            }
+            this.service.likedProducts.next(updatedData);
           }
-  
-          updatedUser.likedProducts = updatedData;
-  
-          // Update the service's likedProducts as well
-          this.service.likedProducts.next(updatedData)
-  
-          console.log(this.service.likedProducts);
-  
           this.http
             .patch(`${this.url}/musicShopUsers/${userId}.json`, updatedUser)
             .subscribe();
         })
       );
   }
-  
   
   getAllLikedProducts(userId: string) {}
 

@@ -10,63 +10,53 @@
         <input formControlName="email" placeholder="Email" />
         <span
           class="error-message"
-          *ngIf="form.get('email')?.hasError('email')"
-        >invalid Email format</span>
-        <span
-          class="error-message"
-          *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched"
-        >Email is required</span>
+          *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
+          >email is required</span
+        >
       </div>
       <div class="inputs">
-        <div class="password-input">
-          <input
-            [type]="showPassword"
-            formControlName="password"
-            placeholder="Password"
-          />
-          <div *ngIf="showPassword !== 'password'" class="pass-img">
-            <img (click)="togglePasswordVisibility('password')" src="assets/show.png" alt="img">
-          </div>
-          <div *ngIf="showPassword === 'password'" class="pass-img">
-            <img (click)="togglePasswordVisibility('password')" src="assets/hidden.png" alt="img">
-          </div>
-        </div>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Password"
+        />
         <span
           class="error-message"
-          *ngIf="form.get('password')?.hasError('required') && form.get('password')?.touched"
+          *ngIf="form.get('password')?.invalid && form.get('password')?.touched"
         >
-          Password is required
+          password is required
         </span>
       </div>
-      <div *ngIf="!selected" class="inputs">
-        <div class="password-input">
-          <input
-            [type]="showConfirmPassword"
-            formControlName="confirmPassword"
-            placeholder="Confirm Password"
-          />
-          <div *ngIf="showConfirmPassword !== 'password'" class="pass-img">
-            <img (click)="togglePasswordVisibility('confirmPassword')" src="assets/show.png" alt="img">
-          </div>
-          <div *ngIf="showConfirmPassword === 'password'" class="pass-img">
-            <img (click)="togglePasswordVisibility('confirmPassword')" src="assets/hidden.png" alt="img">
-          </div>
-        </div>
+      <div class="inputs">
+        <input
+          *ngIf="!selected"
+          type="password"
+          formControlName="confirmPassword"
+          placeholder="Confirm Password"
+        />
         <span
           class="error-message"
-          *ngIf="form.get('confirmPassword')?.hasError('required') && form.get('confirmPassword')?.touched"
+          *ngIf="
+            form.get('confirmPassword')?.invalid &&
+            form.get('confirmPassword')?.touched &&
+            !selected
+          "
         >
-          Confirm password is required
+          confirm password is required
         </span>
       </div>
 
       <button *ngIf="selected" (click)="googleLogin()">
-        Sign in with Google <img src="assets/google.png" alt="img" />
+        Sing in with Google <img src="assets/google.png" alt="img" />
       </button>
       <button (click)="emailAndPasswordLogin()" *ngIf="selected">
         Sign in
       </button>
-      <button (click)="registration()" *ngIf="!selected">
+      <button
+        [disabled]="!form.valid"
+        (click)="registration()"
+        *ngIf="!selected"
+      >
         Register
       </button>
       <button routerLink="/products">Guest Mode</button>

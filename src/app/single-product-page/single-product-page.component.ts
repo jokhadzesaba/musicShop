@@ -27,22 +27,28 @@ export class SingleProductPageComponent implements OnInit{
   public maxSize = 0;
   public focusedImg = this.product?.photoUrl?.[0];
   private prodId = '';
-  public likedProds?: ProductKeyAndType[];
+  
 
   constructor(
     private sharedService: SharedServiceService,
     private authService:LoginAndRegistrationService,
-    // private router: Router,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
     this.getProductInfo();
-    this.authService.likedProducts.subscribe((res) => {
-      this.likedProds = res
+    this.authService.likedProducts$.subscribe(() => {
+      this.cd.detectChanges();
     });
+    
   }
+  get isLiked(): boolean {
+    return this.authService.likedProducts.value.some(
+      (prod) => prod.key === this.prodId
+    );
+  }
+  
   getProductInfo() {
     this.route.queryParams.pipe(take(1)).subscribe((res) => {
       this.sharedService
@@ -71,14 +77,8 @@ export class SingleProductPageComponent implements OnInit{
   addInCart() {
     this.sharedService.cartOperations('add', {key:this.prodId, product: this.product!});
   }
-  checkIfliked() {
-    return this.likedProds?.some(
-      (prod) => prod.key === this.prodId
-    );
-  }
+  
   likeUnlikeProduct() {
-    console.log(this.likedProds);
-    
     this.authService.loggedUser.pipe(take(1)).subscribe((res) => {
       if (res !== undefined) {
         this.sharedService

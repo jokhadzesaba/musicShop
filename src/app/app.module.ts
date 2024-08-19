@@ -11,17 +11,16 @@ import { ProductPageModule } from './product-page/product-page/product-page.modu
 import { ProfileModuleModule } from './profile/profile-module/profile-module.module';
 import { SingleProductPageModule } from './single-product-page/single-product-page/single-product-page.module';
 import { CartComponent } from './cart/cart.component';
-import { CommonModule } from '@angular/common';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    
   
   ],
   imports: [
-    CommonModule,
     BrowserModule,
     AppRoutingModule,
     LoginAndRegistrationModule,

@@ -40,7 +40,6 @@ export class CardComponent implements OnInit {
   
   public isAdmin?: boolean = false;
   public isEditing: string = '';
-  public likedProds?:ProductKeyAndType[];
   constructor(
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
@@ -50,9 +49,15 @@ export class CardComponent implements OnInit {
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
     this.isAdmin = this.authService.loggedUser.value?.user.isAdmin;
-    this.authService.likedProducts.subscribe((res) => {
-      this.likedProds = res
+    this.authService.likedProducts$.subscribe(() => {
+      this.cd.detectChanges();
     });
+    
+  }
+  get isLiked(): boolean {
+    return this.authService.likedProducts.value.some(
+      (prod) => prod.key === this.product.key
+    );
   }
   removeProduct() {
     this.sharedService
@@ -97,11 +102,7 @@ export class CardComponent implements OnInit {
   addInCart() {
     this.sharedService.cartOperations('add', this.product!);
   }
-  checkIfliked() {
-    return this.likedProds?.some(
-      (prod) => prod.key === this.product?.key
-    );
-  }
+
   navigateToCategotyPage() {
     this.router.navigate([`categoty/${this.product?.product.category}`]);
   }

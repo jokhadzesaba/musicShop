@@ -19,15 +19,16 @@
       <button (click)="addInCart()">Add to cart</button>
       <div>
         <span (click)="navigation()">See Product</span>
-        <span (click)="likeUnlikeProduct()">
+        <span>
           <img
-          *ngIf="!checkIfliked()"
+          (click)="likeUnlikeProduct()"
+          *ngIf="!isLiked"
             src="assets/heart.png"
             alt="img"
           />
           <img
-            *ngIf="checkIfliked()"
-          
+          (click)="likeUnlikeProduct()"
+          *ngIf="isLiked"
             src="assets/heart-red.png"
             alt="img"
           />

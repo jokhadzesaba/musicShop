@@ -38,7 +38,7 @@
           Password is required
         </span>
       </div>
-      <div class="inputs">
+      <div *ngIf="!selected" class="inputs">
         <div class="password-input">
           <input
             [type]="showConfirmPassword"

@@ -8,6 +8,7 @@ import { SharedServiceService } from '../sharedService/shared-service.service';
 import { ProductForm, ProductKeyAndType, ProductKeyValue } from '../interfaces';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-page',
@@ -22,7 +23,6 @@ export class ProductPageComponent implements OnInit {
   public drumProducts: ProductKeyValue[] = [];
   public otherProducts: ProductKeyValue[] = [];
   public loading: boolean = true;
-  public isAdmin?: boolean = false;
   public isEditing?: string = '';
   public likedProducts: ProductKeyAndType[] = [];
 
@@ -57,7 +57,7 @@ export class ProductPageComponent implements OnInit {
           }
         );
         this.authService.loggedUser.subscribe((user) => {
-          this.isAdmin = user?.user.isAdmin;
+          this.authService.isAdmin.next(user?.user.isAdmin!); 
         });
         this.cd.detectChanges();
       }

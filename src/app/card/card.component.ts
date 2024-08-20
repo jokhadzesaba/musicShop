@@ -14,7 +14,7 @@ import { SharedServiceService } from '../sharedService/shared-service.service';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
-import { take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-card',
@@ -38,7 +38,7 @@ export class CardComponent implements OnInit {
     prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
   }>();
   
-  public isAdmin?: boolean = false;
+  public isAdmin?: Observable<boolean>;
   public isEditing: string = '';
   public likedProds?:ProductKeyAndType[];
   constructor(
@@ -49,9 +49,13 @@ export class CardComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
-    this.isAdmin = this.authService.loggedUser.value?.user.isAdmin;
+    
     this.authService.likedProducts.subscribe((res) => {
       this.likedProds = res
+    });
+    this.authService.loggedUser.subscribe((user) => {
+      this.authService.isAdmin.next(user?.user.isAdmin!);
+      this.isAdmin = this.authService.isAdmin.asObservable(); 
     });
   }
   removeProduct() {

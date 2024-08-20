@@ -12,7 +12,7 @@
     background-color: white;
     > .box {
       display: flex;
-      gap: 60px;
+      flex-direction: column;
       .info {
         padding: 8%;
         display: flex;
@@ -72,7 +72,30 @@
         display: grid;
         grid-template-columns: repeat(2, 200px);
         grid-template-rows: repeat(5, 30px);
-        padding-top: 13%;
+        padding-left: 8%;
+
+        .photos{
+          display: flex;
+          gap: 12px;
+          .pht{
+            >div:first-child{
+
+              position: relative;
+              img{
+                width: 35px;
+              }
+              >img:last-of-type{
+                width: 8px;
+                position: absolute;
+                top: 3px;
+                right: -6px;
+                
+              }
+            }
+          }
+
+          }
+        
       }
     }
     .purchased-products {

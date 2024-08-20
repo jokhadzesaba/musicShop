@@ -1,6 +1,6 @@
 <div *ngIf="product && product.product">
   <div class="single-product">
-    <div class="delete-button" *ngIf="isAdmin">
+    <div class="delete-button" *ngIf="isAdmin |async">
       <img (click)="removeProduct()" src="assets/remove.png" alt="img" />
       <img
         *ngIf="isEditing === ''"

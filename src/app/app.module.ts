@@ -13,6 +13,7 @@ import { SingleProductPageModule } from './single-product-page/single-product-pa
 import { CartComponent } from './cart/cart.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SuggestionsComponent } from './suggestions/suggestions.component';
 
 
 
@@ -31,6 +32,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SingleProductPageModule,
     BrowserAnimationsModule,
     CartComponent,
+    SuggestionsComponent,
     AngularFireModule.initializeApp(firebaseConfig),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),

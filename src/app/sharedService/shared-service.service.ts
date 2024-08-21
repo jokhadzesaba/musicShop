@@ -58,6 +58,7 @@ export class SharedServiceService {
     return this.detectChanges.value;
   }
 
+
   getTypeOfProduct(
     category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
   ): Observable<ProductKeyValue[]> {
@@ -271,5 +272,26 @@ export class SharedServiceService {
         array[index].product.quantity = formData.quantity;
       }
     }
+  }
+  getRandomProducts(category:'drum' | 'bass' | 'guitar' | 'piano' | 'other'){
+    return this.getTypeOfProduct(category).pipe((map(res=>{
+      let counter = 2;
+      const randomProducts:ProductKeyValue[] = []
+      const randomIndexes:number[] = []
+      while(counter!==0){
+        if(res.length <= counter){
+          return res
+        }
+        const randomIndex = Math.floor(Math.random() * res.length);
+        if (randomIndexes.includes(randomIndex)) {
+          continue;
+        }else{
+          randomProducts.push(res[randomIndex])
+          randomIndexes.push(randomIndex)
+          counter--;
+        }
+      }
+      return randomProducts
+    })))
   }
 }

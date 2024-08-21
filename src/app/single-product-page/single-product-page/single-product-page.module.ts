@@ -5,6 +5,7 @@ import { SingleProductPageRoutingModule } from './single-product-page-routing.mo
 import { SingleProductPageComponent } from '../single-product-page.component';
 import { HeaderComponent } from 'src/app/header/header.component';
 import { FooterComponent } from 'src/app/footer/footer.component';
+import { SuggestionsComponent } from "../../suggestions/suggestions.component";
 
 
 
@@ -15,7 +16,8 @@ import { FooterComponent } from 'src/app/footer/footer.component';
     HeaderComponent,
     FooterComponent,
     SingleProductPageRoutingModule,
-  ],
+    SuggestionsComponent
+],
   exports:[SingleProductPageComponent]
 })
 export class SingleProductPageModule { }

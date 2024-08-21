@@ -64,6 +64,7 @@ export class ProfileComponent implements OnInit {
         this.photos.push(e.target?.result as string);
         this.cd.detectChanges();
       };
+
       reader.readAsDataURL(file);
     }
   }
@@ -72,8 +73,7 @@ export class ProfileComponent implements OnInit {
   }
   removeImg(url: string) {
     const photoIndex = this.photos.findIndex((x) => x === url);
-    this.photos.splice(photoIndex, photoIndex);
-    console.log(this.photos);
+    this.photos.splice(photoIndex,1);
   }
   addNewProduct() {
     const category = this.form.get('category')?.getRawValue();
@@ -100,6 +100,8 @@ export class ProfileComponent implements OnInit {
           this.form.get('discount')?.setValue('');
           this.form.get('quantity')?.setValue('');
           this.form.get('description')?.setValue('');
+          this.photos = [];
+          this.cd.detectChanges()
           alert('Product was added successfully');
         },
         error: (err) => {

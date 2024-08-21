@@ -17,6 +17,8 @@ export class LoginAndRegistrationService {
     private http: HttpClient,
     private router: Router,
   ) {}
+  public isAdmin = new BehaviorSubject<boolean>(false)
+  
   public likedProducts = new BehaviorSubject<ProductKeyAndType[]>([]);
   public loginWithGoogle() {
     this.auth.signInWithPopup(new GoogleAuthProvider()).then(
@@ -149,5 +151,6 @@ export class LoginAndRegistrationService {
     localStorage.removeItem('currentUser');
     this.likedProducts.next([]);
     this.loggedUser.next(undefined);
+    
   }
 }

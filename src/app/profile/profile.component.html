@@ -29,9 +29,11 @@
         </button>
 
         <div class="photos">
-          <div *ngFor="let img of photos">
-            <img [src]="img" alt="img" />
-            <img (click)="removeImg(img)" src="assets/remove.png" alt="img" />
+          <div class="pht" *ngFor="let img of photos">
+            <div>
+              <img [src]="img" alt="img" />
+              <img (click)="removeImg(img)" src="assets/remove.png" alt="img" />         
+            </div>
           </div>
         </div>
       </form>

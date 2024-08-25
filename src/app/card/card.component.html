@@ -19,19 +19,11 @@
       <button (click)="addInCart()">Add to cart</button>
       <div>
         <span (click)="navigation()">See Product</span>
-        <span (click)="likeUnlikeProduct()">
-          <img
-          *ngIf="!checkIfliked()"
-            src="assets/heart.png"
-            alt="img"
-          />
-          <img
-            *ngIf="checkIfliked()"
-          
-            src="assets/heart-red.png"
-            alt="img"
-          />
+        <span>
+          <app-is-liked [category]="product.product.category" [id]="product.key" [userId]="userID!"></app-is-liked>
+
         </span>
+
       </div>
     </div>
     <div class="edit" *ngIf="isEditing === product.key">

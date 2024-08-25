@@ -16,11 +16,9 @@ import {
   map,
   of,
   switchMap,
-  take,
   tap,
 } from 'rxjs';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
-import { user } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +57,7 @@ export class SharedServiceService {
     this.detectChanges.next(!this.detectChanges.value);
     return this.detectChanges.value;
   }
+
 
   getTypeOfProduct(
     category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
@@ -104,9 +103,8 @@ export class SharedServiceService {
       .pipe(
         tap((res: User) => {
           let updatedUser = this.service.loggedUser.value?.user;
-          let updatedData = this.service.loggedUser.value?.user.likedProducts;
-          console.log(this.service.loggedUser.value?.user.likedProducts);
-          
+          let updatedData = this.service.likedProducts.value;
+  
           if (updatedUser) {
             const check = updatedUser.likedProducts.find(
               (product) => product.key === productId
@@ -123,16 +121,15 @@ export class SharedServiceService {
               );
               updatedUser.likedProducts = updatedData;
             }
+            this.service.likedProducts.next(updatedData);
           }
-          this.service.loggedUser.next({key:userId,user:updatedUser!})
-          console.log(this.service.loggedUser.value?.user.likedProducts);
           this.http
             .patch(`${this.url}/musicShopUsers/${userId}.json`, updatedUser)
             .subscribe();
         })
       );
   }
-
+  
   getAllLikedProducts(userId: string) {}
 
   getProduct(id: string, category: string): Observable<ProductKeyValue> {
@@ -276,37 +273,31 @@ export class SharedServiceService {
       }
     }
   }
-  getRandomProducts(category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other') {
-    return this.getTypeOfProduct(category).pipe(
-      map((res) => {
-        let counter = 2;
-        const randomProducts: ProductKeyValue[] = [];
-        const randomIndexes: number[] = [];
-        while (counter !== 0) {
-          if (res.length <= counter) {
-            return res;
-          }
-          const randomIndex = Math.floor(Math.random() * res.length);
-          if (randomIndexes.includes(randomIndex)) {
-            continue;
-          } else {
-            randomProducts.push(res[randomIndex]);
-            randomIndexes.push(randomIndex);
-            counter--;
-          }
+  getRandomProducts(category:'drum' | 'bass' | 'guitar' | 'piano' | 'other'){
+    return this.getTypeOfProduct(category).pipe((map(res=>{
+      let counter = 2;
+      const randomProducts:ProductKeyValue[] = []
+      const randomIndexes:number[] = []
+      while(counter!==0){
+        if(res.length <= counter){
+          return res
         }
-        return randomProducts;
-      })
+        const randomIndex = Math.floor(Math.random() * res.length);
+        if (randomIndexes.includes(randomIndex)) {
+          continue;
+        }else{
+          randomProducts.push(res[randomIndex])
+          randomIndexes.push(randomIndex)
+          counter--;
+        }
+      }
+      return randomProducts
+    })))
+  }
+  checkIfLiked(id: string, userId: string): Observable<boolean> {
+    return this.http.get<User>(`${this.url}/musicShopUsers/${userId}.json`).pipe(
+      map(res => !!res.likedProducts.find(prodId => prodId.key === id))
     );
   }
-  checkIfLiked(id: string, userId: string) {
-    return this.http
-      .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
-      .pipe(
-        tap((res) => {
-          const findId = res.likedProducts.find((x) => x.key === id);
-          return findId;
-        })
-      );
-  }
+  
 }

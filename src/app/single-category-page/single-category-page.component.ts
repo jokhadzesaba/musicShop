@@ -56,6 +56,12 @@ export class SingleCategoryPageComponent implements OnInit {
         this.UnChangedProducts = res;
         this.cd.detectChanges();
       });
+      this.authService.likedProducts.subscribe(
+        (likedProducts: ProductKeyAndType[]) => {
+          this.likedProducts = likedProducts;
+          this.cd.detectChanges();
+        }
+      );
     });
   }
 

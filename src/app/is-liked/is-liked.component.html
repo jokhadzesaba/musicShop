@@ -1,0 +1,12 @@
+<img
+  (click)="likeUnlikeProduct()"
+  *ngIf="isLiked$ | async"
+  src="assets/heart-red.png"
+  alt="Liked"
+/>
+<img
+  (click)="likeUnlikeProduct()"
+  *ngIf="!(isLiked$ | async)"
+  src="assets/heart.png"
+  alt="Not Liked"
+/>

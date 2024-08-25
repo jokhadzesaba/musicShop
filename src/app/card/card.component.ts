@@ -14,12 +14,13 @@ import { SharedServiceService } from '../sharedService/shared-service.service';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { BehaviorSubject, Observable, shareReplay, take, tap } from 'rxjs';
+import { IsLikedComponent } from '../is-liked/is-liked.component';
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReusableFormComponent],
+  imports: [FormsModule, CommonModule, ReusableFormComponent, IsLikedComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 
   templateUrl: './card.component.html',
@@ -27,7 +28,7 @@ import { Observable, take } from 'rxjs';
 })
 export class CardComponent implements OnInit {
   @Input() product!: ProductKeyValue;
-  @Input() singleProdPage:boolean = false;
+  @Input() singleProdPage: boolean = false;
   @Output() removeEvent = new EventEmitter<{
     prodId: string;
     prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
@@ -37,9 +38,12 @@ export class CardComponent implements OnInit {
     prodId: string;
     prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
   }>();
-  
+
   public isAdmin?: Observable<boolean>;
   public isEditing: string = '';
+  public likedProds?: ProductKeyAndType[];
+  public userID?: string;
+
   constructor(
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
@@ -48,9 +52,14 @@ export class CardComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
+
+    this.authService.likedProducts.subscribe((res) => {
+      this.likedProds = res;
+    });
     this.authService.loggedUser.subscribe((user) => {
       this.authService.isAdmin.next(user?.user.isAdmin!);
-      this.isAdmin = this.authService.isAdmin.asObservable(); 
+      this.isAdmin = this.authService.isAdmin.asObservable();
+      this.userID = user?.key;
     });
   }
   removeProduct() {
@@ -64,28 +73,7 @@ export class CardComponent implements OnInit {
         this.cd.detectChanges();
       });
   }
-  likeUnlikeProduct() {   
-    this.authService.loggedUser.pipe(take(1)).subscribe((res) => {
-      if (res !== undefined) {
-        this.sharedService
-          .likeUnlikeProduct(
-            this.product?.key!,
-            res.key,
-            this.product?.product.category!
-          )
-          .subscribe(() => {
-            setTimeout(() => {
-              this.cd.detectChanges();
-            }, 300);
-            this.cd.detectChanges();
-          });
-      }
-    }, (err: any) => {
-      console.error('Error in likeUnlikeProduct:', err);
-      this.cd.detectChanges();
-    });
-  }
-  
+
 
   navigation() {
     this.router.navigate([`single-product/${this.product?.key}`], {
@@ -98,17 +86,8 @@ export class CardComponent implements OnInit {
   addInCart() {
     this.sharedService.cartOperations('add', this.product!);
   }
-  checkIfliked(): boolean {
-    let isLiked = false;
-    this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
-      if (user && user.user.likedProducts) {
-       const likedProduct = user.user.likedProducts.find(x=>x.key === this.product.key);
-       isLiked = likedProduct !== undefined
-      }
-    });
-    return isLiked;
-  }
   
+
   navigateToCategotyPage() {
     this.router.navigate([`categoty/${this.product?.product.category}`]);
   }

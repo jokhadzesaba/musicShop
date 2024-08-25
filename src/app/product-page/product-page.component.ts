@@ -51,6 +51,11 @@ export class ProductPageComponent implements OnInit {
           }
         });
         this.loading = false;
+        this.authService.likedProducts.subscribe(
+          (likedProducts: ProductKeyAndType[]) => {
+            this.likedProducts = likedProducts;
+          }
+        );
         this.authService.loggedUser.subscribe((user) => {
           this.authService.isAdmin.next(user?.user.isAdmin!); 
         });

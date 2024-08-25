@@ -20,6 +20,7 @@ export class SuggestionsComponent implements OnInit {
   ngOnInit(): void {
    this.service.getRandomProducts(this.categoty).subscribe(res=>{
     this.randomSuggestions = res  
+    console.log(this.randomSuggestions);
     this.cd.detectChanges()
       
    })

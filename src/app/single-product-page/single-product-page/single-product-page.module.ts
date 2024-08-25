@@ -6,6 +6,7 @@ import { SingleProductPageComponent } from '../single-product-page.component';
 import { HeaderComponent } from 'src/app/header/header.component';
 import { FooterComponent } from 'src/app/footer/footer.component';
 import { SuggestionsComponent } from "../../suggestions/suggestions.component";
+import { IsLikedComponent } from 'src/app/is-liked/is-liked.component';
 
 
 
@@ -16,7 +17,8 @@ import { SuggestionsComponent } from "../../suggestions/suggestions.component";
     HeaderComponent,
     FooterComponent,
     SingleProductPageRoutingModule,
-    SuggestionsComponent
+    SuggestionsComponent,
+    IsLikedComponent
 ],
   exports:[SingleProductPageComponent]
 })

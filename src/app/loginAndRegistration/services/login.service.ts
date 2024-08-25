@@ -18,8 +18,6 @@ export class LoginAndRegistrationService {
     private router: Router,
   ) {}
   public isAdmin = new BehaviorSubject<boolean>(false)
-  
-  public likedProducts = new BehaviorSubject<ProductKeyAndType[]>([]);
   public loginWithGoogle() {
     this.auth.signInWithPopup(new GoogleAuthProvider()).then(
       (res) => {
@@ -30,7 +28,7 @@ export class LoginAndRegistrationService {
           } else {
             this.findUser(res.user?.email!).subscribe((user) => {
               this.loggedUser.next(user);
-              this.likedProducts.next(user?.user.likedProducts!);
+              
               this.router.navigate(['/products']);
               localStorage.setItem('currentUser', JSON.stringify(user));
             });
@@ -48,7 +46,7 @@ export class LoginAndRegistrationService {
       (res) => {
         this.findUser(res.user?.email!).subscribe((user) => {
           this.loggedUser.next(user);
-          this.likedProducts.next(user?.user.likedProducts!);
+        
           this.router.navigate(['/products']);
           localStorage.setItem('currentUser', JSON.stringify(user));
         });
@@ -144,12 +142,11 @@ export class LoginAndRegistrationService {
     if (localStorage.getItem('currentUser')) {
       let user:KeyValueUser | undefined = JSON.parse(localStorage.getItem('currentUser')!);
       this.loggedUser.next(user);
-      this.likedProducts.next(user?.user.likedProducts as ProductKeyAndType[])
+      
     }
   }
   logOut() {
     localStorage.removeItem('currentUser');
-    this.likedProducts.next([]);
     this.loggedUser.next(undefined);
     
   }

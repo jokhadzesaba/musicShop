@@ -32,16 +32,12 @@ export class SingleProductPageComponent implements OnInit{
   constructor(
     private sharedService: SharedServiceService,
     private authService:LoginAndRegistrationService,
-    // private router: Router,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
     this.getProductInfo();
-    this.authService.likedProducts.subscribe((res) => {
-      this.likedProds = res
-    });
   }
   getProductInfo() {
     this.route.queryParams.pipe(take(1)).subscribe((res) => {
@@ -71,14 +67,18 @@ export class SingleProductPageComponent implements OnInit{
   addInCart() {
     this.sharedService.cartOperations('add', {key:this.prodId, product: this.product!});
   }
-  checkIfliked() {
-    return this.likedProds?.some(
-      (prod) => prod.key === this.prodId
-    );
+  checkIfliked(): boolean {
+    let isLiked = false;
+    this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
+      if (user && user.user.likedProducts) {
+       const likedProduct = user.user.likedProducts.find(x=>x.key === this.prodId);
+       isLiked = likedProduct !== undefined
+       
+      }
+    });
+    return isLiked;
   }
   likeUnlikeProduct() {
-    console.log(this.likedProds);
-    
     this.authService.loggedUser.pipe(take(1)).subscribe((res) => {
       if (res !== undefined) {
         this.sharedService
@@ -88,7 +88,7 @@ export class SingleProductPageComponent implements OnInit{
             this.product?.category!
           )
           .subscribe(() => {
-            this.cd.detectChanges();
+            
           });
       }
     }, (err: any) => {
@@ -96,4 +96,5 @@ export class SingleProductPageComponent implements OnInit{
       this.cd.detectChanges();
     });
   }
+  
 }

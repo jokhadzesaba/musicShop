@@ -40,7 +40,6 @@ export class CardComponent implements OnInit {
   
   public isAdmin?: Observable<boolean>;
   public isEditing: string = '';
-  public likedProds?:ProductKeyAndType[];
   constructor(
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
@@ -49,10 +48,6 @@ export class CardComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
-    
-    this.authService.likedProducts.subscribe((res) => {
-      this.likedProds = res
-    });
     this.authService.loggedUser.subscribe((user) => {
       this.authService.isAdmin.next(user?.user.isAdmin!);
       this.isAdmin = this.authService.isAdmin.asObservable(); 
@@ -69,8 +64,7 @@ export class CardComponent implements OnInit {
         this.cd.detectChanges();
       });
   }
-  likeUnlikeProduct() {
-    
+  likeUnlikeProduct() {   
     this.authService.loggedUser.pipe(take(1)).subscribe((res) => {
       if (res !== undefined) {
         this.sharedService
@@ -80,6 +74,9 @@ export class CardComponent implements OnInit {
             this.product?.product.category!
           )
           .subscribe(() => {
+            setTimeout(() => {
+              this.cd.detectChanges();
+            }, 300);
             this.cd.detectChanges();
           });
       }
@@ -101,11 +98,17 @@ export class CardComponent implements OnInit {
   addInCart() {
     this.sharedService.cartOperations('add', this.product!);
   }
-  checkIfliked() {
-    return this.likedProds?.some(
-      (prod) => prod.key === this.product?.key
-    );
+  checkIfliked(): boolean {
+    let isLiked = false;
+    this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
+      if (user && user.user.likedProducts) {
+       const likedProduct = user.user.likedProducts.find(x=>x.key === this.product.key);
+       isLiked = likedProduct !== undefined
+      }
+    });
+    return isLiked;
   }
+  
   navigateToCategotyPage() {
     this.router.navigate([`categoty/${this.product?.product.category}`]);
   }

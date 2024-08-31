@@ -7,7 +7,7 @@
 
     <form [formGroup]="form" [@toggleState]="selected ? 'login' : 'signup'">
       <div class="inputs">
-        <input formControlName="email" placeholder="Email" />
+        <input formControlName="email" placeholder="Email ex:sabadmin@gmail.com" />
         <span
           class="error-message"
           *ngIf="form.get('email')?.hasError('email')"
@@ -22,7 +22,7 @@
           <input
             [type]="showPassword"
             formControlName="password"
-            placeholder="Password"
+            placeholder="Password ex:123123123"
           />
           <div *ngIf="showPassword !== 'password'" class="pass-img">
             <img (click)="togglePasswordVisibility('password')" src="assets/show.png" alt="img">

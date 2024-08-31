@@ -82,6 +82,7 @@ export class CardComponent implements OnInit {
         prod: this.product?.key,
       },
     });
+    this.cd.detectChanges()
   }
   addInCart() {
     this.sharedService.cartOperations('add', this.product!);

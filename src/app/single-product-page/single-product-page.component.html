@@ -10,7 +10,7 @@
           <img (click)="scroll('left')" src="assets/left.png" alt="img" />
         </div>
 
-        <div *ngFor="let i of images | slice : 2; let j = index">
+        <div *ngFor="let i of images | slice : 0; let j = index">
           <img (click)="switchImage(j)" [src]="images[j]" alt="img" />
         </div>
         <div>
@@ -26,12 +26,7 @@
       <div>
         <p><span>Model:</span> {{ product?.model }}</p>
         <p>
-          <span>Description: </span> {{ product?.description }} some shit
-          description which i do not know what is over and over again some shit
-          description which i do not know what is over and over again some shit
-          description which i do not know what is over and over againsome shit
-          description which i do not know what is over and over again some shit
-          description which i do not know what is over and over again
+          <span>Description: </span> {{ product?.description }}
         </p>
         <p><span>Price:</span> {{ product?.price }}$</p>
         <button (click)="addInCart()">Add to Cart</button>

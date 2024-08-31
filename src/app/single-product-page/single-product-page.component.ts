@@ -1,14 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { Product, ProductKeyAndType } from '../interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { take } from 'rxjs';
+import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 
 @Component({
   selector: 'app-single-product-page',
@@ -24,17 +19,21 @@ export class SingleProductPageComponent implements OnInit {
   public maxSize = 0;
   public focusedImg = this.product?.photoUrl?.[0];
   public prodId = '';
+
   constructor(
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef
   ) {}
+
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
-    this.getProductInfo();
-
+    this.route.queryParams.subscribe(() => {
+      this.getProductInfo(); // Call the function to get product info whenever route parameters change
+    });
   }
+
   getProductInfo() {
     this.route.queryParams.pipe(take(1)).subscribe((res) => {
       this.sharedService
@@ -44,7 +43,9 @@ export class SingleProductPageComponent implements OnInit {
           this.product = product;
           this.images = product.photoUrl;
           this.prodId = res['prod'];
-          this.cd.detectChanges();
+          this.cuurentIndex = 0; // Reset current index
+          this.focusedImg = this.product?.photoUrl?.[0]; // Update focused image
+          this.cd.detectChanges(); // Trigger change detection
         });
     });
   }
@@ -52,6 +53,7 @@ export class SingleProductPageComponent implements OnInit {
   switchImage(index: number) {
     this.cuurentIndex = index;
   }
+
   scroll(direction: 'left' | 'right') {
     if (direction === 'right') {
       this.images.unshift(this.images.pop()!);

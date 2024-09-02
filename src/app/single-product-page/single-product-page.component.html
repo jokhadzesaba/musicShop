@@ -32,7 +32,7 @@
         <button (click)="addInCart()">Add to Cart</button>
       </div>
     </div>
+    <app-suggestions *ngIf="product?.category" [categoty]="product?.category!"></app-suggestions>
+    <app-footer></app-footer>
   </div>
 </div>
-<app-suggestions *ngIf="product?.category" [categoty]="product?.category!"></app-suggestions>
-<app-footer></app-footer>

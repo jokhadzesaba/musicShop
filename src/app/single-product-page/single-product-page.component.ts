@@ -30,7 +30,7 @@ export class SingleProductPageComponent implements OnInit {
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
     this.route.queryParams.subscribe(() => {
-      this.getProductInfo(); // Call the function to get product info whenever route parameters change
+      this.getProductInfo(); 
     });
   }
 
@@ -43,9 +43,9 @@ export class SingleProductPageComponent implements OnInit {
           this.product = product;
           this.images = product.photoUrl;
           this.prodId = res['prod'];
-          this.cuurentIndex = 0; // Reset current index
-          this.focusedImg = this.product?.photoUrl?.[0]; // Update focused image
-          this.cd.detectChanges(); // Trigger change detection
+          this.cuurentIndex = 0; 
+          this.focusedImg = this.product?.photoUrl?.[0]; 
+          this.cd.detectChanges(); 
         });
     });
   }

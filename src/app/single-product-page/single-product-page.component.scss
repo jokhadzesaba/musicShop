@@ -1,12 +1,13 @@
 .container {
   width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   > .content {
     display: flex;
+    flex-direction: column;
     gap: 6%;
+    margin-top: 4%;
     > .images {
       display: flex;
       flex-direction: column;
@@ -30,14 +31,16 @@
         justify-content: center;
         > div:last-child,
         div:first-child {
-          display: flex;
-          align-items: center;
+          background-color: unset;
           > img {
             width: 40px;
             height: 40px;
+            
           }
         }
+        
         > div {
+          background-color: white;
           display: flex;
           align-items: center;
           img {
@@ -50,8 +53,9 @@
     > .description {
       display: flex;
       flex-direction: column;
+      padding: 40px;
       gap: 20px;
-      width: 500px;
+      width: 90%;
       > div:first-child {
         display: flex;
         justify-content: space-between;
@@ -63,6 +67,7 @@
         }
       }
       div {
+
         > p {
           margin-bottom: 10px;
           > span {

@@ -1,50 +1,25 @@
 <app-header></app-header>
 <app-top-products></app-top-products>
 <h1>Our Products</h1>
-<div *ngIf="loading" class="loading-container">
+<div *ngIf="loading$|async" class="loading-container">
   <div class="loader"></div>
   <p>Loading...</p>
 </div>
-<div *ngIf="!loading" class="products">
-  <div class="products-container">
-    <p>Guitars</p>
-    <div class="product">
-      <app-card (editEvent)="onFormSubmitted($event)" (removeEvent)="removeHandler($event)" [product]="product" *ngFor="let product of guitarProducts">
-      </app-card>
-    </div>
-  </div>
-  <div class="products-container">
-    <p>Drums</p>
-    <div class="product">
-      <app-card
-        [product]="product"
-        *ngFor="let product of drumProducts"
-        class="single-product"
-      >
-      </app-card>
-    </div>
-  </div>
-  <div class="products-container">
-    <p>Pianos</p>
-    <div class="product">
-      <app-card
-        [product]="product"
-        *ngFor="let product of pianoProducts"
-        class="single-product"
-      >
-      </app-card>
-    </div>
-  </div>
-  <div class="products-container">
-    <p>Basses</p>
-    <div class="product">
-      <app-card
-        [product]="product"
-        *ngFor="let product of bassProducts"
-        class="single-product"
-      >
-      </app-card>
-    </div>
-  </div>
-</div>
+<app-product-page-single-category
+  [category]="'guitar'"
+  (productsImported)="loadingValue($event)"
+></app-product-page-single-category>
+<app-product-page-single-category
+  [category]="'drum'"
+  (productsImported)="loadingValue($event)"
+></app-product-page-single-category>
+<app-product-page-single-category
+  [category]="'piano'"
+  (productsImported)="loadingValue($event)"
+></app-product-page-single-category>
+<app-product-page-single-category
+  [category]="'bass'"
+  (productsImported)="loadingValue($event)"
+></app-product-page-single-category>
+
 <app-footer></app-footer>

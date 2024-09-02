@@ -9,6 +9,7 @@ import { CartComponent } from 'src/app/cart/cart.component';
 import { RouterLink, RouterModule } from '@angular/router';
 import { ReusableFormComponent } from 'src/app/reusable-form/reusable-form.component';
 import { CardComponent } from 'src/app/card/card.component';
+import { ProductPageSingleCategoryComponent } from 'src/app/product-page-single-category/product-page-single-category.component';
 
 @NgModule({
   declarations: [ProductPageComponent, TopProductsComponent],
@@ -21,7 +22,8 @@ import { CardComponent } from 'src/app/card/card.component';
     RouterModule,
     RouterLink,
     ReusableFormComponent,
-    CardComponent
+    CardComponent,
+    ProductPageSingleCategoryComponent
   ],
   exports: [ProductPageComponent],
 })

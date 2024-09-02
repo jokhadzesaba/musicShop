@@ -1,0 +1,20 @@
+.products-container {
+  padding: 60px;
+  > div:first-child {
+    width: 100%;
+    display: flex;
+
+    justify-content: space-between;
+    div {
+      img {
+        width: 28px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .products {
+    display: flex;
+    gap: 20px;
+  }
+}

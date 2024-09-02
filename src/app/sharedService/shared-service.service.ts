@@ -275,7 +275,7 @@ export class SharedServiceService {
   }
   getRandomProducts(category:'drum' | 'bass' | 'guitar' | 'piano' | 'other'){
     return this.getTypeOfProduct(category).pipe((map(res=>{
-      let counter = 2;
+      let counter = 4;
       const randomProducts:ProductKeyValue[] = []
       const randomIndexes:number[] = []
       while(counter!==0){

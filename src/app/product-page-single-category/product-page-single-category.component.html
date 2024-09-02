@@ -1,0 +1,19 @@
+<div class="products-container" *ngIf="!loading" >
+    <div>
+        <h2>{{ modifyCatName() }}:</h2>
+        <div>
+            <img (click)="shiftRight()" src="assets/left.png" alt="img">
+            <img (click)="shiftLeft()" src="assets/right.png" alt="img">
+        </div>
+    </div>
+    <div class="products">
+      <app-card
+        (editEvent)="onFormSubmitted($event)"
+        (removeEvent)="removeHandler($event)"
+        [product]="product"
+        *ngFor="let product of productsArray|slice:sliceStart:SliceEnd"
+      >
+      </app-card>
+    </div>  
+  </div>
+  

@@ -16,11 +16,8 @@
       </div>
       <div class="description">
         <span>Type: {{ prod.product.product.category }}</span>
-        <span>Model: {{ prod.product.product.model }}</span>
+        <span>Model: {{ prod.product.product.model|slice:0:60}}...</span>
         <span>Price: {{ prod.product.product.price }}$</span>
-        <button (click)="nav(prod.product.key, prod.product.product.category)">
-          See Product
-        </button>
         <p>Discount -{{prod.product.product.discount}}%</p>
         <p>
           <img
@@ -34,6 +31,9 @@
             alt="img"
           />
         </p>
+        <button (click)="nav(prod.product.key, prod.product.product.category)">
+          See Product
+        </button>
       </div>
     </div>
   </div>

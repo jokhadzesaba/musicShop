@@ -4,7 +4,9 @@ import { GoogleAuthProvider, user } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
-import { KeyValueUser, ProductKeyAndType, User } from 'src/app/interfaces';
+import { CartService } from 'src/app/cart/cart.service';
+import { Cart, KeyValueUser, ProductKeyAndType, ProductKeyValue, User } from 'src/app/interfaces';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -16,6 +18,7 @@ export class LoginAndRegistrationService {
     private auth: AngularFireAuth,
     private http: HttpClient,
     private router: Router,
+    private cartService:CartService
   ) {}
   public isAdmin = new BehaviorSubject<boolean>(false)
   
@@ -145,12 +148,17 @@ export class LoginAndRegistrationService {
       let user:KeyValueUser | undefined = JSON.parse(localStorage.getItem('currentUser')!);
       this.loggedUser.next(user);
       this.likedProducts.next(user?.user.likedProducts as ProductKeyAndType[])
+      if (localStorage.getItem('cart')) {
+        this.cartService.cart.next(JSON.parse(localStorage.getItem('cart')!) as Cart[])
+      }
     }
   }
   logOut() {
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('cart');
     this.likedProducts.next([]);
     this.loggedUser.next(undefined);
+    this.cartService.cart.next([])
     
   }
 }

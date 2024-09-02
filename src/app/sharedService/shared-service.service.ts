@@ -25,7 +25,7 @@ import { LoginAndRegistrationService } from '../loginAndRegistration/services/lo
 })
 export class SharedServiceService {
   public detectChanges = new BehaviorSubject<boolean>(false);
-  public cart = new BehaviorSubject<Cart[]>([]);
+  
   public url =
     'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app';
   constructor(
@@ -57,7 +57,6 @@ export class SharedServiceService {
     this.detectChanges.next(!this.detectChanges.value);
     return this.detectChanges.value;
   }
-
 
   getTypeOfProduct(
     category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
@@ -104,7 +103,7 @@ export class SharedServiceService {
         tap((res: User) => {
           let updatedUser = this.service.loggedUser.value?.user;
           let updatedData = this.service.likedProducts.value;
-  
+
           if (updatedUser) {
             const check = updatedUser.likedProducts.find(
               (product) => product.key === productId
@@ -129,7 +128,7 @@ export class SharedServiceService {
         })
       );
   }
-  
+
   getAllLikedProducts(userId: string) {}
 
   getProduct(id: string, category: string): Observable<ProductKeyValue> {
@@ -143,26 +142,7 @@ export class SharedServiceService {
       `${this.url}/products/${category}/${id}.json`
     );
   }
-  public cartOperations(operation: 'add' | 'remove', product: ProductKeyValue) {
-    let currentCart = this.cart.getValue();
-    const checkIfInCart = currentCart.findIndex(
-      (prod) => prod.product.key === product.key
-    );
-    let newCart = [...currentCart];
 
-    if (checkIfInCart !== -1) {
-      if (operation === 'add') {
-        newCart[checkIfInCart].quantity++;
-      } else {
-        newCart.splice(checkIfInCart, 1);
-      }
-    } else {
-      if (operation === 'add') {
-        newCart.push({ quantity: 1, product: product });
-      }
-    }
-    this.cart.next(newCart);
-  }
   buyProducts(
     items: Cart[],
     totalPrice: number,
@@ -273,31 +253,34 @@ export class SharedServiceService {
       }
     }
   }
-  getRandomProducts(category:'drum' | 'bass' | 'guitar' | 'piano' | 'other'){
-    return this.getTypeOfProduct(category).pipe((map(res=>{
-      let counter = 4;
-      const randomProducts:ProductKeyValue[] = []
-      const randomIndexes:number[] = []
-      while(counter!==0){
-        if(res.length <= counter){
-          return res
+  getRandomProducts(category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other') {
+    return this.getTypeOfProduct(category).pipe(
+      map((res) => {
+        let counter = 4;
+        const randomProducts: ProductKeyValue[] = [];
+        const randomIndexes: number[] = [];
+        while (counter !== 0) {
+          if (res.length <= counter) {
+            return res;
+          }
+          const randomIndex = Math.floor(Math.random() * res.length);
+          if (randomIndexes.includes(randomIndex)) {
+            continue;
+          } else {
+            randomProducts.push(res[randomIndex]);
+            randomIndexes.push(randomIndex);
+            counter--;
+          }
         }
-        const randomIndex = Math.floor(Math.random() * res.length);
-        if (randomIndexes.includes(randomIndex)) {
-          continue;
-        }else{
-          randomProducts.push(res[randomIndex])
-          randomIndexes.push(randomIndex)
-          counter--;
-        }
-      }
-      return randomProducts
-    })))
-  }
-  checkIfLiked(id: string, userId: string): Observable<boolean> {
-    return this.http.get<User>(`${this.url}/musicShopUsers/${userId}.json`).pipe(
-      map(res => !!res.likedProducts.find(prodId => prodId.key === id))
+        return randomProducts;
+      })
     );
   }
-  
+  checkIfLiked(id: string, userId: string): Observable<boolean> {
+    return this.http
+      .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
+      .pipe(
+        map((res) => !!res.likedProducts.find((prodId) => prodId.key === id))
+      );
+  }
 }

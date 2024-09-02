@@ -4,6 +4,7 @@ import { Product, ProductKeyAndType } from '../interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
+import { CartService } from '../cart/cart.service';
 
 @Component({
   selector: 'app-single-product-page',
@@ -24,7 +25,8 @@ export class SingleProductPageComponent implements OnInit {
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
     private route: ActivatedRoute,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private cartService:CartService
   ) {}
 
   ngOnInit(): void {
@@ -63,7 +65,7 @@ export class SingleProductPageComponent implements OnInit {
   }
 
   addInCart() {
-    this.sharedService.cartOperations('add', {
+    this.cartService.cartOperations('add', {
       key: this.prodId,
       product: this.product!,
     });

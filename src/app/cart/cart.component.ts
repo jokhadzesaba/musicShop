@@ -14,6 +14,7 @@ import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { NgxPayPalModule, IPayPalConfig } from 'ngx-paypal';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
+import { CartService } from './cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -33,22 +34,25 @@ export class CartComponent implements OnInit {
     private sharedService: SharedServiceService,
     private router: Router,
     private authService: LoginAndRegistrationService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private cartService:CartService
   ) {}
   ngOnInit(): void {
-    this.cart$ = this.sharedService.cart.asObservable();
+    this.authService.checkIfLoggedIn();
+    this.cart$ = this.cartService.cart.asObservable();
+    this.cd.detectChanges()
   }
 
   makePayment() {
     this.sharedService.buyProducts(
-      this.sharedService.cart.getValue(),
+      this.cartService.cart.getValue(),
       this.calculateTotalPrice(),
       this.authService.loggedUser.getValue()?.user.email!,
       this.authService.loggedUser.getValue()?.key
     );
   }
   removeFromCart(product: ProductKeyValue) {
-    this.sharedService.cartOperations('remove', product);
+    this.cartService.cartOperations('remove', product);
     this.calculateTotalPrice();
   }
   nav(productId: string, type: string) {
@@ -57,7 +61,7 @@ export class CartComponent implements OnInit {
     });
   }
   plus(prodId: string, op: 'plus' | 'minus') {
-    let cart = this.sharedService.cart.getValue();
+    let cart = this.cartService.cart.getValue();
     const index = cart.findIndex((id) => id.product.key === prodId);
     if (op === 'plus') {
       cart[index].quantity++;
@@ -66,11 +70,11 @@ export class CartComponent implements OnInit {
         cart[index].quantity--;
       }
     }
-    this.sharedService.cart.next(cart);
+    this.cartService.cart.next(cart);
   }
   calculateTotalPrice() {
     let sum = 0;
-    this.sharedService.cart.getValue().forEach((x) => {
+    this.cartService.cart.getValue().forEach((x) => {
       if (x.product.product.discount > 0) {
         const discount =
           x.quantity *

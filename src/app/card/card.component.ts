@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
 import { BehaviorSubject, Observable, shareReplay, take, tap } from 'rxjs';
 import { IsLikedComponent } from '../is-liked/is-liked.component';
+import { CartService } from '../cart/cart.service';
 
 @Component({
   selector: 'app-card',
@@ -48,7 +49,8 @@ export class CardComponent implements OnInit {
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private cartService:CartService
   ) {}
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
@@ -85,7 +87,7 @@ export class CardComponent implements OnInit {
     this.cd.detectChanges()
   }
   addInCart() {
-    this.sharedService.cartOperations('add', this.product!);
+    this.cartService.cartOperations('add', this.product!);
   }
   
 

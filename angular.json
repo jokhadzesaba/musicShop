@@ -49,7 +49,7 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/musicshop/"
+              "baseHref": "/musicShop/"
             },
             "development": {
               "buildOptimizer": false,

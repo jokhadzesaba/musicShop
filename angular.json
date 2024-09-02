@@ -48,7 +48,8 @@
                   "maximumError": "5kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/musicshop/"
             },
             "development": {
               "buildOptimizer": false,

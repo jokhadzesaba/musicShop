@@ -25,6 +25,10 @@
         </span>
 
       </div>
+      <div *ngIf="isUsedInSpecificParent" class="shifting">
+        <input type="number" [(ngModel)]="position">
+        <button (click)="switch(position)">switch</button>
+      </div>
     </div>
     <div class="edit" *ngIf="isEditing === product.key">
       <app-reusable-form

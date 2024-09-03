@@ -10,8 +10,11 @@
       <app-card
         (editEvent)="onFormSubmitted($event)"
         (removeEvent)="removeHandler($event)"
+        (shifting)="shiftPosition($event)"
+        [showSpecificContent]="true"
         [product]="product"
         *ngFor="let product of productsArray|slice:sliceStart:SliceEnd"
+        
       >
       </app-card>
     </div>  

@@ -283,4 +283,7 @@ export class SharedServiceService {
         map((res) => !!res.likedProducts.find((prodId) => prodId.key === id))
       );
   }
+  updateProductPagePosition(productsArray:ProductKeyValue[],category:'guitar' | 'bass' | 'piano' | 'drum' | 'other'){
+    this.http.patch(`${this.url}/products/${category}.json`,{productsArray}).subscribe()
+  }
 }

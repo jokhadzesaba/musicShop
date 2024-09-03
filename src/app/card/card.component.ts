@@ -5,6 +5,7 @@ import {
   Component,
   Input,
   OnInit,
+  Optional,
   Output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import { EventEmitter } from '@angular/core';
 import { BehaviorSubject, Observable, shareReplay, take, tap } from 'rxjs';
 import { IsLikedComponent } from '../is-liked/is-liked.component';
 import { CartService } from '../cart/cart.service';
+import { ProductPageComponent } from '../product-page/product-page.component';
 
 @Component({
   selector: 'app-card',
@@ -39,19 +41,27 @@ export class CardComponent implements OnInit {
     prodId: string;
     prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
   }>();
-
+  @Output() shifting = new EventEmitter<{id:string,switchToPosition:number}>()
+  position:number = 0
   public isAdmin?: Observable<boolean>;
   public isEditing: string = '';
   public likedProds?: ProductKeyAndType[];
   public userID?: string;
+  isUsedInSpecificParent = false;
+  @Input() showSpecificContent = false;
 
   constructor(
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
     private router: Router,
     private cd: ChangeDetectorRef,
-    private cartService:CartService
-  ) {}
+    private cartService:CartService,
+    @Optional() private specificParent: ProductPageComponent
+  ) {
+    if (this.specificParent) {
+      this.isUsedInSpecificParent = true;
+    }
+  }
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
 
@@ -131,4 +141,11 @@ export class CardComponent implements OnInit {
     }
     this.cancelEditing();
   }
+  switch(position:number){
+    this.shifting.emit({id:this.product.key,switchToPosition:position})
+  }
 }
+function SkipSelf(): (target: typeof CardComponent, propertyKey: undefined, parameterIndex: 5) => void {
+  throw new Error('Function not implemented.');
+}
+

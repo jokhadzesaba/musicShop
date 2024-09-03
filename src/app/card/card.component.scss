@@ -1,118 +1,135 @@
-
 .single-product {
-    width: 200px;
-    height: 420px;
-    background-color: #e6e9f0;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    &:hover {
-      > .hover {
-        display: block;
-      }
-    }
-    >.delete-button{
-      position: absolute;
-      z-index: 1;
-      >img{
-        width: 25px;
-        height: 25px;
-        margin-right: 2px;
-        cursor: pointer;
-      }
-    }
-
+  width: 200px;
+  height: 420px;
+  background-color: #e6e9f0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  &:hover {
     > .hover {
-      display: none;
-      position: absolute;
-      background-color: rgb(58, 58, 250);
-      top: 30%;
-      left: 14%;
-      z-index: 1;
-      > button {
-        width: 140px;
-        height: 40px;
-        border: 1px solid gray;
-        background-color: white;
-        color: #d37a42;
-        cursor: pointer;
-      }
-      > div:first-of-type {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        width: 140px;
-        height: 40px;
-        color: white;
+      display: block;
+    }
+  }
+  > .delete-button {
+    position: absolute;
+    z-index: 1;
+    > img {
+      width: 25px;
+      height: 25px;
+      margin-right: 2px;
+      cursor: pointer;
+    }
+  }
 
-        > span {
-          display: flex;
-          align-items: center;
-          cursor: pointer;
-          > img {
-            width: 20px;
-            height: 20px;
-            margin-right: 3px;
-            cursor: pointer;
-          }
+  > .hover {
+    display: none;
+    position: absolute;
+    background-color: rgb(58, 58, 250);
+    top: 30%;
+    left: 14%;
+    z-index: 1;
+    .shifting {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      input,
+      button {
+        height: 20px;
+        border-radius: 4px;
+      }
+      input {
+        width: 35px;
+      }
+      button {
+        width: 60px;
+        cursor: pointer;
+        &:active{
+          color: red;
+          
         }
       }
     }
-    > .img-placeholder {
-      height: 260px;
+    > button {
+      width: 140px;
+      height: 40px;
+      border: 1px solid gray;
+      background-color: white;
+      color: #d37a42;
+      cursor: pointer;
+    }
+    > div:first-of-type {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      width: 140px;
+      height: 40px;
+      color: white;
+
+      > span {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        > img {
+          width: 20px;
+          height: 20px;
+          margin-right: 3px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  > .img-placeholder {
+    height: 260px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      min-height: 50%;
+      min-width: 50%;
+    }
+    > .discount {
       display: flex;
       justify-content: center;
-      position: relative;
-      img{
-        max-height: 100%;
-        max-width: 100%;
-        min-height: 50%;
-        min-width: 50%;
-        
-      }
-      > .discount {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        top: 20px;
-        right: 40px;
-        background-color: #e97171;
-        border-radius: 50%;
-        color: white;
-      }
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      background-color: #e97171;
+      border-radius: 50%;
+      color: white;
+    }
+  }
+  > .info {
+    height: 155px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
+    span {
+      margin-left: 10px;
     }
-    > .info {
-      height: 155px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      
-      span {
-        margin-left: 10px;
-      }
-      > span:not(:nth-child(2)) {
-        font-size: 20px;
-        font-weight: bold;
-      }
-    }
-  }
-.if-discount{
-    >span:first-of-type{
-      text-decoration: line-through;
-    }
-    span{
-      font-weight: bold;
-      justify-self: flex-end;
-    }
-    >span{
+    > span:not(:nth-child(2)) {
       font-size: 20px;
+      font-weight: bold;
     }
   }
-  .display-none{
-    display: none;
+}
+.if-discount {
+  > span:first-of-type {
+    text-decoration: line-through;
   }
-  
+  span {
+    font-weight: bold;
+    justify-self: flex-end;
+  }
+  > span {
+    font-size: 20px;
+  }
+}
+.display-none {
+  display: none;
+}

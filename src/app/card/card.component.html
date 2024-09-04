@@ -47,8 +47,8 @@
       <img [src]="product.product.photoUrl[0]" alt="img" />
     </div>
     <div class="info">
-      <span>{{ product.product.category }}</span>
-      <span>{{ product.product.model }}</span>
+      <span>{{ product.product.category|upperCase }}</span>
+      <span>{{ product.product.model|slice:0:150|upperCase }}</span>
       <span *ngIf="!product.product.discount">{{ product.product.price }}$</span>
       <div *ngIf="product.product.discount" class="if-discount">
         <span> {{ product.product.price }}$ </span>

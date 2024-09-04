@@ -84,8 +84,6 @@ export class ProductPageSingleCategoryComponent implements OnInit {
     this.cd.detectChanges();
   }
   shiftPosition(data: { id: string; switchToPosition: number }) {
-    
-
     if (data.switchToPosition > this.length || data.switchToPosition < 0) {
       alert('position must be greater than 0 or less than number of products');
     } else {

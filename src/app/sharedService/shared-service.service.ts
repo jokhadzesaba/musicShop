@@ -283,7 +283,23 @@ export class SharedServiceService {
         map((res) => !!res.likedProducts.find((prodId) => prodId.key === id))
       );
   }
-  updateProductPagePosition(productsArray:ProductKeyValue[],category:'guitar' | 'bass' | 'piano' | 'drum' | 'other'){
-    this.http.patch(`${this.url}/products/${category}.json`,{productsArray}).subscribe()
+  updateProductPagePosition(productsArray: ProductKeyValue[], category: 'guitar' | 'bass' | 'piano' | 'drum' | 'other') {
+    const productsObject = productsArray.reduce((obj, item) => {
+      obj[item.key] = {
+        ...item.product,
+        discount: Number(item.product.discount), // Ensure discount is a number
+        price: Number(item.product.price), // Ensure price is a number
+      };
+      return obj;
+    }, {} as { [key: string]: Product });
+  
+    this.http.put(`${this.url}/products/${category}.json`, productsObject).subscribe({
+      next: (response) => {
+        console.log('Update successful', response);
+      },
+      error: (error) => {
+        alert("something went wrong try again later")
+      }
+    });
   }
 }

@@ -15,15 +15,16 @@ import { SharedServiceService } from '../sharedService/shared-service.service';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
-import { BehaviorSubject, Observable, shareReplay, take, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IsLikedComponent } from '../is-liked/is-liked.component';
 import { CartService } from '../cart/cart.service';
 import { ProductPageComponent } from '../product-page/product-page.component';
+import { UpperCasePipe } from './card-pipe/upper-case.pipe';
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReusableFormComponent, IsLikedComponent],
+  imports: [FormsModule, CommonModule, ReusableFormComponent, IsLikedComponent,UpperCasePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 
   templateUrl: './card.component.html',
@@ -144,8 +145,8 @@ export class CardComponent implements OnInit {
   switch(position:number){
     this.shifting.emit({id:this.product.key,switchToPosition:position})
   }
-}
-function SkipSelf(): (target: typeof CardComponent, propertyKey: undefined, parameterIndex: 5) => void {
-  throw new Error('Function not implemented.');
+  firstLetterUpperCase(word:string){
+    return word.charAt(0).toUpperCase() + word.substring(1,word.length)
+  }
 }
 

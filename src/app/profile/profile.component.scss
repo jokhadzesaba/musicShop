@@ -73,6 +73,7 @@
         grid-template-columns: repeat(2, 200px);
         grid-template-rows: repeat(5, 30px);
         padding-left: 8%;
+        margin-bottom: 80px;
 
         .photos{
           display: flex;
@@ -82,7 +83,7 @@
 
               position: relative;
               img{
-                width: 35px;
+                width: 80px;
               }
               >img:last-of-type{
                 width: 8px;

@@ -21,8 +21,6 @@ export class LoginAndRegistrationService {
     private cartService:CartService
   ) {}
   public isAdmin = new BehaviorSubject<boolean>(false)
-  
-  public likedProducts = new BehaviorSubject<ProductKeyAndType[]>([]);
   public loginWithGoogle() {
     this.auth.signInWithPopup(new GoogleAuthProvider()).then(
       (res) => {
@@ -33,7 +31,7 @@ export class LoginAndRegistrationService {
           } else {
             this.findUser(res.user?.email!).subscribe((user) => {
               this.loggedUser.next(user);
-              this.likedProducts.next(user?.user.likedProducts!);
+              
               this.router.navigate(['/products']);
               localStorage.setItem('currentUser', JSON.stringify(user));
             });
@@ -51,7 +49,7 @@ export class LoginAndRegistrationService {
       (res) => {
         this.findUser(res.user?.email!).subscribe((user) => {
           this.loggedUser.next(user);
-          this.likedProducts.next(user?.user.likedProducts!);
+          
           this.router.navigate(['/products']);
           localStorage.setItem('currentUser', JSON.stringify(user));
         });
@@ -147,7 +145,7 @@ export class LoginAndRegistrationService {
     if (localStorage.getItem('currentUser')) {
       let user:KeyValueUser | undefined = JSON.parse(localStorage.getItem('currentUser')!);
       this.loggedUser.next(user);
-      this.likedProducts.next(user?.user.likedProducts as ProductKeyAndType[])
+      
       if (localStorage.getItem('cart')) {
         this.cartService.cart.next(JSON.parse(localStorage.getItem('cart')!) as Cart[])
       }
@@ -156,7 +154,7 @@ export class LoginAndRegistrationService {
   logOut() {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('cart');
-    this.likedProducts.next([]);
+    
     this.loggedUser.next(undefined);
     this.cartService.cart.next([])
     

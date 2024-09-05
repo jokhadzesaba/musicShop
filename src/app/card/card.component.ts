@@ -16,7 +16,6 @@ import { LoginAndRegistrationService } from '../loginAndRegistration/services/lo
 import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IsLikedComponent } from '../is-liked/is-liked.component';
 import { CartService } from '../cart/cart.service';
 import { ProductPageComponent } from '../product-page/product-page.component';
 import { UpperCasePipe } from './card-pipe/upper-case.pipe';
@@ -24,7 +23,7 @@ import { UpperCasePipe } from './card-pipe/upper-case.pipe';
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReusableFormComponent, IsLikedComponent,UpperCasePipe],
+  imports: [FormsModule, CommonModule, ReusableFormComponent,UpperCasePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 
   templateUrl: './card.component.html',
@@ -42,7 +41,6 @@ export class CardComponent implements OnInit {
     prodId: string;
     prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
   }>();
-  @Output() shifting = new EventEmitter<{id:string,switchToPosition:number}>()
   position:number = 0
   public isAdmin?: Observable<boolean>;
   public isEditing: string = '';
@@ -65,10 +63,6 @@ export class CardComponent implements OnInit {
   }
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
-
-    this.authService.likedProducts.subscribe((res) => {
-      this.likedProds = res;
-    });
     this.authService.loggedUser.subscribe((user) => {
       this.authService.isAdmin.next(user?.user.isAdmin!);
       this.isAdmin = this.authService.isAdmin.asObservable();
@@ -142,9 +136,7 @@ export class CardComponent implements OnInit {
     }
     this.cancelEditing();
   }
-  switch(position:number){
-    this.shifting.emit({id:this.product.key,switchToPosition:position})
-  }
+
   firstLetterUpperCase(word:string){
     return word.charAt(0).toUpperCase() + word.substring(1,word.length)
   }

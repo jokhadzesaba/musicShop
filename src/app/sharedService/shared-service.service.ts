@@ -25,7 +25,7 @@ import { LoginAndRegistrationService } from '../loginAndRegistration/services/lo
 })
 export class SharedServiceService {
   public detectChanges = new BehaviorSubject<boolean>(false);
-  
+  userId = this.service.loggedUser.value?.key;
   public url =
     'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app';
   constructor(
@@ -94,16 +94,17 @@ export class SharedServiceService {
   }
   likeUnlikeProduct(
     productId: string,
+    productCategory: 'guitar' | 'drum' | 'bass' | 'piano' | 'other',
     userId: string,
-    productCategory: 'guitar' | 'drum' | 'bass' | 'piano' | 'other'
+    likedProducts: ProductKeyAndType[]
   ) {
     return this.http
       .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
       .pipe(
         tap((res: User) => {
-          let updatedUser = this.service.loggedUser.value?.user;
-          let updatedData = this.service.likedProducts.value;
-
+          let updatedUser = res;
+          console.log(res);
+          let updatedData = likedProducts;
           if (updatedUser) {
             const check = updatedUser.likedProducts.find(
               (product) => product.key === productId
@@ -120,7 +121,6 @@ export class SharedServiceService {
               );
               updatedUser.likedProducts = updatedData;
             }
-            this.service.likedProducts.next(updatedData);
           }
           this.http
             .patch(`${this.url}/musicShopUsers/${userId}.json`, updatedUser)
@@ -276,30 +276,13 @@ export class SharedServiceService {
       })
     );
   }
-  checkIfLiked(id: string, userId: string): Observable<boolean> {
+  getLikedProductsArr(userId: string) {
     return this.http
       .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
       .pipe(
-        map((res) => !!res.likedProducts.find((prodId) => prodId.key === id))
+        map((res) => {
+          return res
+        })
       );
-  }
-  updateProductPagePosition(productsArray: ProductKeyValue[], category: 'guitar' | 'bass' | 'piano' | 'drum' | 'other') {
-    const productsObject = productsArray.reduce((obj, item) => {
-      obj[item.key] = {
-        ...item.product,
-        discount: Number(item.product.discount), // Ensure discount is a number
-        price: Number(item.product.price), // Ensure price is a number
-      };
-      return obj;
-    }, {} as { [key: string]: Product });
-  
-    this.http.put(`${this.url}/products/${category}.json`, productsObject).subscribe({
-      next: (response) => {
-        console.log('Update successful', response);
-      },
-      error: (error) => {
-        alert("something went wrong try again later")
-      }
-    });
   }
 }

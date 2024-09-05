@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { Product, ProductKeyAndType } from '../interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,19 +25,23 @@ export class SingleProductPageComponent implements OnInit {
   public maxSize = 0;
   public focusedImg = this.product?.photoUrl?.[0];
   public prodId = '';
-
+  public likedProducts?: ProductKeyAndType[];
+  public userId = '';
   constructor(
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef,
-    private cartService:CartService
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
+    this.authService.loggedUser.subscribe((res) => {
+      this.userId = res?.key!;
+    });
     this.authService.checkIfLoggedIn();
     this.route.queryParams.subscribe(() => {
-      this.getProductInfo(); 
+      this.getProductInfo();
     });
   }
 
@@ -45,9 +54,9 @@ export class SingleProductPageComponent implements OnInit {
           this.product = product;
           this.images = product.photoUrl;
           this.prodId = res['prod'];
-          this.cuurentIndex = 0; 
-          this.focusedImg = this.product?.photoUrl?.[0]; 
-          this.cd.detectChanges(); 
+          this.cuurentIndex = 0;
+          this.focusedImg = this.product?.photoUrl?.[0];
+          this.cd.detectChanges();
         });
     });
   }
@@ -55,7 +64,36 @@ export class SingleProductPageComponent implements OnInit {
   switchImage(index: number) {
     this.cuurentIndex = index;
   }
-
+  checkIfliked() {
+    if (this.likedProducts) {      
+      return this.likedProducts.find((x) => x.key = this.prodId);
+    } else {
+      return false;
+    }
+  }
+  likeProduct(process: 'like' | 'unlike') {
+    this.sharedService
+      .likeUnlikeProduct(
+        this.prodId,
+        this.product?.category!,
+        this.userId,
+        this.likedProducts!
+      )
+      .subscribe(() => {
+        if (this.likedProducts) {
+          if ((process = 'unlike')) {
+            this.likedProducts = this.likedProducts =
+              this.likedProducts?.filter((x) => x.key !== this.prodId);
+            } else if ((process = 'like')) {
+              this.likedProducts.push({
+                category: this.product?.category!,
+                key: this.prodId,
+              });
+            }
+          }
+          this.cd.detectChanges();
+      });
+  }
   scroll(direction: 'left' | 'right') {
     if (direction === 'right') {
       this.images.unshift(this.images.pop()!);

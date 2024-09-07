@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <title>Page Not Found</title>
     <script type="text/javascript">
-      // Redirect all 404s to index.html
       var path = window.location.pathname;
-      var redirectTo = '/index.html';
+      var redirectTo = '/<repository-name>/index.html';
       if (path) {
         redirectTo += '#' + path;
       }

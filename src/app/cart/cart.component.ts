@@ -12,9 +12,10 @@ import { CommonModule } from '@angular/common';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
-import { NgxPayPalModule, IPayPalConfig } from 'ngx-paypal';
+
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { CartService } from './cart.service';
+import { PaypalComponent } from "../paypal/paypal.component";
 
 @Component({
   selector: 'app-cart',
@@ -22,14 +23,13 @@ import { CartService } from './cart.service';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, NgxPayPalModule],
+  imports: [CommonModule, RouterModule, PaypalComponent],
 })
 export class CartComponent implements OnInit {
   @Input() showCart?: boolean = true;
   @Input() userEmail?: string;
   @ViewChild('paymentRef', { static: true }) paymentRef!: ElementRef;
   public cart$?: Observable<Cart[]>;
-  public payPalConfig?: IPayPalConfig;
   constructor(
     private sharedService: SharedServiceService,
     private router: Router,

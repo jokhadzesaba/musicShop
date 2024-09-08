@@ -33,9 +33,6 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
     BrowserAnimationsModule,
     CartComponent,
     SuggestionsComponent,
-    AngularFireModule.initializeApp(firebaseConfig),
-    provideAuth(() => getAuth()),
-    provideDatabase(() => getDatabase()),
   ],
   bootstrap: [AppComponent],
 })

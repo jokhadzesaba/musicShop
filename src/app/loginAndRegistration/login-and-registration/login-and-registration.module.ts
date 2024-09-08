@@ -4,9 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { LoginComponent } from '../login.component';
-import { GoogleAuthProvider } from '@angular/fire/auth';
+import { GoogleAuthProvider,} from '@angular/fire/auth';
 import { LoginRouting } from './loginRouting';
 import { HttpClientModule } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire/compat';
+
+import { firebaseConfig } from 'src/app/interfaces';
 
 @NgModule({
   declarations: [LoginComponent],
@@ -17,7 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
     AngularFirestoreModule,
     AngularFireAuthModule,
     LoginRouting,
-    HttpClientModule
+    HttpClientModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+
   ],
   providers: [GoogleAuthProvider],
   exports: [LoginComponent],

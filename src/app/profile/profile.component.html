@@ -9,6 +9,7 @@
         <button (click)="addingProd()" *ngIf="user?.user?.isAdmin">
           Add New Product
         </button>
+        <button (click)="navigate()">See Purchases</button>
       </div>
       <form *ngIf="user?.user?.isAdmin && addingProduct" [formGroup]="form">
         <select formControlName="category">
@@ -37,73 +38,9 @@
           </div>
         </div>
       </form>
+      
     </div>
-    <div
-      class="purchased-products"
-      *ngFor="
-        let purchase of user?.user?.purchasedProducts | slice : 1;
-        let i = index
-      "
-    >
-      <div class="purchase-wrapper">
-        <span>{{ convertDate(purchase.date) }}</span>
-        <span>total price: {{ purchase.totalPrice }}</span>
-        <div class="see-more-arrow">
-          <img
-            *ngIf="!changeArrow[i]"
-            (click)="showMoreItems[i] = !showMoreItems[i]"
-            (click)="changeArrow[i] = !changeArrow[i]"
-            src="assets/arrow-down.png"
-            alt="img"
-          />
-          <img
-            *ngIf="changeArrow[i]"
-            (click)="showMoreItems[i] = !showMoreItems[i] && !changeArrow"
-            (click)="changeArrow[i] = !changeArrow[i]"
-            src="assets/arrow-up.png"
-            alt="img"
-          />
-        </div>
-        <div
-          class="purchase"
-          *ngFor="let item of purchase.products | slice : 0 : 1"
-        >
-          <div>
-            <img [src]="item.product.product.photoUrl[0]" alt="img" />
-          </div>
-          <div class="grid-container">
-            <span>{{ purchase.email ? purchase.email : "unknown" }}</span>
-            <span>{{
-              upperCaseFirstLetter(item.product.product.category)
-            }}</span>
-
-            <span>{{ item.product.product.model }}</span>
-            <span>Price: {{ item.product.product.price }}$</span>
-            <span>Dicsount: {{ item.product.product.discount }}%</span>
-          </div>
-        </div>
-        <div *ngIf="showMoreItems[i]">
-          <div
-            class="other-items purchase"
-            *ngFor="let item of purchase.products | slice : 1"
-          >
-            <div>
-              <img [src]="item.product.product.photoUrl[0]" alt="img" />
-            </div>
-            <div class="grid-container">
-              <span>{{ purchase.email ? purchase.email : "unknown" }}</span>
-              <span>{{
-                upperCaseFirstLetter(item.product.product.category)
-              }}</span>
-
-              <span>{{ item.product.product.model }}</span>
-              <span>Price: {{ item.product.product.price }}</span>
-              <span>Dicsount: {{ item.product.product.discount }}%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
     <div class="liked-products">
       <p *ngIf="likedProducts">Liked Products:</p>
       <div class="products">

@@ -5,10 +5,11 @@ import {
   OnInit,
 } from '@angular/core';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
-import { KeyValueUser, Product, ProductKeyAndType, ProductKeyValue } from '../interfaces';
+import { Cart, KeyValueUser, Product, ProductKeyAndType, ProductKeyValue, Purchase } from '../interfaces';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { forkJoin, map, take } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -17,12 +18,12 @@ import { forkJoin, map, take } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileComponent implements OnInit {
-  public user?: KeyValueUser;
   public likedProducts?: ProductKeyValue[];
   public photos: string[] = [];
   public addingProduct: boolean = false;
-  public showMoreItems: boolean[] = [];
-  public changeArrow: boolean[] = [];
+
+  public user?: KeyValueUser;
+  public purchasedProducts: Purchase[] = [];
   public form = this.fb.group({
     category: ['', [Validators.required]],
     model: ['', Validators.required],
@@ -35,27 +36,23 @@ export class ProfileComponent implements OnInit {
     private authService: LoginAndRegistrationService,
     private cd: ChangeDetectorRef,
     private fb: FormBuilder,
-    private sharedService: SharedServiceService
+    private sharedService: SharedServiceService,
+    private router:Router
   ) {}
   ngOnInit(): void {
     this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
-      this.user = user;
+      if (user && user.user.purchasedProducts) {
+        this.user = user;
+        this.purchasedProducts = user?.user.purchasedProducts.slice(1);
+        console.log(this.purchasedProducts);
+        
+      }
       this.form.patchValue({
         category: 'guitar',
       });
     });
   }
 
-  public update() {
-    if (this.user?.user.email) {
-      this.authService.findUser(this.user?.user.email).subscribe((res) => {
-        this.user = res;
-        this.cd.detectChanges();
-      });
-    } else {
-      throw new Error('no user email found');
-    }
-  }
   onFileChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -118,7 +115,8 @@ export class ProfileComponent implements OnInit {
       newDate.getMonth() + 1
     }/${newDate.getFullYear()}`;
   }
-  upperCaseFirstLetter(word: string) {
-    return word.charAt(0).toUpperCase() + word.slice(1);
+  public navigate() {
+    this.router.navigate([`/purchasedProducts`])
   }
+
 }

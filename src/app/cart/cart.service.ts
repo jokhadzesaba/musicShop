@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Cart, ProductKeyValue } from '../interfaces';
 
@@ -7,6 +7,7 @@ import { Cart, ProductKeyValue } from '../interfaces';
 })
 export class CartService {
   public cart = new BehaviorSubject<Cart[]>([]);
+  @Output() cartArr = new EventEmitter<Cart[]>()
   constructor() { }
   cartOperations(operation: 'add' | 'remove', product: ProductKeyValue) {
     let currentCart = this.cart.getValue();

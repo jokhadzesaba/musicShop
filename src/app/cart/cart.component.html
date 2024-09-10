@@ -41,7 +41,7 @@
     <h2>Total Price: {{ calculateTotalPrice() }}$</h2>
     <div>
       <div>
-        <app-paypal></app-paypal>
+        <app-paypal [cartArr$]="cart$" [totalPrice]="calculateTotalPrice()"></app-paypal>
       </div>
     </div>
   </div>

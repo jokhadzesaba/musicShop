@@ -1,7 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
-import { IPayPalConfig, ICreateOrderRequest, NgxPayPalModule } from 'ngx-paypal';
+import {
+  IPayPalConfig,
+  ICreateOrderRequest,
+  NgxPayPalModule,
+} from 'ngx-paypal';
+import { SharedServiceService } from '../sharedService/shared-service.service';
+import { Cart } from '../interfaces';
+import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-paypal',
   standalone: true,
@@ -11,19 +19,42 @@ import { IPayPalConfig, ICreateOrderRequest, NgxPayPalModule } from 'ngx-paypal'
 })
 export class PaypalComponent implements OnInit {
   public paypalConfig?: IPayPalConfig;
-  @Input() totalPrice?:number
-  
-  constructor(private cookieService:CookieService){}
+  @Input() totalPrice?: number;
+  @Input() cartArr$?: Observable<Cart[]> ;
+  public cartArr?:Cart[] ; 
+  public userId:string = ''
+  public userEmail:string = ''
+  constructor(
+    private sharedService: SharedServiceService,
+    private authService:LoginAndRegistrationService
+  ) {}
   ngOnInit(): void {
-    this.initConfig()
-    this.setCookie('paypal_cookie', 'some_value');
-    const cookieValue = this.getCookie('paypal_cookie');
-    console.log('PayPal Cookie Value: ', cookieValue);
+    this.authService.loggedUser.subscribe(res=>{
+      if (res && res.user.email) {
+        this.userId = res?.key;
+        this.userEmail = res?.user.email
+      }
+    })
+    this.cartArr$?.subscribe(res=>{
+      this.cartArr = res
+    })
+    this.initConfig();
+  }
+  public update() {
+    if (this.userEmail) {
+      this.authService.findUser(this.userEmail).subscribe((res) => {
+        this.authService.loggedUser.next(res)
+        ;
+      });
+    } else {
+      throw new Error('no user email found');
+    }
   }
   private initConfig() {
     this.paypalConfig = {
       currency: 'USD',
-      clientId: 'AQ7YdqsTpxT_ouN31zRUyhQFvr1mMuO8rfcrWINg6SE5BFQ0l67cIFOhsNjIMdaxDU2RU42hI8yx2IxG',
+      clientId:
+        'AQ7YdqsTpxT_ouN31zRUyhQFvr1mMuO8rfcrWINg6SE5BFQ0l67cIFOhsNjIMdaxDU2RU42hI8yx2IxG',
       createOrderOnClient: (data) => {
         return <ICreateOrderRequest>{
           intent: 'CAPTURE',
@@ -31,11 +62,11 @@ export class PaypalComponent implements OnInit {
             {
               amount: {
                 currency_code: 'USD',
-                value: '0.1',
+                value: this.totalPrice?.toString(),
                 breakdown: {
                   item_total: {
                     currency_code: 'USD',
-                    value: '0.1',
+                    value: this.totalPrice?.toString(),
                   },
                 },
               },
@@ -46,7 +77,7 @@ export class PaypalComponent implements OnInit {
                   category: 'PHYSICAL_GOODS',
                   unit_amount: {
                     currency_code: 'USD',
-                    value: '0.1',
+                    value: this.totalPrice?.toString(),
                   },
                 },
               ],
@@ -62,7 +93,12 @@ export class PaypalComponent implements OnInit {
         layout: 'vertical',
       },
       onApprove: (data, actions) => {
-        console.log('payment approved: ', data, actions);
+        if (this.cartArr && this.totalPrice) {
+          this.sharedService.buyProducts(this.cartArr, this.totalPrice,this.userEmail,this.userId);
+          this.update()
+          
+          console.log('payment approved: ', data, actions);
+        }
       },
       onCancel: (data, action) => {
         console.log('payment cancelled: ', data, action);
@@ -71,16 +107,5 @@ export class PaypalComponent implements OnInit {
         console.log('Onclick: ', data, action);
       },
     };
-  }
-  setCookie(name: string, value: string) {
-    this.cookieService.set(name, value, undefined, '/', undefined, true, 'None');
-  }
-
-  getCookie(name: string) {
-    return this.cookieService.get(name);
-  }
-
-  deleteCookie(name: string) {
-    this.cookieService.delete(name);
   }
 }

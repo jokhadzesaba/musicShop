@@ -18,7 +18,8 @@ import { EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CartService } from '../cart/cart.service';
 import { ProductPageComponent } from '../product-page/product-page.component';
-import { UpperCasePipe } from './card-pipe/upper-case.pipe';
+import { UpperCasePipe } from '../pipes/upper-case.pipe';
+
 
 @Component({
   selector: 'app-card',

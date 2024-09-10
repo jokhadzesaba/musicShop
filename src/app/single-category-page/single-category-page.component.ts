@@ -27,9 +27,9 @@ export class SingleCategoryPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
+    
     private sharedService: SharedServiceService,
-    private authService: LoginAndRegistrationService,
+    
     private cd: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
@@ -39,7 +39,7 @@ export class SingleCategoryPageComponent implements OnInit {
       this.isAdmin = user.user.isAdmin;
     }
     this.cd.detectChanges();
-    console.log(this.isAdmin);
+  
   }
   onRemove(
     data: { prodId: string; prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other' }

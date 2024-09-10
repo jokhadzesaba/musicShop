@@ -1,0 +1,63 @@
+<app-header></app-header>
+<div class="container">
+  <div
+    class="purchased-products"
+    *ngFor="let purchase of purchasedProducts; let i = index"
+  >
+    <div class="purchase-wrapper">
+      <span>{{purchase.date |date}}</span>
+      <span>total price: {{ purchase.totalPrice }}</span>
+      <div class="see-more-arrow">
+        <img
+          *ngIf="!changeArrow[i]"
+          (click)="showMoreItems[i] = !showMoreItems[i]"
+          (click)="changeArrow[i] = !changeArrow[i]"
+          src="assets/arrow-down.png"
+          alt="img"
+        />
+        <img
+          *ngIf="changeArrow[i]"
+          (click)="showMoreItems[i] = !showMoreItems[i] && !changeArrow"
+          (click)="changeArrow[i] = !changeArrow[i]"
+          src="assets/arrow-up.png"
+          alt="img"
+        />
+      </div>
+      <div
+        class="purchase"
+        *ngFor="let item of purchase.products | slice : 0 : 1"
+      >
+        <div>
+          <img [src]="item.product.product.photoUrl[0]" alt="img" />
+        </div>
+        <div class="grid-container">
+          <span>{{ purchase.email ? purchase.email : "unknown" }}</span>
+          <span>{{ item.product.product.category }}</span>
+
+          <span>{{ item.product.product.model }}</span>
+          <span>Price: {{ item.product.product.price }}$</span>
+          <span>Dicsount: {{ item.product.product.discount }}%</span>
+        </div>
+      </div>
+      <div *ngIf="showMoreItems[i]">
+        <div
+          class="other-items purchase"
+          *ngFor="let item of purchase.products | slice : 1"
+        >
+          <div>
+            <img [src]="item.product.product.photoUrl[0]" alt="img" />
+          </div>
+          <div class="grid-container">
+            <span>{{ purchase.email ? purchase.email : "unknown" }}</span>
+            <span>{{ item.product.product.category| upperCase }}</span>
+
+            <span>{{ item.product.product.model|upperCase }}</span>
+            <span>Price: {{ item.product.product.price }}</span>
+            <span>Dicsount: {{ item.product.product.discount }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

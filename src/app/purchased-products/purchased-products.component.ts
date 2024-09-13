@@ -7,11 +7,12 @@ import { UpperCasePipe } from '../pipes/upper-case.pipe';
 import { DatePipe } from '../pipes/date.pipe';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import { PurchasedProductComponent } from './purchased-product/purchased-product.component';
 
 @Component({
   selector: 'app-purchased-products',
   standalone: true,
-  imports: [CommonModule,UpperCasePipe,DatePipe,HeaderComponent,FooterComponent],
+  imports: [CommonModule,UpperCasePipe,DatePipe,HeaderComponent,FooterComponent,PurchasedProductComponent],
   templateUrl: './purchased-products.component.html',
   styleUrl: './purchased-products.component.scss',
   changeDetection:ChangeDetectionStrategy.OnPush
@@ -19,8 +20,8 @@ import { FooterComponent } from '../footer/footer.component';
 export class PurchasedProductsComponent {
   public user?: KeyValueUser;
   public purchasedProducts: Purchase[] = [];
-  public showMoreItems: boolean[] = [];
-  public changeArrow: boolean[] = [];
+  public length = 0;
+
   constructor(
     private authService: LoginAndRegistrationService,
     private cd:ChangeDetectorRef
@@ -32,6 +33,7 @@ export class PurchasedProductsComponent {
       if (user && user.user.purchasedProducts) {
         this.user = user;
         this.purchasedProducts = user?.user.purchasedProducts.slice(1);
+        this.length = this.purchasedProducts.length
         console.log('Purchased products:', this.purchasedProducts);
       } else {
         console.log('No user or purchased products found.');

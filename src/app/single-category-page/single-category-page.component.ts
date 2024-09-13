@@ -18,7 +18,7 @@ import { LoginAndRegistrationService } from '../loginAndRegistration/services/lo
 export class SingleCategoryPageComponent implements OnInit {
   private likedProducts: ProductKeyAndType[] = [];
   public leftSlider = 0;
-  public rightSlider = 10000;
+  public rightSlider = 50000;
   public searchWords = '';
   public isAdmin: boolean = false;
   public products!: ProductKeyValue[];

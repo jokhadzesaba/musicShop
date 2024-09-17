@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { CardComponent } from '../card/card.component';
+import { CardComponent } from '../sharedComponents/card/card.component';
 import { CommonModule } from '@angular/common';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { ProductKeyValue } from '../interfaces';

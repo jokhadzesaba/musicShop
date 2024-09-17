@@ -9,16 +9,16 @@ import {
   Output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ProductKeyAndType, ProductKeyValue } from '../interfaces';
-import { ReusableFormComponent } from '../reusable-form/reusable-form.component';
-import { SharedServiceService } from '../sharedService/shared-service.service';
-import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
+import { ProductKeyAndType, ProductKeyValue } from '../../interfaces';
+import { ReusableFormComponent } from '../../reusable-form/reusable-form.component';
+import { SharedServiceService } from '../../sharedService/shared-service.service';
+import { LoginAndRegistrationService } from '../../loginAndRegistration/services/login.service';
 import { Router } from '@angular/router';
 import { EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CartService } from '../cart/cart.service';
-import { ProductPageComponent } from '../product-page/product-page.component';
-import { UpperCasePipe } from '../pipes/upper-case.pipe';
+import { CartService } from '../../cart/cart.service';
+import { ProductPageComponent } from '../../product-page/product-page.component';
+import { UpperCasePipe } from '../../pipes/upper-case.pipe';
 
 
 @Component({

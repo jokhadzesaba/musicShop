@@ -9,7 +9,8 @@
         <button (click)="addingProd()" *ngIf="user?.user?.isAdmin">
           Add New Product
         </button>
-        <button (click)="navigate()">See Purchases</button>
+        <button (click)="navigate('purchasedProducts')">See Your Purchases</button>
+        <button (click)="navigate('allPurchase')">See All Purchases</button>
       </div>
       <form *ngIf="user?.user?.isAdmin && addingProduct" [formGroup]="form">
         <select formControlName="category">

@@ -8,7 +8,7 @@ import { FooterComponent } from 'src/app/footer/footer.component';
 import { CartComponent } from 'src/app/cart/cart.component';
 import { RouterLink, RouterModule } from '@angular/router';
 import { ReusableFormComponent } from 'src/app/reusable-form/reusable-form.component';
-import { CardComponent } from 'src/app/card/card.component';
+import { CardComponent } from 'src/app/sharedComponents/card/card.component';
 import { ProductPageSingleCategoryComponent } from 'src/app/product-page-single-category/product-page-single-category.component';
 
 @NgModule({

@@ -6,7 +6,7 @@ import { ProfileComponent } from '../profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from 'src/app/header/header.component';
 import { FooterComponent } from 'src/app/footer/footer.component';
-import { CardComponent } from 'src/app/card/card.component';
+import { CardComponent } from 'src/app/sharedComponents/card/card.component';
 
 
 @NgModule({

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PurchasedProductsComponent } from './purchased-products/purchased-products.component';
+import { AllClientPurchasesComponent } from './all-client-purchases/all-client-purchases.component';
 
 const routes: Routes = [
   {
@@ -55,6 +56,7 @@ const routes: Routes = [
       ).then((m) => m.SinleCategoryPageModuleModule),
   },
   { path: 'purchasedProducts', component: PurchasedProductsComponent },
+  { path: 'allPurchase', component: AllClientPurchasesComponent },
 ];
 
 @NgModule({

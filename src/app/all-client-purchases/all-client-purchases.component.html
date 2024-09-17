@@ -1,0 +1,20 @@
+<app-header></app-header>
+<div class="search">
+    <input type="email" [(ngModel)]="email" placeholder="enter email">
+    <button (click)="search()">Search</button>
+</div>
+<div class="container">
+    <div class="purchased-products">
+      <div *ngFor="let purchase of searched | slice: 0 : halfLength">
+        <app-purchased-product [purchase]="purchase"></app-purchased-product>
+      </div>
+    </div>
+    <div class="purchased-products">
+      <div
+        *ngFor="let purchase of searched | slice: halfLength : length"
+      >
+        <app-purchased-product [purchase]="purchase"></app-purchased-product>
+      </div>
+    </div>
+  </div>
+<app-footer></app-footer>

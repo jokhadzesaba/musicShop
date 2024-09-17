@@ -1,14 +1,13 @@
 <app-header></app-header>
 <div class="container">
   <div class="purchased-products">
-    <div *ngFor="let purchase of purchasedProducts | slice : 0 : length / 2+1">
+    <div *ngFor="let purchase of purchasedProducts | slice: 0 : halfLength">
       <app-purchased-product [purchase]="purchase"></app-purchased-product>
     </div>
   </div>
   <div class="purchased-products">
-    <div
-      *ngFor="let purchase of purchasedProducts | slice : (length / 2)+1 : length"
-    >
+
+    <div *ngFor="let purchase of purchasedProducts | slice: halfLength : length">
       <app-purchased-product [purchase]="purchase"></app-purchased-product>
     </div>
   </div>

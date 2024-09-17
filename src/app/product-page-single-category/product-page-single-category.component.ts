@@ -9,7 +9,7 @@ import {
 import { ProductKeyValue } from '../interfaces';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { CommonModule } from '@angular/common';
-import { CardComponent } from '../card/card.component';
+import { CardComponent } from '../sharedComponents/card/card.component';
 
 @Component({
   selector: 'app-product-page-single-category',

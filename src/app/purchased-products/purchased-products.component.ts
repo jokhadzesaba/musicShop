@@ -7,7 +7,7 @@ import { UpperCasePipe } from '../pipes/upper-case.pipe';
 import { DatePipe } from '../pipes/date.pipe';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
-import { PurchasedProductComponent } from './purchased-product/purchased-product.component';
+import { PurchasedProductComponent } from '../sharedComponents/purchased-product/purchased-product.component';
 
 @Component({
   selector: 'app-purchased-products',
@@ -15,16 +15,18 @@ import { PurchasedProductComponent } from './purchased-product/purchased-product
   imports: [CommonModule,UpperCasePipe,DatePipe,HeaderComponent,FooterComponent,PurchasedProductComponent],
   templateUrl: './purchased-products.component.html',
   styleUrl: './purchased-products.component.scss',
-  changeDetection:ChangeDetectionStrategy.OnPush
+  changeDetection:ChangeDetectionStrategy.OnPush,
+  
 })
 export class PurchasedProductsComponent {
   public user?: KeyValueUser;
   public purchasedProducts: Purchase[] = [];
+  public halfLength = 0;
   public length = 0;
 
   constructor(
     private authService: LoginAndRegistrationService,
-    private cd:ChangeDetectorRef
+    private cd:ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -32,8 +34,11 @@ export class PurchasedProductsComponent {
     this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
       if (user && user.user.purchasedProducts) {
         this.user = user;
-        this.purchasedProducts = user?.user.purchasedProducts.slice(1);
+        this.purchasedProducts = user?.user.purchasedProducts.slice(1).sort((a, b) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });;
         this.length = this.purchasedProducts.length
+        this.halfLength = Math.ceil(this.purchasedProducts.length / 2) 
         console.log('Purchased products:', this.purchasedProducts);
       } else {
         console.log('No user or purchased products found.');

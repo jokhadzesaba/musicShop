@@ -43,9 +43,7 @@ export class ProfileComponent implements OnInit {
     this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
       if (user && user.user.purchasedProducts) {
         this.user = user;
-        this.purchasedProducts = user?.user.purchasedProducts.slice(1);
-        console.log(this.purchasedProducts);
-        
+        this.purchasedProducts = user?.user.purchasedProducts.slice(1);        
       }
       this.form.patchValue({
         category: 'guitar',
@@ -115,8 +113,8 @@ export class ProfileComponent implements OnInit {
       newDate.getMonth() + 1
     }/${newDate.getFullYear()}`;
   }
-  public navigate() {
-    this.router.navigate([`/purchasedProducts`])
+  public navigate(where:'purchasedProducts'|'allPurchase') {
+    this.router.navigate([`/${where}`])
   }
 
 }

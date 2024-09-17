@@ -7,7 +7,7 @@ import { SingleCategoryPageComponent } from '../single-category-page.component';
 import { HeaderComponent } from 'src/app/header/header.component';
 import { FooterComponent } from 'src/app/footer/footer.component';
 import { ReusableFormComponent } from 'src/app/reusable-form/reusable-form.component';
-import { CardComponent } from 'src/app/card/card.component';
+import { CardComponent } from 'src/app/sharedComponents/card/card.component';
 
 
 @NgModule({

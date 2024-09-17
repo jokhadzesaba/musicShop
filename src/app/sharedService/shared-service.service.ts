@@ -281,7 +281,22 @@ export class SharedServiceService {
       .get<User>(`${this.url}/musicShopUsers/${userId}.json`)
       .pipe(
         map((res) => {
-          return res
+          return res;
+        })
+      );
+  }
+  getAllClientPurchases() {
+    return this.http
+      .get<{ [key: string]: User }>(`${this.url}/musicShopUsers/.json`)
+      .pipe(
+        map((users) => {
+          return Object.keys(users).map((userId) => {
+            const products = users[userId].purchasedProducts || [];
+            return products.slice(1);
+          });
+        }),
+        map((purchasedProductsArrays) => {
+          return purchasedProductsArrays.flat();
         })
       );
   }

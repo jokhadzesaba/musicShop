@@ -1,0 +1,30 @@
+.container {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    .purchased-products {
+      >div{
+        margin: 10px;
+      }
+    }
+  }
+  
+  .search{
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+    gap: 10px;
+    input,button{
+        height: 30px;
+        border: none;
+        border-radius: 4px;
+    }
+    button{
+        background-color: rgb(113, 190, 219);
+        color: white;
+        &:active{
+            color: green;
+        }
+    }
+  }

@@ -29,7 +29,6 @@ export class ProductPageComponent implements OnInit {
     this.authService.checkIfLoggedIn();
   }
   loadingValue(data: boolean) {
-    
     this.loadingSubject.next(!data);
   }
   

@@ -27,6 +27,8 @@ export class SingleProductPageComponent implements OnInit {
   public prodId = '';
   public likedProducts?: ProductKeyAndType[];
   public userId = '';
+  public isLiked = false;
+  public userEmail = '';
   constructor(
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
@@ -36,12 +38,18 @@ export class SingleProductPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.loggedUser.subscribe((res) => {
-      this.userId = res?.key!;
-    });
     this.authService.checkIfLoggedIn();
     this.route.queryParams.subscribe(() => {
       this.getProductInfo();
+      this.getUserInfo();
+    });
+  }
+  getUserInfo() {
+    this.authService.loggedUser.subscribe((res) => {
+      this.userId = res?.key!;
+      this.userEmail = res?.user.email!;
+      this.likedProducts = res?.user.likedProducts;
+      this.checkIfliked();
     });
   }
 
@@ -65,10 +73,13 @@ export class SingleProductPageComponent implements OnInit {
     this.cuurentIndex = index;
   }
   checkIfliked() {
-    if (this.likedProducts) {      
-      return this.likedProducts.find((x) => x.key = this.prodId);
-    } else {
-      return false;
+    if (this.likedProducts) {
+      const prod = this.likedProducts.find((x) => x.key === this.prodId);
+      if (prod) {
+        this.isLiked = true;
+      } else {
+        this.isLiked = false;
+      }
     }
   }
   likeProduct(process: 'like' | 'unlike') {
@@ -81,17 +92,34 @@ export class SingleProductPageComponent implements OnInit {
       )
       .subscribe(() => {
         if (this.likedProducts) {
-          if ((process = 'unlike')) {
-            this.likedProducts = this.likedProducts =
-              this.likedProducts?.filter((x) => x.key !== this.prodId);
-            } else if ((process = 'like')) {
-              this.likedProducts.push({
-                category: this.product?.category!,
-                key: this.prodId,
-              });
-            }
+          if (process === 'unlike') {
+            this.isLiked = false;
+          } else if (process === 'like') {
+            this.isLiked = true;
           }
+
           this.cd.detectChanges();
+          this.authService.findUser(this.userEmail).subscribe((res) => {
+            this.authService.loggedUser.next(res);
+          
+            if (process === 'unlike') {
+              this.likedProducts = this.likedProducts?.filter(
+                (x) => x.key !== this.prodId
+              );
+              this.isLiked = false;
+            } else if (process === 'like') {
+              this.likedProducts?.push({
+                key: this.prodId,
+                category: this.product?.category!,
+              });
+              this.isLiked = true;
+            }
+          
+            // Update localStorage here with the latest user state
+            localStorage.setItem('currentUser', JSON.stringify(res));
+            this.cd.detectChanges();
+          });
+        }
       });
   }
   scroll(direction: 'left' | 'right') {

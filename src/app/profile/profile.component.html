@@ -9,7 +9,9 @@
         <button (click)="addingProd()" *ngIf="user?.user?.isAdmin">
           Add New Product
         </button>
-        <button (click)="navigate('purchasedProducts')">See Your Purchases</button>
+        <button (click)="navigate('purchasedProducts')">
+          See Your Purchases
+        </button>
         <button (click)="navigate('allPurchase')">See All Purchases</button>
       </div>
       <form *ngIf="user?.user?.isAdmin && addingProduct" [formGroup]="form">
@@ -29,30 +31,30 @@
         <button [disabled]="form.invalid" (click)="addNewProduct()">
           add product
         </button>
-
+        
         <div class="photos">
           <div class="pht" *ngFor="let img of photos">
             <div>
               <img [src]="img" alt="img" />
-              <img (click)="removeImg(img)" src="assets/remove.png" alt="img" />         
+              <img (click)="removeImg(img)" src="assets/remove.png" alt="img" />
             </div>
           </div>
         </div>
       </form>
-      
     </div>
-    
+
     <div class="liked-products">
-      <p *ngIf="likedProducts">Liked Products:</p>
+      <h2>Liked Products:</h2>
       <div class="products">
         <app-card
-          [product]="product"
-          *ngFor="let product of likedProducts |slice:1"
-          class="single-product"
+        [product]="product"
+        *ngFor="let product of likedProducts | slice : 1"
+        class="single-product"
         >
-        </app-card>
-      </div>
+      </app-card>
     </div>
   </div>
+  </div>
 </div>
+
 <app-footer></app-footer>

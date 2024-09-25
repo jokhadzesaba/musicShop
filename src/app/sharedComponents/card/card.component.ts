@@ -42,7 +42,7 @@ export class CardComponent implements OnInit {
     prodId: string;
     prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
   }>();
-  position:number = 0
+
   public isAdmin?: Observable<boolean>;
   public isEditing: string = '';
   public likedProds?: ProductKeyAndType[];

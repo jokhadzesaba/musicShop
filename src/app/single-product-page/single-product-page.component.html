@@ -21,17 +21,32 @@
     <div class="description payment">
       <div>
         <p><span>Categoty:</span> {{ product?.category }}</p>
+        <div>
+          <img
+            (click)="likeProduct('unlike')"
+            *ngIf="isLiked"
+            src="assets/heart-red.png"
+            alt="img"
+          />
+          <img
+            (click)="likeProduct('like')"
+            *ngIf="!isLiked"
+            src="assets/heart.png"
+            alt="img"
+          />
+        </div>
       </div>
       <div>
         <p><span>Model:</span> {{ product?.model }}</p>
-        <p>
-          <span>Description: </span> {{ product?.description }}
-        </p>
+        <p><span>Description: </span> {{ product?.description }}</p>
         <p><span>Price:</span> {{ product?.price }}$</p>
         <button (click)="addInCart()">Add to Cart</button>
       </div>
     </div>
-    <app-suggestions *ngIf="product?.category" [categoty]="product?.category!"></app-suggestions>
+    <app-suggestions
+      *ngIf="product?.category"
+      [categoty]="product?.category!"
+    ></app-suggestions>
     <app-footer></app-footer>
   </div>
 </div>

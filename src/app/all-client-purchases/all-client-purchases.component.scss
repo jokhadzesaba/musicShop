@@ -23,6 +23,7 @@
     button{
         background-color: rgb(113, 190, 219);
         color: white;
+        cursor: pointer;
         &:active{
             color: green;
         }

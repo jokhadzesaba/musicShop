@@ -5,7 +5,14 @@ import {
   OnInit,
 } from '@angular/core';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
-import { Cart, KeyValueUser, Product, ProductKeyAndType, ProductKeyValue, Purchase } from '../interfaces';
+import {
+  Cart,
+  KeyValueUser,
+  Product,
+  ProductKeyAndType,
+  ProductKeyValue,
+  Purchase,
+} from '../interfaces';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { forkJoin, map, take } from 'rxjs';
@@ -37,17 +44,19 @@ export class ProfileComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private fb: FormBuilder,
     private sharedService: SharedServiceService,
-    private router:Router
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
       if (user && user.user.purchasedProducts) {
         this.user = user;
-        this.purchasedProducts = user?.user.purchasedProducts.slice(1);        
+        this.purchasedProducts = user?.user.purchasedProducts.slice(1);
       }
+      this.getUserLikedProducts();
       this.form.patchValue({
         category: 'guitar',
       });
+      
     });
   }
 
@@ -68,7 +77,7 @@ export class ProfileComponent implements OnInit {
   }
   removeImg(url: string) {
     const photoIndex = this.photos.findIndex((x) => x === url);
-    this.photos.splice(photoIndex,1);
+    this.photos.splice(photoIndex, 1);
   }
   addNewProduct() {
     const category = this.form.get('category')?.getRawValue();
@@ -96,7 +105,7 @@ export class ProfileComponent implements OnInit {
           this.form.get('quantity')?.setValue('');
           this.form.get('description')?.setValue('');
           this.photos = [];
-          this.cd.detectChanges()
+          this.cd.detectChanges();
           alert('Product was added successfully');
         },
         error: (err) => {
@@ -113,8 +122,20 @@ export class ProfileComponent implements OnInit {
       newDate.getMonth() + 1
     }/${newDate.getFullYear()}`;
   }
-  public navigate(where:'purchasedProducts'|'allPurchase') {
-    this.router.navigate([`/${where}`])
+  public navigate(where: 'purchasedProducts' | 'allPurchase') {
+    this.router.navigate([`/${where}`]);
   }
-
+  getUserLikedProducts() {
+    this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
+      const likedProducts = user?.user.likedProducts;
+      if (likedProducts && likedProducts.length > 0) {
+        this.sharedService
+          .getLikedProductsByIdsAsKeyValue(likedProducts)
+          .subscribe((products) => {
+            this.likedProducts = products;
+            this.cd.detectChanges()
+          });
+      }
+    });
+  }
 }

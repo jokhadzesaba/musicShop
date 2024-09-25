@@ -17,4 +17,5 @@ export class PurchasedProductComponent {
   @Input() purchase?: Purchase;
   public showMoreItems: boolean = false;
   public changeArrow: boolean = false;
+  
 }

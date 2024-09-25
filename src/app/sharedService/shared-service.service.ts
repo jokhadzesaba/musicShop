@@ -129,7 +129,24 @@ export class SharedServiceService {
       );
   }
 
-  getAllLikedProducts(userId: string) {}
+  getLikedProductsByIdsAsKeyValue(likedProducts: ProductKeyAndType[]): Observable<ProductKeyValue[]> {
+    const productRequests = likedProducts.map((productKeyAndType) => {
+      return this.getProductById(productKeyAndType.key, productKeyAndType.category).pipe(
+        map((product: Product) => {
+          return {
+            key: productKeyAndType.key,
+            product: product,
+          } as ProductKeyValue;
+        })
+      );
+    });
+  
+    // Combine all observables and return them as a single observable of an array
+    return forkJoin(productRequests);
+  }
+  
+  
+  
 
   getProduct(id: string, category: string): Observable<ProductKeyValue> {
     return this.http.get<ProductKeyValue>(

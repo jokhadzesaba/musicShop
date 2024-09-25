@@ -31,7 +31,7 @@
         <button [disabled]="form.invalid" (click)="addNewProduct()">
           add product
         </button>
-        
+
         <div class="photos">
           <div class="pht" *ngFor="let img of photos">
             <div>
@@ -47,13 +47,13 @@
       <h2>Liked Products:</h2>
       <div class="products">
         <app-card
-        [product]="product"
-        *ngFor="let product of likedProducts | slice : 1"
-        class="single-product"
+          [product]="product"
+          *ngFor="let product of likedProducts | slice : 1"
+          class="single-product"
         >
-      </app-card>
+        </app-card>
+      </div>
     </div>
-  </div>
   </div>
 </div>
 

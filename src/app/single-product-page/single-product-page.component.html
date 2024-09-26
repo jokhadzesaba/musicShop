@@ -3,8 +3,9 @@
   <div class="content">
     <div class="images">
       <div class="focused-img">
-        <img #myImage *ngIf="images" [src]="images[cuurentIndex]" alt="img" />
+        <img #myImage *ngIf="images?.length" [src]="images[cuurentIndex]" alt="img" />
       </div>
+      
       <div class="otherPhotos">
         <div>
           <img (click)="scroll('left')" src="assets/left.png" alt="img" />
@@ -35,6 +36,7 @@
             alt="img"
           />
         </div>
+        
       </div>
       <div>
         <p><span>Model:</span> {{ product?.model }}</p>

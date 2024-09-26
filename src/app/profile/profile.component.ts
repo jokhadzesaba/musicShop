@@ -17,6 +17,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { forkJoin, map, take } from 'rxjs';
 import { Router } from '@angular/router';
+import { SngPageService } from '../single-product-page/service/sng-page.service';
 
 @Component({
   selector: 'app-profile',
@@ -26,6 +27,7 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
   public likedProducts?: ProductKeyValue[];
+  public keyandType?:ProductKeyAndType[]
   public photos: string[] = [];
   public addingProduct: boolean = false;
 
@@ -44,7 +46,8 @@ export class ProfileComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private fb: FormBuilder,
     private sharedService: SharedServiceService,
-    private router: Router
+    private router: Router,
+    private sngService:SngPageService
   ) {}
   ngOnInit(): void {
     this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
@@ -52,6 +55,9 @@ export class ProfileComponent implements OnInit {
         this.user = user;
         this.purchasedProducts = user?.user.purchasedProducts.slice(1);
       }
+      this.sngService.prodId.subscribe(res=>{
+        this.keyandType = res
+      })
       this.getUserLikedProducts();
       this.form.patchValue({
         category: 'guitar',
@@ -127,10 +133,10 @@ export class ProfileComponent implements OnInit {
   }
   getUserLikedProducts() {
     this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
-      const likedProducts = user?.user.likedProducts;
-      if (likedProducts && likedProducts.length > 0) {
+      
+      if (this.keyandType && this.keyandType.length > 0) {
         this.sharedService
-          .getLikedProductsByIdsAsKeyValue(likedProducts)
+          .getLikedProductsByIdsAsKeyValue(this.keyandType)
           .subscribe((products) => {
             this.likedProducts = products;
             this.cd.detectChanges()

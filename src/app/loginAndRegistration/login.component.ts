@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { LoginAndRegistrationService } from './services/login.service';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { SngPageService } from '../single-product-page/service/sng-page.service';
 const passwordMatchValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
   const password = formGroup.get('password')?.value;
   const confirmPassword = formGroup.get('confirmPassword')?.value;
@@ -42,7 +43,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private logInService: LoginAndRegistrationService
+    private logInService: LoginAndRegistrationService,
   ) {}
 
   ngOnInit(): void {}
@@ -76,10 +77,6 @@ export class LoginComponent implements OnInit {
       alert('Password and confirm password do not match');
       return;
     }
-    console.log(this.form.get('password')?.getRawValue());
-    console.log(this.form.get('confirmPassword')?.getRawValue());
-
-    console.log('Form is valid, proceeding with registration'); 
     let email = this.form.get('email')?.value;
     let password = this.form.get('password')?.value;
     this.logInService.registration(email!, password!);

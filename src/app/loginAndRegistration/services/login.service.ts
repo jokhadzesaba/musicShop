@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 import { CartService } from 'src/app/cart/cart.service';
 import { Cart, KeyValueUser, ProductKeyAndType, ProductKeyValue, User } from 'src/app/interfaces';
+import { SngPageService } from 'src/app/single-product-page/service/sng-page.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,9 +19,11 @@ export class LoginAndRegistrationService {
     private auth: AngularFireAuth,
     private http: HttpClient,
     private router: Router,
-    private cartService:CartService
+    private cartService:CartService,
+    private sng:SngPageService,
   ) {}
   public isAdmin = new BehaviorSubject<boolean>(false)
+  public likedProducts = new BehaviorSubject<ProductKeyAndType[]>([]);
   public loginWithGoogle() {
     this.auth.signInWithPopup(new GoogleAuthProvider()).then(
       (res) => {
@@ -30,8 +33,7 @@ export class LoginAndRegistrationService {
             this.addUserTodatabase(res.user?.email!, res.user?.photoURL!);
           } else {
             this.findUser(res.user?.email!).subscribe((user) => {
-              this.loggedUser.next(user);
-              
+              this.loggedUser.next(user);       
               this.router.navigate(['/products']);
               localStorage.setItem('currentUser', JSON.stringify(user));
             });
@@ -49,9 +51,12 @@ export class LoginAndRegistrationService {
       (res) => {
         this.findUser(res.user?.email!).subscribe((user) => {
           this.loggedUser.next(user);
-          
           this.router.navigate(['/products']);
           localStorage.setItem('currentUser', JSON.stringify(user));
+          if (user?.user.likedProducts) {    
+            this.sng.prodId.next(user?.user.likedProducts)     
+            localStorage.setItem('prodKeyAndType', JSON.stringify(user?.user.likedProducts))  
+          }
         });
       },
       (err) => {
@@ -148,6 +153,9 @@ export class LoginAndRegistrationService {
       
       if (localStorage.getItem('cart')) {
         this.cartService.cart.next(JSON.parse(localStorage.getItem('cart')!) as Cart[])
+      }
+      if (localStorage.getItem('prodKeyAndType')) {
+        this.sng.prodId.next(JSON.parse(localStorage.getItem('prodKeyAndType')!) as ProductKeyAndType[])
       }
     }
   }

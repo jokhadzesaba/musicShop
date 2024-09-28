@@ -141,5 +141,8 @@ export class CardComponent implements OnInit {
   firstLetterUpperCase(word:string){
     return word.charAt(0).toUpperCase() + word.substring(1,word.length)
   }
+  makeItTop(){
+    this.sharedService.makeTopProduct(this.product.key,this.product.product.category)
+  }
 }
 

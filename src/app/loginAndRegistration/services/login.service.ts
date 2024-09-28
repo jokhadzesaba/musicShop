@@ -95,6 +95,7 @@ export class LoginAndRegistrationService {
                 key: 'unknown',
                 product: {
                   category: 'other',
+                  isTopProduct:false,
                   model: 'none',
                   price: -1,
                   quantity: -1,

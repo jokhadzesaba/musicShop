@@ -21,6 +21,7 @@ export interface Product {
   description?: string;
   quantity: number;
   discount: number;
+  isTopProduct:boolean;
   photoUrl: string[];
 }
 export interface ProductKeyValue {

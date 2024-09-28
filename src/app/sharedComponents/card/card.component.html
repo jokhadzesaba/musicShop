@@ -20,6 +20,7 @@
       <div>
         <span (click)="navigation()">See Product</span>
       </div>
+      <button (click)="makeItTop()">Add To Top Products</button>
     </div>
     <div class="edit" *ngIf="isEditing === product.key">
       <app-reusable-form

@@ -1,29 +1,22 @@
+
 <div class="topProducts-container">
+  <div *ngIf="loading" class="loading-container">
+    <div class="loader"></div>
+    <p>Loading...</p>
+  </div>
   <div>
-    <div>
-      <div
-        (click)="changeIndex(0)"
-        [ngClass]="index === 0 ? 'highlight' : ''"
-      ></div>
-      <div
-        (click)="changeIndex(1)"
-        [ngClass]="index === 1 ? 'highlight' : ''"
-      ></div>
-      <div
-        (click)="changeIndex(2)"
-        [ngClass]="index === 2 ? 'highlight' : ''"
-      ></div>
-      <div
-        (click)="changeIndex(3)"
-        [ngClass]="index === 3 ? 'highlight' : ''"
+    <div *ngIf="!loading">
+      <div *ngFor="let dot of imgUrls; let i = index"
+        (click)="changeIndex(i)"
+        [ngClass]="index === i ? 'highlight' : ''"
       ></div>
     </div>
-    <div class="arrows">
+    <div *ngIf="!loading" class="arrows">
       <img (click)="changeImgDown()" src="assets/left.png" alt="img" />
       <img (click)="changeImgUp()" src="assets/right.png" alt="img" />
     </div>
   </div>
-  <div class="images">
+  <div *ngIf="!loading" class="images">
     <img [src]="img" alt="img" />
   </div>
 </div>

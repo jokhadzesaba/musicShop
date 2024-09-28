@@ -49,6 +49,7 @@ export class SharedServiceService {
       quantity: parseInt(quantity),
       discount: parseInt(discount),
       photoUrl: photos,
+      isTopProduct:false,
       description: desctiprion,
     };
     return this.http.post(`${this.url}/products/${category}.json`, product);
@@ -57,6 +58,41 @@ export class SharedServiceService {
     this.detectChanges.next(!this.detectChanges.value);
     return this.detectChanges.value;
   }
+  makeTopProduct(key:string,categoty:'drum' | 'bass' | 'guitar' | 'piano' | 'other'){
+    this.http.get<Product>(`${this.url}/products/${categoty}/${key}.json`).pipe(tap((res)=>{
+      if (res.isTopProduct) {
+        res.isTopProduct = false
+      }else{
+        res.isTopProduct = true
+      }
+        this.http.patch(`${this.url}/products/${categoty}/${key}.json`,res).subscribe()
+    })).subscribe();
+  }
+  getAllTopProduct() {
+    const data1 = this.http.get<ProductKeyValue>(`${this.url}/products/guitar.json`);
+    const data2 = this.http.get<ProductKeyValue>(`${this.url}/products/piano.json`);
+    const data3 = this.http.get<ProductKeyValue>(`${this.url}/products/bass.json`);
+    const data4 = this.http.get<ProductKeyValue>(`${this.url}/products/drum.json`);
+  
+    return forkJoin<ProductKeyValue[]>([data1, data2, data3, data4]).pipe(
+      map((results) => {
+        
+        const allProductsWithKeys = results.flatMap(productList => 
+          Object.entries(productList).map(([key, product]) => ({
+            key,
+            product
+          }))
+        );
+        const topProductsWithKeys = allProductsWithKeys.filter(
+          item => item.product.isTopProduct === true
+        );
+        
+        return topProductsWithKeys;
+      })
+    );
+  }
+  
+  
 
   getTypeOfProduct(
     category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'

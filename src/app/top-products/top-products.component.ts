@@ -1,6 +1,8 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
+import { SharedServiceService } from '../sharedService/shared-service.service';
+import { ProductKeyValue } from '../interfaces';
 
 @Component({
   selector: 'app-top-products',
@@ -10,48 +12,61 @@ import { Subscription, interval } from 'rxjs';
 })
 export class TopProductsComponent implements OnInit {
   public index = 0;
-  public imgUrls = [
-    'assets/guitar1.jpg',
-    'assets/piano.png',
-    'assets/drum.avif',
-    'assets/bass.webp',
-  ];
-  constructor(private cdr: ChangeDetectorRef) {}
-  public img = this.imgUrls[0];
+  public imgUrls: { img: string; key: string }[] = [];
+  public img = '';
+  public key = '';
+  public loading = true
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private service: SharedServiceService
+  ) {}
+
   private intervalSubscription: Subscription | undefined;
 
   ngOnInit(): void {
     this.startTimeChangeInterval();
+    this.service.getAllTopProduct().subscribe((res) => {
+      res.forEach((x) =>
+        this.imgUrls.push({ key: x.key, img: x.product.photoUrl[0] })
+      );
+      this.img = this.imgUrls[0].img;
+      this.key = this.imgUrls[0].key;
+      this.loading = false
+      this.cdr.detectChanges();
+    });
   }
   startTimeChangeInterval() {
     this.intervalSubscription = interval(4000).subscribe(() => {
-      this.changeImgUp();
+      // this.changeImgUp();
       this.cdr.detectChanges();
     });
   }
   changeImgUp() {
-    if (this.index === 3) {
+    if (this.index === this.imgUrls.length - 1) {
       this.index = 0;
-      this.img = this.imgUrls[this.index];
+      this.img = this.imgUrls[this.index].img;
+      this.key = this.imgUrls[this.index].key;
     } else {
-      this.img = this.imgUrls[this.index + 1];
+      this.img = this.imgUrls[this.index + 1].img;
       this.index++;
     }
     this.clearInterval();
   }
+
   changeImgDown() {
     if (this.index === 0) {
-      this.index = 3;
-      this.img = this.imgUrls[this.index];
+      this.index = this.imgUrls.length-1;
+      this.img = this.imgUrls[this.index].img;
     } else {
-      this.img = this.imgUrls[this.index - 1];
+      this.img = this.imgUrls[this.index - 1].img;
       this.index--;
     }
     this.clearInterval();
   }
   changeIndex(index: number) {
     this.index = index;
-    this.img = this.imgUrls[index];
+    this.img = this.imgUrls[index].img;
+    this.key = this.imgUrls[index].key;
     this.clearInterval();
   }
   clearInterval() {

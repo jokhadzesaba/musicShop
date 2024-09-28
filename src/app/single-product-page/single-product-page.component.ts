@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
 import { CartService } from '../cart/cart.service';
+import { SngPageService } from './service/sng-page.service';
 
 @Component({
   selector: 'app-single-product-page',
@@ -34,7 +35,8 @@ export class SingleProductPageComponent implements OnInit {
     private authService: LoginAndRegistrationService,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef,
-    private cartService: CartService
+    private cartService: CartService,
+    private sngService:SngPageService
   ) {}
 
   ngOnInit(): void {
@@ -48,8 +50,6 @@ export class SingleProductPageComponent implements OnInit {
     this.authService.loggedUser.subscribe((res) => {
       this.userId = res?.key!;
       this.userEmail = res?.user.email!;
-      this.likedProducts = res?.user.likedProducts;
-      this.checkIfliked();
     });
   }
 
@@ -64,6 +64,8 @@ export class SingleProductPageComponent implements OnInit {
           this.prodId = res['prod'];
           this.cuurentIndex = 0;
           this.focusedImg = this.product?.photoUrl?.[0];
+          this.likedProducts = this.sngService.prodId.value
+          this.checkIfliked();
           this.cd.detectChanges();
         });
     });

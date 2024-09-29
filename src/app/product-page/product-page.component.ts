@@ -17,13 +17,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPageComponent implements OnInit {
-  
   public isEditing?: string = '';
   private loadingSubject = new BehaviorSubject<boolean>(true);
   public loading$ = this.loadingSubject.asObservable();
 
   constructor(
-    private authService: LoginAndRegistrationService
+    private authService: LoginAndRegistrationService,
   ) {}
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
@@ -31,5 +30,4 @@ export class ProductPageComponent implements OnInit {
   loadingValue(data: boolean) {
     this.loadingSubject.next(!data);
   }
-  
 }

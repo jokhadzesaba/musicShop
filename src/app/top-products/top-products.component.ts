@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { ProductKeyValue } from '../interfaces';
+import { ShareDataService } from '../sharedService/share-data.service';
 
 @Component({
   selector: 'app-top-products',
@@ -15,29 +16,31 @@ export class TopProductsComponent implements OnInit {
   public imgUrls: { img: string; key: string }[] = [];
   public img = '';
   public key = '';
-  public loading = true
+  public loading = true;
   constructor(
     private cdr: ChangeDetectorRef,
-    private service: SharedServiceService
+    private dataShareService: ShareDataService
   ) {}
 
   private intervalSubscription: Subscription | undefined;
 
   ngOnInit(): void {
-    this.startTimeChangeInterval();
-    this.service.getAllTopProduct().subscribe((res) => {
-      res.forEach((x) =>
-        this.imgUrls.push({ key: x.key, img: x.product.photoUrl[0] })
-      );
-      this.img = this.imgUrls[0].img;
-      this.key = this.imgUrls[0].key;
-      this.loading = false
-      this.cdr.detectChanges();
+    this.dataShareService.topProducts.subscribe((res) => {
+      res.forEach((x) => {
+        this.imgUrls.push({ key: x.key, img: x.product.photoUrl[0] });
+      });
+      if (this.imgUrls.length > 0) {
+        this.img = this.imgUrls[0].img;
+        this.key = this.imgUrls[0].key;
+        this.loading = false;
+        this.startTimeChangeInterval();
+        this.cdr.detectChanges();
+      }
     });
   }
   startTimeChangeInterval() {
     this.intervalSubscription = interval(4000).subscribe(() => {
-      // this.changeImgUp();
+      this.changeImgUp();
       this.cdr.detectChanges();
     });
   }
@@ -55,7 +58,7 @@ export class TopProductsComponent implements OnInit {
 
   changeImgDown() {
     if (this.index === 0) {
-      this.index = this.imgUrls.length-1;
+      this.index = this.imgUrls.length - 1;
       this.img = this.imgUrls[this.index].img;
     } else {
       this.img = this.imgUrls[this.index - 1].img;

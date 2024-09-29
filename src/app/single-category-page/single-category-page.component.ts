@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { ProductKeyAndType, ProductKeyValue } from '../interfaces';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
+import { ShareDataService } from '../sharedService/share-data.service';
 
 @Component({
   selector: 'app-single-category-page',
@@ -27,9 +28,9 @@ export class SingleCategoryPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    
+
     private sharedService: SharedServiceService,
-    
+    private shareDataService: ShareDataService,
     private cd: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
@@ -39,19 +40,21 @@ export class SingleCategoryPageComponent implements OnInit {
       this.isAdmin = user.user.isAdmin;
     }
     this.cd.detectChanges();
-  
   }
-  onRemove(
-    data: { prodId: string; prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other' }
-  ) {
-    this.sharedService.removeProduct(data.prodCategory, data.prodId).subscribe(() => {
-      this.products = this.products.filter((x) => x.key !== data.prodId);
-      this.cd.detectChanges();
-    });
+  onRemove(data: {
+    prodId: string;
+    prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
+  }) {
+    this.sharedService
+      .removeProduct(data.prodCategory, data.prodId)
+      .subscribe(() => {
+        this.products = this.products.filter((x) => x.key !== data.prodId);
+        this.cd.detectChanges();
+      });
   }
   getProducts() {
     this.route.params.subscribe((res) => {
-      this.sharedService.getTypeOfProduct(res['category']).subscribe((res) => {
+      this.shareDataService.getData(res['category']).subscribe((res) => {
         this.products = res;
         this.UnChangedProducts = res;
         this.cd.detectChanges();
@@ -93,16 +96,20 @@ export class SingleCategoryPageComponent implements OnInit {
     );
     this.cd.detectChanges();
   }
-  onEdit(
-    data: {
-      form: any;
-      prodId: string;
-      prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
-    }
-  ) {
-    this.sharedService.editProduct(data.form, data.prodId, data.prodCategory).subscribe(() => {
-      this.sharedService.updateProductArray(data.form, this.products, data.prodId);
-      this.cd.detectChanges()
-    });
+  onEdit(data: {
+    form: any;
+    prodId: string;
+    prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
+  }) {
+    this.sharedService
+      .editProduct(data.form, data.prodId, data.prodCategory)
+      .subscribe(() => {
+        this.sharedService.updateProductArray(
+          data.form,
+          this.products,
+          data.prodId
+        );
+        this.cd.detectChanges();
+      });
   }
 }

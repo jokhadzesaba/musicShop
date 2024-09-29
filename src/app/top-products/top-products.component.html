@@ -11,7 +11,7 @@
         [ngClass]="index === i ? 'highlight' : ''"
       ></div>
     </div>
-    <div *ngIf="!loading" class="arrows">
+    <div *ngIf="!loading && imgUrls.length>0" class="arrows">
       <img (click)="changeImgDown()" src="assets/left.png" alt="img" />
       <img (click)="changeImgUp()" src="assets/right.png" alt="img" />
     </div>

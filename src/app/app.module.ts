@@ -1,11 +1,7 @@
-import { ChangeDetectorRef, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getDatabase, provideDatabase } from '@angular/fire/database';
-import { firebaseConfig } from './interfaces';
-import { AngularFireModule } from '@angular/fire/compat';
 import { LoginAndRegistrationModule } from './loginAndRegistration/login-and-registration/login-and-registration.module';
 import { ProductPageModule } from './product-page/product-page/product-page.module';
 import { ProfileModuleModule } from './profile/profile-module/profile-module.module';
@@ -14,6 +10,7 @@ import { CartComponent } from './cart/cart.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
+import { SharedServiceService } from './sharedService/shared-service.service';
 
 
 
@@ -35,5 +32,13 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
     SuggestionsComponent,
   ],
   bootstrap: [AppComponent],
+  providers:[ {
+    provide: APP_INITIALIZER,
+    useFactory: (productService: SharedServiceService) => {
+      return () => productService.getAllTypeOfProduct().subscribe() // Ensuring it's called at startup
+    },
+    deps: [SharedServiceService],
+    multi: true
+  }]
 })
 export class AppModule {}

@@ -19,6 +19,7 @@ import {
   tap,
 } from 'rxjs';
 import { LoginAndRegistrationService } from '../loginAndRegistration/services/login.service';
+import { ShareDataService } from './share-data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,8 @@ export class SharedServiceService {
     'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app';
   constructor(
     private http: HttpClient,
-    private service: LoginAndRegistrationService
+    private service: LoginAndRegistrationService,
+    private shareDataService: ShareDataService
   ) {}
 
   addProduct(
@@ -49,7 +51,7 @@ export class SharedServiceService {
       quantity: parseInt(quantity),
       discount: parseInt(discount),
       photoUrl: photos,
-      isTopProduct:false,
+      isTopProduct: false,
       description: desctiprion,
     };
     return this.http.post(`${this.url}/products/${category}.json`, product);
@@ -58,56 +60,58 @@ export class SharedServiceService {
     this.detectChanges.next(!this.detectChanges.value);
     return this.detectChanges.value;
   }
-  makeTopProduct(key:string,categoty:'drum' | 'bass' | 'guitar' | 'piano' | 'other'){
-    this.http.get<Product>(`${this.url}/products/${categoty}/${key}.json`).pipe(tap((res)=>{
-      if (res.isTopProduct) {
-        res.isTopProduct = false
-      }else{
-        res.isTopProduct = true
-      }
-        this.http.patch(`${this.url}/products/${categoty}/${key}.json`,res).subscribe()
-    })).subscribe();
+  makeTopProduct(
+    key: string,
+    categoty: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
+  ) {
+    this.http
+      .get<Product>(`${this.url}/products/${categoty}/${key}.json`)
+      .pipe(
+        tap((res) => {
+          if (res.isTopProduct) {
+            res.isTopProduct = false;
+          } else {
+            res.isTopProduct = true;
+          }
+          this.http
+            .patch(`${this.url}/products/${categoty}/${key}.json`, res)
+            .subscribe();
+        })
+      )
+      .subscribe();
   }
   getAllTopProduct() {
-    const data1 = this.http.get<ProductKeyValue>(`${this.url}/products/guitar.json`);
-    const data2 = this.http.get<ProductKeyValue>(`${this.url}/products/piano.json`);
-    const data3 = this.http.get<ProductKeyValue>(`${this.url}/products/bass.json`);
-    const data4 = this.http.get<ProductKeyValue>(`${this.url}/products/drum.json`);
-  
-    return forkJoin<ProductKeyValue[]>([data1, data2, data3, data4]).pipe(
-      map((results) => {
-        
-        const allProductsWithKeys = results.flatMap(productList => 
-          Object.entries(productList).map(([key, product]) => ({
-            key,
-            product
-          }))
-        );
-        const topProductsWithKeys = allProductsWithKeys.filter(
-          item => item.product.isTopProduct === true
-        );
-        
-        return topProductsWithKeys;
-      })
-    );
-  }
-  
-  
-
-  getTypeOfProduct(
-    category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
-  ): Observable<ProductKeyValue[]> {
-    return this.http
-      .get<ProductKeyValue>(`${this.url}/products/${category}.json`)
-      .pipe(
-        map((responese) => {
-          let productsArray: ProductKeyValue[] = [];
-          Object.entries(responese).forEach(([keys, products]) =>
-            productsArray.push({ key: keys, product: products })
-          );
-          return productsArray;
-        })
+    this.shareDataService.allProducts.subscribe((allProduct) => {
+      const allProducts = this.mapKeyValue(allProduct);
+      const topProducts = allProducts.filter(
+        (top) => top.product.isTopProduct === true
       );
+      console.log(topProducts);
+      this.shareDataService.topProducts.next(topProducts);
+    });
+  }
+
+  // getTypeOfProduct(category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other') {
+  //   return this.http
+  //     .get<ProductKeyValue>(`${this.url}/products/${category}.json`)
+  //     .pipe(
+  //       map((responese) => {
+  //         let productsArray: ProductKeyValue[] = [];
+  //         Object.entries(responese).forEach(([keys, products]) =>
+  //           productsArray.push({ key: keys, product: products })
+  //         );
+  //         return productsArray;
+  //       })
+  //     );
+  // }
+  mapKeyValue(data: ProductKeyValue[]) {
+    const allProducts = data.flatMap((productList) =>
+      Object.entries(productList).map(([key, product]) => ({
+        key,
+        product,
+      }))
+    );
+    return allProducts;
   }
   getAllTypeOfProduct() {
     const data1 = this.http.get<ProductKeyValue>(
@@ -124,6 +128,25 @@ export class SharedServiceService {
     );
     return forkJoin<ProductKeyValue[]>([data1, data2, data3, data4]).pipe(
       map((results) => {
+        this.shareDataService.allProducts.next(results);
+        const allProds = this.mapKeyValue(results);
+        const guitarProds = allProds.filter(
+          (pr) => pr.product.category === 'guitar'
+        );
+        const pianoProds = allProds.filter(
+          (pr) => pr.product.category === 'piano'
+        );
+        const bassProds = allProds.filter(
+          (pr) => pr.product.category === 'bass'
+        );
+        const drumProds = allProds.filter(
+          (pr) => pr.product.category === 'drum'
+        );
+        this.shareDataService.guitarProducts.next(guitarProds);
+        this.shareDataService.pianoProducts.next(pianoProds);
+        this.shareDataService.bassProducts.next(bassProds);
+        this.shareDataService.drumProducts.next(drumProds);
+        this.getAllTopProduct();
         return results;
       })
     );
@@ -165,9 +188,14 @@ export class SharedServiceService {
       );
   }
 
-  getLikedProductsByIdsAsKeyValue(likedProducts: ProductKeyAndType[]): Observable<ProductKeyValue[]> {
+  getLikedProductsByIdsAsKeyValue(
+    likedProducts: ProductKeyAndType[]
+  ): Observable<ProductKeyValue[]> {
     const productRequests = likedProducts.map((productKeyAndType) => {
-      return this.getProductById(productKeyAndType.key, productKeyAndType.category).pipe(
+      return this.getProductById(
+        productKeyAndType.key,
+        productKeyAndType.category
+      ).pipe(
         map((product: Product) => {
           return {
             key: productKeyAndType.key,
@@ -176,13 +204,10 @@ export class SharedServiceService {
         })
       );
     });
-  
+
     // Combine all observables and return them as a single observable of an array
     return forkJoin(productRequests);
   }
-  
-  
-  
 
   getProduct(id: string, category: string): Observable<ProductKeyValue> {
     return this.http.get<ProductKeyValue>(
@@ -307,7 +332,7 @@ export class SharedServiceService {
     }
   }
   getRandomProducts(category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other') {
-    return this.getTypeOfProduct(category).pipe(
+    return this.shareDataService.getData(category).pipe(
       map((res) => {
         let counter = 4;
         const randomProducts: ProductKeyValue[] = [];
@@ -325,6 +350,7 @@ export class SharedServiceService {
             counter--;
           }
         }
+        
         return randomProducts;
       })
     );

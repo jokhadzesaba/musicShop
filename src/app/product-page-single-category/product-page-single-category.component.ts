@@ -10,6 +10,7 @@ import { ProductKeyValue } from '../interfaces';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../sharedComponents/card/card.component';
+import { ShareDataService } from '../sharedService/share-data.service';
 
 @Component({
   selector: 'app-product-page-single-category',
@@ -29,20 +30,19 @@ export class ProductPageSingleCategoryComponent implements OnInit {
 
   constructor(
     private sharedService: SharedServiceService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private dataShareService: ShareDataService
   ) {}
 
   ngOnInit(): void {
     if (this.category) {
-      this.sharedService
-        .getTypeOfProduct(`${this.category}`)
-        .subscribe((res) => {
-          this.productsArray = res;
-          this.length = res.length;
-          this.loading = false;
-          this.productsImported.emit(true);
-          this.cd.detectChanges();
-        });
+      this.dataShareService.getData(this.category).subscribe((res) => {
+        this.productsArray = res;
+        this.length = res.length;
+        this.loading = false;
+        this.cd.detectChanges();
+        this.productsImported.emit(true);
+      });
     }
   }
   shiftLeft() {
@@ -83,7 +83,7 @@ export class ProductPageSingleCategoryComponent implements OnInit {
     );
     this.cd.detectChanges();
   }
-  
+
   modifyCatName() {
     if (this.category) {
       return (

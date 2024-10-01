@@ -19,18 +19,19 @@ import { Observable } from 'rxjs';
 import { CartService } from '../../cart/cart.service';
 import { ProductPageComponent } from '../../product-page/product-page.component';
 import { UpperCasePipe } from '../../pipes/upper-case.pipe';
-
+import { ShareDataService } from 'src/app/sharedService/share-data.service';
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReusableFormComponent,UpperCasePipe],
+  imports: [FormsModule, CommonModule, ReusableFormComponent, UpperCasePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
 })
 export class CardComponent implements OnInit {
+  @Input() showSpecificContent = false;
   @Input() product!: ProductKeyValue;
   @Input() singleProdPage: boolean = false;
   @Output() removeEvent = new EventEmitter<{
@@ -42,20 +43,20 @@ export class CardComponent implements OnInit {
     prodId: string;
     prodCategory: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
   }>();
-
+  @Output() topProds = new EventEmitter<boolean>();
   public isAdmin?: Observable<boolean>;
   public isEditing: string = '';
   public likedProds?: ProductKeyAndType[];
   public userID?: string;
   isUsedInSpecificParent = false;
-  @Input() showSpecificContent = false;
-
+  public isTopProduct = false;
   constructor(
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
     private router: Router,
     private cd: ChangeDetectorRef,
-    private cartService:CartService,
+    private cartService: CartService,
+    private dataService: ShareDataService,
     @Optional() private specificParent: ProductPageComponent
   ) {
     if (this.specificParent) {
@@ -68,6 +69,7 @@ export class CardComponent implements OnInit {
       this.authService.isAdmin.next(user?.user.isAdmin!);
       this.isAdmin = this.authService.isAdmin.asObservable();
       this.userID = user?.key;
+      this.isProductIntop();
     });
   }
   removeProduct() {
@@ -82,7 +84,6 @@ export class CardComponent implements OnInit {
       });
   }
 
-
   navigation() {
     this.router.navigate([`single-product/${this.product?.key}`], {
       queryParams: {
@@ -90,12 +91,11 @@ export class CardComponent implements OnInit {
         prod: this.product?.key,
       },
     });
-    this.cd.detectChanges()
+    this.cd.detectChanges();
   }
   addInCart() {
     this.cartService.cartOperations('add', this.product!);
   }
-  
 
   navigateToCategotyPage() {
     this.router.navigate([`categoty/${this.product?.product.category}`]);
@@ -138,11 +138,23 @@ export class CardComponent implements OnInit {
     this.cancelEditing();
   }
 
-  firstLetterUpperCase(word:string){
-    return word.charAt(0).toUpperCase() + word.substring(1,word.length)
+  firstLetterUpperCase(word: string) {
+    return word.charAt(0).toUpperCase() + word.substring(1, word.length);
   }
-  makeItTop(){
-    this.sharedService.makeTopProduct(this.product.key,this.product.product.category)
+  makeItTop() {
+    this.sharedService
+      .makeTopProduct(this.product.key, this.product.product.category)
+      .subscribe(() => {
+        this.isTopProduct = true;
+        this.dataService.emitTopProductUpdate(this.product.product.photoUrl[0],this.product.key);
+        this.cd.detectChanges();
+      });
+  }
+  isProductIntop() {
+    this.dataService.topProducts.subscribe((res) => {
+      if (res.find((x) => x.key === this.product.key)) {
+        this.isTopProduct = true;
+      }
+    });
   }
 }
-

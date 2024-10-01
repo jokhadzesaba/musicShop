@@ -28,7 +28,7 @@ export class SharedServiceService {
   public detectChanges = new BehaviorSubject<boolean>(false);
   userId = this.service.loggedUser.value?.key;
   public url =
-    'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app';
+    'https://musicshop-88945-default-rtdb.firebaseio.com/';
   constructor(
     private http: HttpClient,
     private service: LoginAndRegistrationService,
@@ -64,7 +64,7 @@ export class SharedServiceService {
     key: string,
     categoty: 'drum' | 'bass' | 'guitar' | 'piano' | 'other'
   ) {
-    this.http
+    return this.http
       .get<Product>(`${this.url}/products/${categoty}/${key}.json`)
       .pipe(
         tap((res) => {
@@ -78,18 +78,8 @@ export class SharedServiceService {
             .subscribe();
         })
       )
-      .subscribe();
   }
-  getAllTopProduct() {
-    this.shareDataService.allProducts.subscribe((allProduct) => {
-      const allProducts = this.mapKeyValue(allProduct);
-      const topProducts = allProducts.filter(
-        (top) => top.product.isTopProduct === true
-      );
-      console.log(topProducts);
-      this.shareDataService.topProducts.next(topProducts);
-    });
-  }
+
 
   // getTypeOfProduct(category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other') {
   //   return this.http
@@ -104,53 +94,6 @@ export class SharedServiceService {
   //       })
   //     );
   // }
-  mapKeyValue(data: ProductKeyValue[]) {
-    const allProducts = data.flatMap((productList) =>
-      Object.entries(productList).map(([key, product]) => ({
-        key,
-        product,
-      }))
-    );
-    return allProducts;
-  }
-  getAllTypeOfProduct() {
-    const data1 = this.http.get<ProductKeyValue>(
-      `${this.url}/products/guitar.json`
-    );
-    const data2 = this.http.get<ProductKeyValue>(
-      `${this.url}/products/piano.json`
-    );
-    const data3 = this.http.get<ProductKeyValue>(
-      `${this.url}/products/bass.json`
-    );
-    const data4 = this.http.get<ProductKeyValue>(
-      `${this.url}/products/drum.json`
-    );
-    return forkJoin<ProductKeyValue[]>([data1, data2, data3, data4]).pipe(
-      map((results) => {
-        this.shareDataService.allProducts.next(results);
-        const allProds = this.mapKeyValue(results);
-        const guitarProds = allProds.filter(
-          (pr) => pr.product.category === 'guitar'
-        );
-        const pianoProds = allProds.filter(
-          (pr) => pr.product.category === 'piano'
-        );
-        const bassProds = allProds.filter(
-          (pr) => pr.product.category === 'bass'
-        );
-        const drumProds = allProds.filter(
-          (pr) => pr.product.category === 'drum'
-        );
-        this.shareDataService.guitarProducts.next(guitarProds);
-        this.shareDataService.pianoProducts.next(pianoProds);
-        this.shareDataService.bassProducts.next(bassProds);
-        this.shareDataService.drumProducts.next(drumProds);
-        this.getAllTopProduct();
-        return results;
-      })
-    );
-  }
   likeUnlikeProduct(
     productId: string,
     productCategory: 'guitar' | 'drum' | 'bass' | 'piano' | 'other',

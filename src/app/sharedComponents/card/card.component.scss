@@ -28,53 +28,32 @@
     top: 30%;
     left: 14%;
     z-index: 1;
-    .shifting {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      input,
-      button {
-        height: 20px;
-        border-radius: 4px;
-      }
-      input {
-        width: 35px;
-      }
-      button {
-        width: 60px;
-        cursor: pointer;
-        &:active{
-          color: red;
-          
-        }
-      }
-    }
-    > button {
-      width: 140px;
-      height: 40px;
-      border: 1px solid gray;
-      background-color: white;
-      color: #d37a42;
-      cursor: pointer;
-    }
-    > div:first-of-type {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      width: 140px;
-      height: 40px;
-      color: white;
+  }
+  button {
+    width: 140px;
+    height: 40px;
+    border: 1px solid gray;
+    background-color: white;
+    color: #d37a42;
+    cursor: pointer;
+  }
+  div:first-of-type {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 140px;
+    height: 40px;
+    color: white;
 
-      > span {
-        display: flex;
-        align-items: center;
+     span {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      > img {
+        width: 20px;
+        height: 20px;
+        margin-right: 3px;
         cursor: pointer;
-        > img {
-          width: 20px;
-          height: 20px;
-          margin-right: 3px;
-          cursor: pointer;
-        }
       }
     }
   }
@@ -123,6 +102,7 @@
     text-decoration: line-through;
   }
   span {
+    color: black;
     font-weight: bold;
     justify-self: flex-end;
   }

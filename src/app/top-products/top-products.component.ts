@@ -25,6 +25,14 @@ export class TopProductsComponent implements OnInit {
   private intervalSubscription: Subscription | undefined;
 
   ngOnInit(): void {
+    this.getTopProducts();
+    this.dataShareService.topProductUpdated$.subscribe((updated) => {
+      if (updated) {
+        this.cdr.detectChanges();
+      }
+    });
+  }
+  getTopProducts() {
     this.dataShareService.topProducts.subscribe((res) => {
       res.forEach((x) => {
         this.imgUrls.push({ key: x.key, img: x.product.photoUrl[0] });

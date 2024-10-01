@@ -20,7 +20,11 @@
       <div>
         <span (click)="navigation()">See Product</span>
       </div>
-      <button (click)="makeItTop()">Add To Top Products</button>
+      <div class="add-remove" *ngIf="isAdmin">
+        <button *ngIf="!isTopProduct" (click)="makeItTop()">Add To Top </button>
+        <button *ngIf="isTopProduct" (click)="makeItTop()">Remove From Top </button>
+
+      </div>
     </div>
     <div class="edit" *ngIf="isEditing === product.key">
       <app-reusable-form

@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SharedServiceService } from './sharedService/shared-service.service';
+import { ShareDataService } from './sharedService/share-data.service';
 
 
 
@@ -34,10 +35,10 @@ import { SharedServiceService } from './sharedService/shared-service.service';
   bootstrap: [AppComponent],
   providers:[ {
     provide: APP_INITIALIZER,
-    useFactory: (productService: SharedServiceService) => {
+    useFactory: (productService: ShareDataService) => {
       return () => productService.getAllTypeOfProduct().subscribe() // Ensuring it's called at startup
     },
-    deps: [SharedServiceService],
+    deps: [ShareDataService],
     multi: true
   }]
 })

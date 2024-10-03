@@ -15,9 +15,14 @@ export class ShareDataService {
   public bassProducts = new BehaviorSubject<ProductKeyValue[]>([]);
   public drumProducts = new BehaviorSubject<ProductKeyValue[]>([]);
   private topProductUpdated = new BehaviorSubject<
-    { img: string; key: string,operation:string } | undefined
+    { img?: string; key: string; operation: string } | undefined
   >(undefined);
   topProductUpdated$ = this.topProductUpdated.asObservable();
+  // guitarProducts$ = this.guitarProducts.asObservable();
+  // pianoProducts$ = this.pianoProducts.asObservable();
+  // bassProducts$ = this.bassProducts.asObservable();
+  // drumProducts$ = this.drumProducts.asObservable();
+  // allProducts$ = this.allProducts.asObservable();
   constructor(private http: HttpClient) {}
   getData(data?: 'guitar' | 'piano' | 'bass' | 'drum' | 'other') {
     if (data === 'guitar') {
@@ -32,16 +37,35 @@ export class ShareDataService {
       return this.allProducts;
     }
   }
-  emitTopProductUpdate(img: string, key: string, operation: 'add' | 'remove') {
-    this.topProductUpdated.next({ img: img, key: key,operation:operation });
+  // getObsData(data?: 'guitar' | 'piano' | 'bass' | 'drum' | 'other') {
+  //   if (data === 'guitar') {
+  //     return this.guitarProducts$;
+  //   } else if (data === 'bass') {
+  //     return this.bassProducts$;
+  //   } else if (data === 'drum') {
+  //     return this.drumProducts$;
+  //   } else if (data === 'piano') {
+  //     return this.pianoProducts$;
+  //   }else{
+  //     return this.allProducts$
+  //   }
+  // }
+  emitTopProductUpdate(key: string, operation: 'add' | 'remove', img?: string) {
+    this.topProductUpdated.next({ img: img, key: key, operation: operation });
   }
   getAllTopProduct() {
     this.allProducts.subscribe((allProduct) => {
       const allProducts = this.mapKeyValue(allProduct);
       const topProducts = allProducts.filter(
-        (top) => top.product.isTopProduct === true
+        (top) => top.product.isTopProduct.isTop === true
       );
-      this.topProducts.next(topProducts);
+      const sortedTopProducts = topProducts.sort((a, b) => {
+        return (
+          new Date(a.product.isTopProduct.date).getTime() -
+          new Date(b.product.isTopProduct.date).getTime()
+        );
+      });
+      this.topProducts.next(sortedTopProducts);
     });
   }
   getAllTypeOfProduct() {
@@ -90,5 +114,12 @@ export class ShareDataService {
       }))
     );
     return allProducts;
+  }
+  getTypeOfProduct(category: 'guitar' | 'piano' | 'bass' | 'drum' | 'other') {
+    this.http
+      .get<ProductKeyValue[]>(`${this.url}/products/guitar.json`)
+      .subscribe((res) => {
+        this.getData(category).next(res);
+      });
   }
 }

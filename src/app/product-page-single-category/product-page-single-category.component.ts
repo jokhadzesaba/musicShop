@@ -40,8 +40,8 @@ export class ProductPageSingleCategoryComponent implements OnInit {
         this.productsArray = res;
         this.length = res.length;
         this.loading = false;
-        this.cd.detectChanges();
         this.productsImported.emit(true);
+        this.cd.detectChanges();
       });
     }
   }
@@ -67,7 +67,7 @@ export class ProductPageSingleCategoryComponent implements OnInit {
     this.sharedService
       .editProduct(data.form, data.prodId, data.prodCategory)
       .subscribe(() => {
-        if (data.prodCategory === 'guitar') {
+        if (data.prodCategory === this.category) {
           this.sharedService.updateProductArray(
             data.form,
             this.productsArray,

@@ -80,6 +80,7 @@ export class CardComponent implements OnInit {
           prodId: this.product?.key!,
           prodCategory: this.product?.product.category!,
         });
+        this.dataService.emitTopProductUpdate(this.product.key,'remove')
         this.cd.detectChanges();
       });
   }
@@ -148,16 +149,16 @@ export class CardComponent implements OnInit {
         if (this.isTopProduct) {
           this.isTopProduct = false;
           this.dataService.emitTopProductUpdate(
-            this.product.product.photoUrl[0],
             this.product.key,
-            'remove'
+            'remove',
+  
           );
         } else {
           this.isTopProduct = true;
           this.dataService.emitTopProductUpdate(
-            this.product.product.photoUrl[0],
             this.product.key,
-            'add'
+            'add',
+            this.product.product.photoUrl[0],
           );
         }
         this.cd.detectChanges();

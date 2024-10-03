@@ -25,11 +25,14 @@ export class TopProductsComponent implements OnInit {
   private intervalSubscription: Subscription | undefined;
 
   ngOnInit(): void {
+    this.dataShareService.getTypeOfProduct('guitar')
     this.getTopProducts();
     this.dataShareService.topProductUpdated$.subscribe((updated) => {
       if (updated) {
         if (updated.operation === 'add') {
-          this.imgUrls.push({ img: updated.img, key: updated.key });
+          if (updated.img) {
+            this.imgUrls.push({ img: updated.img, key: updated.key });
+          }
         } else {
           this.imgUrls = this.imgUrls.filter((key) => key.key !== updated.key);
         }

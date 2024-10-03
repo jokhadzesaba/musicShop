@@ -51,9 +51,10 @@ export class SharedServiceService {
       quantity: parseInt(quantity),
       discount: parseInt(discount),
       photoUrl: photos,
-      isTopProduct: {isTop:false,date:'none'},
+      isTopProduct: {isTop:false,date:new Date(1990)},
       description: desctiprion,
     };
+    
     return this.http.post(`${this.url}/products/${category}.json`, product);
   }
   ifDetectChanges() {
@@ -70,8 +71,10 @@ export class SharedServiceService {
         tap((res) => {
           if (res.isTopProduct.isTop) {
             res.isTopProduct.isTop = false;
+            res.isTopProduct.date = new Date(1990)
           } else {
             res.isTopProduct.isTop = true;
+            res.isTopProduct.date = new Date()
           }
           this.http
             .patch(`${this.url}/products/${categoty}/${key}.json`, res)

@@ -6,7 +6,7 @@
             <img (click)="shiftLeft()" src="assets/right.png" alt="img">
         </div>
     </div>
-    <div class="products">
+    <div *ngIf="productsArray.length > 0" class="products">
       <app-card
         (editEvent)="onFormSubmitted($event)"
         (removeEvent)="removeHandler($event)"

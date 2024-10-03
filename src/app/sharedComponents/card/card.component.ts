@@ -145,8 +145,21 @@ export class CardComponent implements OnInit {
     this.sharedService
       .makeTopProduct(this.product.key, this.product.product.category)
       .subscribe(() => {
-        this.isTopProduct = true;
-        this.dataService.emitTopProductUpdate(this.product.product.photoUrl[0],this.product.key);
+        if (this.isTopProduct) {
+          this.isTopProduct = false;
+          this.dataService.emitTopProductUpdate(
+            this.product.product.photoUrl[0],
+            this.product.key,
+            'remove'
+          );
+        } else {
+          this.isTopProduct = true;
+          this.dataService.emitTopProductUpdate(
+            this.product.product.photoUrl[0],
+            this.product.key,
+            'add'
+          );
+        }
         this.cd.detectChanges();
       });
   }

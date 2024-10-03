@@ -23,6 +23,7 @@ export class ProductPageComponent implements OnInit {
 
   constructor(
     private authService: LoginAndRegistrationService,
+    private ser: SharedServiceService,
   ) {}
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
@@ -30,4 +31,5 @@ export class ProductPageComponent implements OnInit {
   loadingValue(data: boolean) {
     this.loadingSubject.next(!data);
   }
+  
 }

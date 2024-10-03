@@ -51,7 +51,7 @@ export class SharedServiceService {
       quantity: parseInt(quantity),
       discount: parseInt(discount),
       photoUrl: photos,
-      isTopProduct: false,
+      isTopProduct: {isTop:false,date:'none'},
       description: desctiprion,
     };
     return this.http.post(`${this.url}/products/${category}.json`, product);
@@ -68,10 +68,10 @@ export class SharedServiceService {
       .get<Product>(`${this.url}/products/${categoty}/${key}.json`)
       .pipe(
         tap((res) => {
-          if (res.isTopProduct) {
-            res.isTopProduct = false;
+          if (res.isTopProduct.isTop) {
+            res.isTopProduct.isTop = false;
           } else {
-            res.isTopProduct = true;
+            res.isTopProduct.isTop = true;
           }
           this.http
             .patch(`${this.url}/products/${categoty}/${key}.json`, res)
@@ -79,21 +79,8 @@ export class SharedServiceService {
         })
       )
   }
-
-
-  // getTypeOfProduct(category: 'drum' | 'bass' | 'guitar' | 'piano' | 'other') {
-  //   return this.http
-  //     .get<ProductKeyValue>(`${this.url}/products/${category}.json`)
-  //     .pipe(
-  //       map((responese) => {
-  //         let productsArray: ProductKeyValue[] = [];
-  //         Object.entries(responese).forEach(([keys, products]) =>
-  //           productsArray.push({ key: keys, product: products })
-  //         );
-  //         return productsArray;
-  //       })
-  //     );
-  // }
+  
+  
   likeUnlikeProduct(
     productId: string,
     productCategory: 'guitar' | 'drum' | 'bass' | 'piano' | 'other',
@@ -222,6 +209,8 @@ export class SharedServiceService {
       `${this.url}/products/${productType}/${prodId}.json`
     );
   }
+
+
   public editProduct(
     formData: any,
     prodId: string,

@@ -14,7 +14,9 @@ export class ShareDataService {
   public pianoProducts = new BehaviorSubject<ProductKeyValue[]>([]);
   public bassProducts = new BehaviorSubject<ProductKeyValue[]>([]);
   public drumProducts = new BehaviorSubject<ProductKeyValue[]>([]);
-  private topProductUpdated = new BehaviorSubject<{img:string,key:string}>({img:'none',key:'none'});
+  private topProductUpdated = new BehaviorSubject<
+    { img: string; key: string,operation:string } | undefined
+  >(undefined);
   topProductUpdated$ = this.topProductUpdated.asObservable();
   constructor(private http: HttpClient) {}
   getData(data?: 'guitar' | 'piano' | 'bass' | 'drum' | 'other') {
@@ -30,8 +32,8 @@ export class ShareDataService {
       return this.allProducts;
     }
   }
-  emitTopProductUpdate(img:string,key:string) {
-    this.topProductUpdated.next({img:img,key:key});
+  emitTopProductUpdate(img: string, key: string, operation: 'add' | 'remove') {
+    this.topProductUpdated.next({ img: img, key: key,operation:operation });
   }
   getAllTopProduct() {
     this.allProducts.subscribe((allProduct) => {
@@ -39,7 +41,6 @@ export class ShareDataService {
       const topProducts = allProducts.filter(
         (top) => top.product.isTopProduct === true
       );
-      console.log(topProducts);
       this.topProducts.next(topProducts);
     });
   }

@@ -1,6 +1,6 @@
 <div *ngIf="product && product.product">
   <div class="single-product">
-    <div class="delete-button" *ngIf="isAdmin |async">
+    <div class="delete-button" *ngIf="isAdmin | async">
       <img (click)="removeProduct()" src="assets/remove.png" alt="img" />
       <img
         *ngIf="isEditing === ''"
@@ -21,9 +21,10 @@
         <span (click)="navigation()">See Product</span>
       </div>
       <div class="add-remove" *ngIf="isAdmin">
-        <button *ngIf="!isTopProduct" (click)="makeItTop()">Add To Top </button>
-        <button *ngIf="isTopProduct" (click)="makeItTop()">Remove From Top </button>
-
+        <button *ngIf="!isTopProduct" (click)="makeItTop()">Add To Top</button>
+        <button *ngIf="isTopProduct" (click)="makeItTop()">
+          Remove From Top
+        </button>
       </div>
     </div>
     <div class="edit" *ngIf="isEditing === product.key">
@@ -43,9 +44,11 @@
       <img [src]="product.product.photoUrl[0]" alt="img" />
     </div>
     <div class="info">
-      <span>{{ product.product.category|upperCase }}</span>
-      <span>{{ product.product.model|slice:0:150|upperCase }}</span>
-      <span *ngIf="!product.product.discount">{{ product.product.price }}$</span>
+      <span>{{ product.product.category | upperCase }}</span>
+      <span>{{ product.product.model | slice : 0 : 150 | upperCase }}</span>
+      <span *ngIf="!product.product.discount"
+        >{{ product.product.price }}$</span
+      >
       <div *ngIf="product.product.discount" class="if-discount">
         <span> {{ product.product.price }}$ </span>
         <span> {{ calculateDiscount() }}$ </span>
@@ -53,4 +56,3 @@
     </div>
   </div>
 </div>
-

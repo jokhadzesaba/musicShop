@@ -17,7 +17,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { SharedServiceService } from '../sharedService/shared-service.service';
 import { forkJoin, map, take } from 'rxjs';
 import { Router } from '@angular/router';
-import { SngPageService } from '../single-product-page/service/sng-page.service';
+
+import { IdService } from '../sharedService/id.service';
 
 @Component({
   selector: 'app-profile',
@@ -47,7 +48,7 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private sharedService: SharedServiceService,
     private router: Router,
-    private sngService:SngPageService
+    private idService:IdService
   ) {}
   ngOnInit(): void {
     this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
@@ -55,10 +56,10 @@ export class ProfileComponent implements OnInit {
         this.user = user;
         this.purchasedProducts = user?.user.purchasedProducts.slice(1);
       }
-      this.sngService.prodId.subscribe(res=>{
+      this.idService.prodId.subscribe(res=>{
         this.keyandType = res
+        this.getUserLikedProducts();
       })
-      this.getUserLikedProducts();
       this.form.patchValue({
         category: 'guitar',
       });
@@ -132,8 +133,7 @@ export class ProfileComponent implements OnInit {
     this.router.navigate([`/${where}`]);
   }
   getUserLikedProducts() {
-    this.authService.loggedUser.pipe(take(1)).subscribe((user) => {
-      
+    this.authService.loggedUser.pipe(take(1)).subscribe(() => {
       if (this.keyandType && this.keyandType.length > 0) {
         this.sharedService
           .getLikedProductsByIdsAsKeyValue(this.keyandType)

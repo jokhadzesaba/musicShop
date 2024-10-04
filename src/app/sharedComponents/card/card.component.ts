@@ -20,6 +20,7 @@ import { CartService } from '../../cart/cart.service';
 import { ProductPageComponent } from '../../product-page/product-page.component';
 import { UpperCasePipe } from '../../pipes/upper-case.pipe';
 import { ShareDataService } from 'src/app/sharedService/share-data.service';
+import { IdService } from 'src/app/sharedService/id.service';
 
 @Component({
   selector: 'app-card',
@@ -50,6 +51,7 @@ export class CardComponent implements OnInit {
   public userID?: string;
   isUsedInSpecificParent = false;
   public isTopProduct = false;
+  public isLiked = false;
   constructor(
     private sharedService: SharedServiceService,
     private authService: LoginAndRegistrationService,
@@ -57,6 +59,7 @@ export class CardComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private cartService: CartService,
     private dataService: ShareDataService,
+    private idService: IdService,
     @Optional() private specificParent: ProductPageComponent
   ) {
     if (this.specificParent) {
@@ -66,10 +69,10 @@ export class CardComponent implements OnInit {
   ngOnInit(): void {
     this.authService.checkIfLoggedIn();
     this.authService.loggedUser.subscribe((user) => {
-      this.authService.isAdmin.next(user?.user.isAdmin!);
       this.isAdmin = this.authService.isAdmin.asObservable();
       this.userID = user?.key;
       this.isProductIntop();
+      this.isProdLiked();
     });
   }
   removeProduct() {
@@ -80,7 +83,7 @@ export class CardComponent implements OnInit {
           prodId: this.product?.key!,
           prodCategory: this.product?.product.category!,
         });
-        this.dataService.emitTopProductUpdate(this.product.key,'remove')
+        this.dataService.emitTopProductUpdate(this.product.key, 'remove');
         this.cd.detectChanges();
       });
   }
@@ -148,17 +151,13 @@ export class CardComponent implements OnInit {
       .subscribe(() => {
         if (this.isTopProduct) {
           this.isTopProduct = false;
-          this.dataService.emitTopProductUpdate(
-            this.product.key,
-            'remove',
-  
-          );
+          this.dataService.emitTopProductUpdate(this.product.key, 'remove');
         } else {
           this.isTopProduct = true;
           this.dataService.emitTopProductUpdate(
             this.product.key,
             'add',
-            this.product.product.photoUrl[0],
+            this.product.product.photoUrl[0]
           );
         }
         this.cd.detectChanges();
@@ -168,6 +167,28 @@ export class CardComponent implements OnInit {
     this.dataService.topProducts.subscribe((res) => {
       if (res.find((x) => x.key === this.product.key)) {
         this.isTopProduct = true;
+      }
+    });
+  }
+  likeOrUnlikeProd() {
+    this.sharedService
+      .likeUnlikeProduct(
+        this.product.key,
+        this.product.product.category,
+        this.userID!,
+        this.idService.prodId.value!
+      )
+      .subscribe(() => {
+        this.isLiked = !this.isLiked;
+        this.cd.detectChanges()
+      });
+  }
+  isProdLiked() {
+    this.idService.prodId.subscribe((res) => {
+      if (res) {
+        if (res.find((x) => x.key === this.product.key)) {
+          this.isLiked = true;
+        }
       }
     });
   }

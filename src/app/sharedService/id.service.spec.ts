@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SngPageService } from './sng-page.service';
+import { IdService } from './id.service';
 
-describe('SngPageService', () => {
-  let service: SngPageService;
+describe('IdService', () => {
+  let service: IdService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SngPageService);
+    service = TestBed.inject(IdService);
   });
 
   it('should be created', () => {

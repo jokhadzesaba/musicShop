@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { LoginAndRegistrationService } from './services/login.service';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { SngPageService } from '../single-product-page/service/sng-page.service';
 const passwordMatchValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
   const password = formGroup.get('password')?.value;
   const confirmPassword = formGroup.get('confirmPassword')?.value;

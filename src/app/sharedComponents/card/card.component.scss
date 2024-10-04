@@ -14,7 +14,7 @@
     position: absolute;
     z-index: 1;
     // display: flex;
-    
+
     > img {
       width: 25px;
       height: 25px;
@@ -30,6 +30,29 @@
     top: 30%;
     left: 14%;
     z-index: 1;
+    .like {
+      div {
+        display: flex;
+        align-items: center;
+        img {
+          width: 20px;
+          cursor: pointer;
+        }
+        button{
+          width: 80px;
+          font-size: 16px;
+          background-color: rgb(58, 58, 250);
+          border: none;
+          
+        }
+      }
+    }
+    .see-prod{
+      display: flex;
+      justify-content: center;
+      height: 40px;
+      color: white;
+    }
     div:first-of-type {
       display: flex;
       justify-content: center;
@@ -37,17 +60,17 @@
       width: 140px;
       height: 40px;
       color: white;
-  }
-  button {
-    width: 140px;
-    height: 40px;
-    border: 1px solid gray;
-    background-color: white;
-    color: #d37a42;
-    cursor: pointer;
-  }
+    }
+    button {
+      width: 140px;
+      height: 40px;
+      border: 1px solid gray;
+      background-color: white;
+      color: #d37a42;
+      cursor: pointer;
+    }
 
-     span {
+    span {
       display: flex;
       align-items: center;
       cursor: pointer;

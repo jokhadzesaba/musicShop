@@ -5,8 +5,14 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 import { CartService } from 'src/app/cart/cart.service';
-import { Cart, KeyValueUser, ProductKeyAndType, ProductKeyValue, User } from 'src/app/interfaces';
-import { SngPageService } from 'src/app/single-product-page/service/sng-page.service';
+import {
+  Cart,
+  KeyValueUser,
+  ProductKeyAndType,
+  ProductKeyValue,
+  User,
+} from 'src/app/interfaces';
+import { IdService } from 'src/app/sharedService/id.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,10 +25,10 @@ export class LoginAndRegistrationService {
     private auth: AngularFireAuth,
     private http: HttpClient,
     private router: Router,
-    private cartService:CartService,
-    private sng:SngPageService,
+    private cartService: CartService,
+    private idService: IdService
   ) {}
-  public isAdmin = new BehaviorSubject<boolean>(false)
+  public isAdmin = new BehaviorSubject<boolean>(false);
   public likedProducts = new BehaviorSubject<ProductKeyAndType[]>([]);
   public loginWithGoogle() {
     this.auth.signInWithPopup(new GoogleAuthProvider()).then(
@@ -33,7 +39,7 @@ export class LoginAndRegistrationService {
             this.addUserTodatabase(res.user?.email!, res.user?.photoURL!);
           } else {
             this.findUser(res.user?.email!).subscribe((user) => {
-              this.loggedUser.next(user);       
+              this.loggedUser.next(user);
               this.router.navigate(['/products']);
               localStorage.setItem('currentUser', JSON.stringify(user));
             });
@@ -53,9 +59,13 @@ export class LoginAndRegistrationService {
           this.loggedUser.next(user);
           this.router.navigate(['/products']);
           localStorage.setItem('currentUser', JSON.stringify(user));
-          if (user?.user.likedProducts) {    
-            this.sng.prodId.next(user?.user.likedProducts)     
-            localStorage.setItem('prodKeyAndType', JSON.stringify(user?.user.likedProducts))  
+          if (user?.user.likedProducts) {
+            this.idService.prodId.next(user?.user.likedProducts);
+            localStorage.setItem(
+              'prodKeyAndType',
+              JSON.stringify(user?.user.likedProducts)
+            );
+            this.isAdmin.next(user?.user.isAdmin);
           }
         });
       },
@@ -95,7 +105,7 @@ export class LoginAndRegistrationService {
                 key: 'unknown',
                 product: {
                   category: 'other',
-                  isTopProduct:{isTop:false,date:new Date(1990)},
+                  isTopProduct: { isTop: false, date: new Date(1990) },
                   model: 'none',
                   price: -1,
                   quantity: -1,
@@ -149,23 +159,33 @@ export class LoginAndRegistrationService {
   }
   checkIfLoggedIn() {
     if (localStorage.getItem('currentUser')) {
-      let user:KeyValueUser | undefined = JSON.parse(localStorage.getItem('currentUser')!);
+      let user: KeyValueUser | undefined = JSON.parse(
+        localStorage.getItem('currentUser')!
+      );
       this.loggedUser.next(user);
-      
+      if (user) {
+        this.isAdmin.next(user?.user.isAdmin);
+      }
       if (localStorage.getItem('cart')) {
-        this.cartService.cart.next(JSON.parse(localStorage.getItem('cart')!) as Cart[])
+        this.cartService.cart.next(
+          JSON.parse(localStorage.getItem('cart')!) as Cart[]
+        );
       }
       if (localStorage.getItem('prodKeyAndType')) {
-        this.sng.prodId.next(JSON.parse(localStorage.getItem('prodKeyAndType')!) as ProductKeyAndType[])
+        this.idService.prodId.next(
+          JSON.parse(
+            localStorage.getItem('prodKeyAndType')!
+          ) as ProductKeyAndType[]
+        );
       }
     }
   }
   logOut() {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('cart');
-    
+    this.isAdmin.next(false);
+
     this.loggedUser.next(undefined);
-    this.cartService.cart.next([])
-    
+    this.cartService.cart.next([]);
   }
 }

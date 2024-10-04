@@ -16,11 +16,21 @@
       />
     </div>
     <div [ngClass]="isEditing ? 'display-none' : 'hover'">
+      <div class="like">
+        <div *ngIf="!isLiked">
+          <button (click)="likeOrUnlikeProd()">Like</button>
+          <img (click)="likeOrUnlikeProd()" src="assets/heart.png" alt="img" />
+        </div>
+        <div *ngIf="isLiked">
+          <button (click)="likeOrUnlikeProd()">unLike</button>
+          <img (click)="likeOrUnlikeProd()" src="assets/heart-red.png" alt="img" />
+        </div>
+      </div>
       <button (click)="addInCart()">Add to cart</button>
-      <div>
+      <div class="see-prod">
         <span (click)="navigation()">See Product</span>
       </div>
-      <div class="add-remove" *ngIf="isAdmin">
+      <div class="add-remove" *ngIf="isAdmin |async">
         <button *ngIf="!isTopProduct" (click)="makeItTop()">Add To Top</button>
         <button *ngIf="isTopProduct" (click)="makeItTop()">
           Remove From Top

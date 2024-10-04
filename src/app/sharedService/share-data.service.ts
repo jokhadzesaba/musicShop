@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, map } from 'rxjs';
-import { ProductKeyValue } from '../interfaces';
+import { ProductKeyAndType, ProductKeyValue } from '../interfaces';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -14,15 +14,11 @@ export class ShareDataService {
   public pianoProducts = new BehaviorSubject<ProductKeyValue[]>([]);
   public bassProducts = new BehaviorSubject<ProductKeyValue[]>([]);
   public drumProducts = new BehaviorSubject<ProductKeyValue[]>([]);
+  public likedProducts = new BehaviorSubject<ProductKeyAndType[]>([])
   private topProductUpdated = new BehaviorSubject<
     { img?: string; key: string; operation: string } | undefined
   >(undefined);
   topProductUpdated$ = this.topProductUpdated.asObservable();
-  // guitarProducts$ = this.guitarProducts.asObservable();
-  // pianoProducts$ = this.pianoProducts.asObservable();
-  // bassProducts$ = this.bassProducts.asObservable();
-  // drumProducts$ = this.drumProducts.asObservable();
-  // allProducts$ = this.allProducts.asObservable();
   constructor(private http: HttpClient) {}
   getData(data?: 'guitar' | 'piano' | 'bass' | 'drum' | 'other') {
     if (data === 'guitar') {
@@ -37,22 +33,10 @@ export class ShareDataService {
       return this.allProducts;
     }
   }
-  // getObsData(data?: 'guitar' | 'piano' | 'bass' | 'drum' | 'other') {
-  //   if (data === 'guitar') {
-  //     return this.guitarProducts$;
-  //   } else if (data === 'bass') {
-  //     return this.bassProducts$;
-  //   } else if (data === 'drum') {
-  //     return this.drumProducts$;
-  //   } else if (data === 'piano') {
-  //     return this.pianoProducts$;
-  //   }else{
-  //     return this.allProducts$
-  //   }
-  // }
   emitTopProductUpdate(key: string, operation: 'add' | 'remove', img?: string) {
     this.topProductUpdated.next({ img: img, key: key, operation: operation });
   }
+  
   getAllTopProduct() {
     this.allProducts.subscribe((allProduct) => {
       const allProducts = this.mapKeyValue(allProduct);
@@ -97,10 +81,10 @@ export class ShareDataService {
         const drumProds = allProds.filter(
           (pr) => pr.product.category === 'drum'
         );
-        this.guitarProducts.next(guitarProds);
         this.pianoProducts.next(pianoProds);
         this.bassProducts.next(bassProds);
         this.drumProducts.next(drumProds);
+        this.guitarProducts.next(guitarProds);
         this.getAllTopProduct();
         return results;
       })

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ProductKeyAndType } from 'src/app/interfaces';
+import { ProductKeyAndType } from '../interfaces';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class SngPageService {
+export class IdService {
   public prodId = new BehaviorSubject<ProductKeyAndType[] |undefined>(undefined);
   constructor() {}
+
 }

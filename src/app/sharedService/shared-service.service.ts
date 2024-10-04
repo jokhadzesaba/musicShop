@@ -27,8 +27,7 @@ import { ShareDataService } from './share-data.service';
 export class SharedServiceService {
   public detectChanges = new BehaviorSubject<boolean>(false);
   userId = this.service.loggedUser.value?.key;
-  public url =
-    'https://musicshop-88945-default-rtdb.firebaseio.com/';
+  public url = 'https://musicshop-88945-default-rtdb.firebaseio.com/';
   constructor(
     private http: HttpClient,
     private service: LoginAndRegistrationService,
@@ -51,10 +50,10 @@ export class SharedServiceService {
       quantity: parseInt(quantity),
       discount: parseInt(discount),
       photoUrl: photos,
-      isTopProduct: {isTop:false,date:new Date(1990)},
+      isTopProduct: { isTop: false, date: new Date(1990) },
       description: desctiprion,
     };
-    
+
     return this.http.post(`${this.url}/products/${category}.json`, product);
   }
   ifDetectChanges() {
@@ -71,19 +70,18 @@ export class SharedServiceService {
         tap((res) => {
           if (res.isTopProduct.isTop) {
             res.isTopProduct.isTop = false;
-            res.isTopProduct.date = new Date(1990)
+            res.isTopProduct.date = new Date(1990);
           } else {
             res.isTopProduct.isTop = true;
-            res.isTopProduct.date = new Date()
+            res.isTopProduct.date = new Date();
           }
           this.http
             .patch(`${this.url}/products/${categoty}/${key}.json`, res)
             .subscribe();
         })
-      )
+      );
   }
-  
-  
+
   likeUnlikeProduct(
     productId: string,
     productCategory: 'guitar' | 'drum' | 'bass' | 'piano' | 'other',
@@ -113,6 +111,7 @@ export class SharedServiceService {
               );
               updatedUser.likedProducts = updatedData;
             }
+            localStorage.setItem('prodKeyAndType', JSON.stringify(updatedData));
           }
           this.http
             .patch(`${this.url}/musicShopUsers/${userId}.json`, updatedUser)
@@ -213,7 +212,6 @@ export class SharedServiceService {
     );
   }
 
-
   public editProduct(
     formData: any,
     prodId: string,
@@ -285,7 +283,7 @@ export class SharedServiceService {
             counter--;
           }
         }
-        
+
         return randomProducts;
       })
     );

@@ -41,6 +41,7 @@ export class ProfileComponent implements OnInit {
     quantity: ['', Validators.required],
     discount: ['', Validators.required],
     description: ['', Validators.required],
+    isAcoustic: [false, Validators.required],
   });
   constructor(
     private authService: LoginAndRegistrationService,
@@ -93,6 +94,7 @@ export class ProfileComponent implements OnInit {
     const discount = this.form.get('discount')?.getRawValue();
     const quantity = this.form.get('quantity')?.getRawValue();
     const description = this.form.get('description')?.getRawValue();
+    const isAcoustic = this.form.get('isAcoustic')?.getRawValue();
     this.sharedService
       .addProduct(
         category,
@@ -101,7 +103,8 @@ export class ProfileComponent implements OnInit {
         quantity,
         discount,
         this.photos,
-        description
+        description,
+        isAcoustic
       )
       .subscribe({
         next: () => {

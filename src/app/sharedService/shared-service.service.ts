@@ -41,7 +41,8 @@ export class SharedServiceService {
     quantity: string,
     discount: string,
     photos: string[],
-    desctiprion: string
+    desctiprion: string,
+    isAcoustic:boolean
   ) {
     const product: Product = {
       category: category,
@@ -51,7 +52,9 @@ export class SharedServiceService {
       discount: parseInt(discount),
       photoUrl: photos,
       isTopProduct: { isTop: false, date: new Date(1990) },
+      isAcoustic:isAcoustic,
       description: desctiprion,
+      
     };
 
     return this.http.post(`${this.url}/products/${category}.json`, product);

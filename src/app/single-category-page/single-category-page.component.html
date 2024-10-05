@@ -1,36 +1,25 @@
 <app-header></app-header>
 <div class="filter">
-  <div class="slider">
-    <div class="left">
-      <input
-        type="range"
-        min="0"
-        max="50000"
-        [(ngModel)]="leftSlider"
-        id="lower"
-      />
-      <input type="text" [value]="leftSlider" [(ngModel)]="leftSlider" />
-    </div>
-    <div class="right">
-      <input
-        type="range"
-        min="0"
-        max="50000"
-        [(ngModel)]="rightSlider"
-        id="upper"
-      />
-      <input type="text" [value]="rightSlider" [(ngModel)]="rightSlider" />
-    </div>
-  </div>
+  <input type="number" [(ngModel)]="leftSlider" placeholder="min price">
+  <input type="number" [(ngModel)]="rightSlider" placeholder="max price">
+  <label>
+    Acoustic
+    <input type="checkbox" [(ngModel)]="acoustic">
+  </label>
   <div class="search">
     <input type="text" [(ngModel)]="searchWords" placeholder="model" />
     <img (click)="filter()" src="assets/loupe.png" alt="img" />
   </div>
   <br />
 </div>
-<div class="products">
-  <app-card [product]="product" (removeEvent)="onRemove($event)" (editEvent)="onEdit($event)"  *ngFor="let product of products" class="single-product">
-
+<div class="products" *ngIf="products">
+  <app-card
+    [product]="product"
+    (removeEvent)="onRemove($event)"
+    (editEvent)="onEdit($event)"
+    *ngFor="let product of products"
+    class="single-product"
+  >
   </app-card>
 </div>
 <app-footer></app-footer>

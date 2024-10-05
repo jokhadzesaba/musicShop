@@ -81,10 +81,15 @@ export class ShareDataService {
         const drumProds = allProds.filter(
           (pr) => pr.product.category === 'drum'
         );
+        
+        
         this.pianoProducts.next(pianoProds);
         this.bassProducts.next(bassProds);
         this.drumProducts.next(drumProds);
         this.guitarProducts.next(guitarProds);
+        console.log(bassProds);
+        console.log(drumProds);
+        console.log(guitarProds);
         this.getAllTopProduct();
         return results;
       })

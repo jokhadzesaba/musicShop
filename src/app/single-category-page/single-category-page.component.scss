@@ -3,44 +3,13 @@
   display: flex;
   flex-direction: column;
   gap: 17px;
-  .slider {
+  label{
     display: flex;
-    flex-direction: column;
-    gap: 2px;
-    > .right,
-    .left {
-      display: flex;
-      width: 350px;
-      gap: 4px;
-      align-items: center;
-      input:first-child {
-        width: 250px;
-        background: linear-gradient(grey, grey) no-repeat center;
-        border-radius: 1px;
-        background-size: 100% 2px;
-        cursor: pointer;
-        &:active,
-        &:focus {
-          outline: none;
-        }
-        &::-webkit-slider-thumb {
-          height: 28px;
-          width: 28px;
-          border-radius: 28px;
-          background-color: #fff;
-          position: relative;
-          cursor: pointer;
-          appearance: none;
-          pointer-events: all;
-          box-shadow: 0 1px 4px 0.5px rgba(0, 0, 0, 0.25);
-        }
-      }
-      input:nth-child(2) {
-        width: 45px;
-        height: 25px;
-        border-radius: 6px;
-      }
-    }
+    gap: 10px;
+  }
+  >input{
+    width: 80px;
+    border-radius: 4px;
   }
   >.search{
     display: flex;
@@ -67,17 +36,3 @@
   padding: 6%;
 }
 
-input[type="range"] {
-  box-sizing: border-box;
-  appearance: none;
-  width: 400px;
-  margin: 0;
-  padding: 0 2px;
-  overflow: hidden;
-  border: 0;
-  border-radius: 1px;
-  outline: none;
-  background: linear-gradient(grey, grey) no-repeat center;
-  background-size: 100% 2px;
-  pointer-events: none;
-}

@@ -110,6 +110,7 @@ export class LoginAndRegistrationService {
                   price: -1,
                   quantity: -1,
                   discount: -1,
+                  isAcoustic:false,
                   photoUrl: ['none'],
                 },
               },

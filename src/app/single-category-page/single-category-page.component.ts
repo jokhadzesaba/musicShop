@@ -17,14 +17,14 @@ import { ShareDataService } from '../sharedService/share-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SingleCategoryPageComponent implements OnInit {
-  private likedProducts: ProductKeyAndType[] = [];
-  public leftSlider = 0;
-  public rightSlider = 50000;
+  public leftSlider?:number;
+  public rightSlider?:number;
   public searchWords = '';
   public isAdmin: boolean = false;
   public products!: ProductKeyValue[];
   public UnChangedProducts!: ProductKeyValue[];
   public isEditing: string = '';
+  public acoustic = false
 
   constructor(
     private route: ActivatedRoute,
@@ -55,9 +55,11 @@ export class SingleCategoryPageComponent implements OnInit {
   getProducts() {
     this.route.params.subscribe((res) => {
       this.shareDataService.getData(res['category']).subscribe((res) => {
-        this.products = res;
-        this.UnChangedProducts = res;
-        this.cd.detectChanges();
+        if (res) {
+          this.products = res;
+          this.UnChangedProducts = res;
+          this.cd.detectChanges();
+        }
       });
     });
   }
@@ -74,25 +76,30 @@ export class SingleCategoryPageComponent implements OnInit {
     return check;
   }
   searchByRange(price: number) {
-    if (this.leftSlider > this.rightSlider) {
-      if (price < this.leftSlider && price > this.rightSlider) {
-        return true;
+    if (this.leftSlider && this.rightSlider) {
+      if (this.leftSlider > this.rightSlider) {
+        if (price < this.leftSlider && price > this.rightSlider) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
-        return false;
+        if (price > this.leftSlider && price < this.rightSlider) {
+          return true;
+        } else {
+          return false;
+        }
       }
-    } else {
-      if (price > this.leftSlider && price < this.rightSlider) {
-        return true;
-      } else {
-        return false;
-      }
+    }else{
+      return true
     }
   }
-  filter() {
+  filter() {    
     this.products = this.UnChangedProducts.filter(
       (pr) =>
         this.searchByRange(pr.product.price) &&
-        this.searchWordInSentence(pr.product.model)
+        this.searchWordInSentence(pr.product.model) && 
+        pr.product.isAcoustic === this.acoustic
     );
     this.cd.detectChanges();
   }

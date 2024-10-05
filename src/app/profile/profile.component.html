@@ -27,6 +27,10 @@
         <input placeholder="Discount" formControlName="discount" />
         <input placeholder="Quantity" formControlName="quantity" />
         <input placeholder="Description" formControlName="description" />
+        <label>
+          is isAcoustic
+          <input type="checkbox" formControlName="isAcoustic" />
+        </label>
         <input type="file" (change)="onFileChange($event)" />
         <button [disabled]="form.invalid" (click)="addNewProduct()">
           add product

@@ -21,6 +21,7 @@ export interface Product {
   description?: string;
   quantity: number;
   discount: number;
+  isAcoustic:boolean,
   isTopProduct:{isTop:boolean,date:Date};
   photoUrl: string[];
 }

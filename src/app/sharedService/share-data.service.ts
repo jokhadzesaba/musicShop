@@ -87,9 +87,6 @@ export class ShareDataService {
         this.bassProducts.next(bassProds);
         this.drumProducts.next(drumProds);
         this.guitarProducts.next(guitarProds);
-        console.log(bassProds);
-        console.log(drumProds);
-        console.log(guitarProds);
         this.getAllTopProduct();
         return results;
       })

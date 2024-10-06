@@ -42,6 +42,10 @@ export class ProductPageSingleCategoryComponent implements OnInit {
         this.loading = false;
         this.productsImported.emit(true);
         this.cd.detectChanges();
+        this.applyResponsive()
+        console.log(window.innerWidth);
+        
+        
       });
     }
   }
@@ -93,6 +97,18 @@ export class ProductPageSingleCategoryComponent implements OnInit {
       );
     } else {
       return this.category;
+    }
+  }
+  applyResponsive(){
+    const width = window.innerWidth
+    if (width < 1300) {
+      this.SliceEnd = 5
+    } else if(width < 900){
+      this.SliceEnd = 4
+    } else if(width < 700){
+      this.SliceEnd = 3
+    } else if(width < 400){
+      this.SliceEnd = 1
     }
   }
 }

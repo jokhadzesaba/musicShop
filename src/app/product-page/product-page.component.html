@@ -1,25 +1,27 @@
 <app-header></app-header>
 <app-top-products></app-top-products>
 <h1>Our Products</h1>
-<div *ngIf="loading$|async" class="loading-container">
+<div *ngIf="loading$ | async" class="loading-container">
   <div class="loader"></div>
   <p>Loading...</p>
 </div>
-<app-product-page-single-category
-  [category]="'guitar'"
-  (productsImported)="loadingValue($event)"
-></app-product-page-single-category>
-<app-product-page-single-category
-  [category]="'drum'"
-  (productsImported)="loadingValue($event)"
-></app-product-page-single-category>
-<app-product-page-single-category
-  [category]="'piano'"
-  (productsImported)="loadingValue($event)"
-></app-product-page-single-category>
-<app-product-page-single-category
-  [category]="'bass'"
-  (productsImported)="loadingValue($event)"
-></app-product-page-single-category>
+<div class="container">
+  <app-product-page-single-category
+    [category]="'guitar'"
+    (productsImported)="loadingValue($event)"
+  ></app-product-page-single-category>
+  <app-product-page-single-category
+    [category]="'drum'"
+    (productsImported)="loadingValue($event)"
+  ></app-product-page-single-category>
+  <app-product-page-single-category
+    [category]="'piano'"
+    (productsImported)="loadingValue($event)"
+  ></app-product-page-single-category>
+  <app-product-page-single-category
+    [category]="'bass'"
+    (productsImported)="loadingValue($event)"
+  ></app-product-page-single-category>
+</div>
 
 <app-footer></app-footer>

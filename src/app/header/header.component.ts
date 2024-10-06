@@ -24,6 +24,8 @@ export class HeaderComponent implements OnInit {
   public user?: KeyValueUser;
   public profilePicture?: string;
   public cart: boolean = false;
+  public showsSidebar = false;
+  public showsSidebar2 = true;
   constructor(
     private router: Router,
     private loginService: LoginAndRegistrationService,
@@ -38,6 +40,10 @@ export class HeaderComponent implements OnInit {
   }
   public changeDropDown() {
     this.dropDown = !this.dropDown;
+  }
+  public changeShowsSidebar() {
+    this.showsSidebar = !this.showsSidebar;
+    this.showsSidebar2 = !this.showsSidebar2;
   }
   public navigateToProfile() {
     this.router.navigate([`profile/${this.user?.key}`]);

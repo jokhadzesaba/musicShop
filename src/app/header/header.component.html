@@ -1,3 +1,39 @@
+<div *ngIf="showsSidebar2" class="menu-icon" (click)="changeShowsSidebar()">
+  <img src="assets/menu-bar.png" alt="img" />
+</div>
+<nav *ngIf="showsSidebar" class="sidebar">
+  <div class="sidebar-content">
+    <div class="menu-icon" (click)="changeShowsSidebar()">
+      <img src="assets/menu-bar.png" alt="img" />
+      <span routerLink="/products">SABAMUSIC.</span>
+    </div>
+    <div class="sections">
+      <div class="categories">
+        <span (click)="navigateToCategotyPage('guitar')">Guitars</span>
+        <span (click)="navigateToCategotyPage('drum')">Drums</span>
+        <span (click)="navigateToCategotyPage('bass')">Basses </span>
+        <span (click)="navigateToCategotyPage('piano')">Pianos</span>
+        <span (click)="navigate('contact')">Contact</span>
+        <span (click)="navigate('about-us')">About Us</span>
+        <app-cart
+        class="cart"
+        [userEmail]="user?.user?.email!"
+        [showCart]="cart"
+      ></app-cart>
+      </div>
+      <div class="cnt">
+        <img *ngIf="user" (click)="logOut()" src="assets/logout.png" alt="img" />
+        <img (click)="openCloseCart()" src="assets/shopping-cart.png" alt="img" />
+        <img
+          *ngIf="user"
+          (click)="navigateToProfile()"
+          src="assets/profile.png"
+          alt="img"
+        />
+      </div>
+    </div>
+  </div>
+</nav>
 <div class="header-container">
   <div>
     <span routerLink="/products">SABAMUSIC.</span>
@@ -15,13 +51,22 @@
       <img (click)="changeDropDown()" src="assets/down-arrow.png" alt="img" />
     </div>
     <span (click)="navigate('contact')">Contact</span>
-    <span (click)="navigate('about-us')" >About Us</span>
-    <span *ngIf="!user"(click)="navigate('login')">Log In</span>
-    <app-cart class="cart" [userEmail]="user?.user?.email!" [showCart]="cart"></app-cart>
+    <span (click)="navigate('about-us')">About Us</span>
+    <span *ngIf="!user" (click)="navigate('login')">Log In</span>
+    <app-cart
+      class="cart"
+      [userEmail]="user?.user?.email!"
+      [showCart]="cart"
+    ></app-cart>
   </div>
   <div>
     <img *ngIf="user" (click)="logOut()" src="assets/logout.png" alt="img" />
     <img (click)="openCloseCart()" src="assets/shopping-cart.png" alt="img" />
-    <img *ngIf="user" (click)="navigateToProfile()" src="assets/profile.png" alt="img" />
+    <img
+      *ngIf="user"
+      (click)="navigateToProfile()"
+      src="assets/profile.png"
+      alt="img"
+    />
   </div>
 </div>

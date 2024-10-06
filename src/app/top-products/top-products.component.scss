@@ -70,4 +70,16 @@
 .highlight {
   background-color: #ffc107;
 }
-
+@media only screen and (min-width: 900px) and (max-width: 1400px) {
+  /* Your responsive styles go here */
+  .topProducts-container {
+    div {
+      > .images {
+        .img {
+          width: 100px;
+          height: 100px;
+        }
+      }
+    }
+  }
+}

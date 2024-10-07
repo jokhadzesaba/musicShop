@@ -2,7 +2,12 @@ h1 {
   display: flex;
   justify-content: center;
 }
-
+.container{
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
 .loading-container{
   margin: 0 auto;
   width: 300px;

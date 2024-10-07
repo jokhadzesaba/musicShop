@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
@@ -19,7 +20,7 @@ import { ShareDataService } from '../sharedService/share-data.service';
   templateUrl: './product-page-single-category.component.html',
   styleUrl: './product-page-single-category.component.scss',
 })
-export class ProductPageSingleCategoryComponent implements OnInit {
+export class ProductPageSingleCategoryComponent implements OnInit, OnDestroy {
   public productsArray: ProductKeyValue[] = [];
   @Input() category?: 'guitar' | 'bass' | 'piano' | 'drum' | 'other';
   @Output() productsImported = new EventEmitter<boolean>(true);
@@ -41,11 +42,10 @@ export class ProductPageSingleCategoryComponent implements OnInit {
         this.length = res.length;
         this.loading = false;
         this.productsImported.emit(true);
+        this.applyResponsive();
+        window.addEventListener('resize', this.applyResponsive.bind(this));
         this.cd.detectChanges();
-        this.applyResponsive()
         console.log(window.innerWidth);
-        
-        
       });
     }
   }
@@ -61,6 +61,9 @@ export class ProductPageSingleCategoryComponent implements OnInit {
       this.sliceStart -= 1;
       this.SliceEnd -= 1;
     }
+  }
+  ngOnDestroy(): void {
+    window.removeEventListener('resize', this.applyResponsive.bind(this)); // Clean up event listener
   }
 
   onFormSubmitted(data: {
@@ -99,16 +102,25 @@ export class ProductPageSingleCategoryComponent implements OnInit {
       return this.category;
     }
   }
-  applyResponsive(){
-    const width = window.innerWidth
-    if (width < 1300) {
-      this.SliceEnd = 5
-    } else if(width < 900){
-      this.SliceEnd = 4
-    } else if(width < 700){
-      this.SliceEnd = 3
-    } else if(width < 400){
-      this.SliceEnd = 1
+  applyResponsive() {
+    const width = window.innerWidth;
+  
+    // Each card, including gap and padding, takes up approximately 250px
+    const cardWidthWithPadding = 230;
+    
+    // Calculate how many cards can fit in the current window width
+    const maxCards = Math.floor(width / cardWidthWithPadding);
+  
+    // Ensure the max slice size is 6 (as per your requirement)
+    this.SliceEnd = Math.min(maxCards, 8);
+  
+    // Ensure the sliceStart is valid and sliceEnd doesn't exceed the total number of products
+    if (this.SliceEnd > this.length) {
+      this.SliceEnd = this.length;
     }
+  
+    this.sliceStart = 0; // Optionally reset to always show the first items on resize
+    this.cd.detectChanges(); // Trigger change detection to update the UI
   }
+  
 }

@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SharedServiceService } from './sharedService/shared-service.service';
 import { ShareDataService } from './sharedService/share-data.service';
+import { HeaderComponent } from "./header/header.component";
 
 
 
@@ -31,7 +32,8 @@ import { ShareDataService } from './sharedService/share-data.service';
     BrowserAnimationsModule,
     CartComponent,
     SuggestionsComponent,
-  ],
+    HeaderComponent
+],
   bootstrap: [AppComponent],
   providers:[ {
     provide: APP_INITIALIZER,

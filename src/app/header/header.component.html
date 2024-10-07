@@ -3,7 +3,7 @@
 </div>
 <nav *ngIf="showsSidebar" class="sidebar">
   <div class="sidebar-content">
-    <div class="menu-icon" (click)="changeShowsSidebar()">
+    <div class="menu-icon-1" (click)="changeShowsSidebar()">
       <img src="assets/menu-bar.png" alt="img" />
       <span routerLink="/products">SABAMUSIC.</span>
     </div>
@@ -15,6 +15,7 @@
         <span (click)="navigateToCategotyPage('piano')">Pianos</span>
         <span (click)="navigate('contact')">Contact</span>
         <span (click)="navigate('about-us')">About Us</span>
+        <span *ngIf="!user" (click)="navigate('login')">Log In</span>
         <app-cart
         class="cart"
         [userEmail]="user?.user?.email!"

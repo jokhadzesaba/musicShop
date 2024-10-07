@@ -16,7 +16,7 @@
       />
     </div>
     <div [ngClass]="isEditing ? 'display-none' : 'hover'">
-      <div class="like">
+      <div *ngIf="userID" class="like">
         <div *ngIf="!isLiked">
           <button (click)="likeOrUnlikeProd()">Like</button>
           <img (click)="likeOrUnlikeProd()" src="assets/heart.png" alt="img" />

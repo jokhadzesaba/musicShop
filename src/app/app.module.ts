@@ -13,6 +13,7 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SharedServiceService } from './sharedService/shared-service.service';
 import { ShareDataService } from './sharedService/share-data.service';
 import { HeaderComponent } from "./header/header.component";
+import { FooterComponent } from "./footer/footer.component";
 
 
 
@@ -32,7 +33,8 @@ import { HeaderComponent } from "./header/header.component";
     BrowserAnimationsModule,
     CartComponent,
     SuggestionsComponent,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
 ],
   bootstrap: [AppComponent],
   providers:[ {

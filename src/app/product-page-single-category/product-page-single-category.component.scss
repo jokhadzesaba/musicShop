@@ -1,4 +1,5 @@
 .products-container {
+  z-index: -1;
   > div:first-child {
     width: 100%;
     display: flex;

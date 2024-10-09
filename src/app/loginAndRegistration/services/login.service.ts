@@ -38,11 +38,9 @@ export class LoginAndRegistrationService {
           if (user === undefined) {
             this.addUserTodatabase(res.user?.email!, res.user?.photoURL!);
           } else {
-            this.findUser(res.user?.email!).subscribe((user) => {
               this.loggedUser.next(user);
               this.router.navigate(['/products']);
               localStorage.setItem('currentUser', JSON.stringify(user));
-            });
           }
         });
       },

@@ -45,7 +45,6 @@ export class ProductPageSingleCategoryComponent implements OnInit, OnDestroy {
         this.applyResponsive();
         window.addEventListener('resize', this.applyResponsive.bind(this));
         this.cd.detectChanges();
-        console.log(window.innerWidth);
       });
     }
   }
@@ -104,23 +103,14 @@ export class ProductPageSingleCategoryComponent implements OnInit, OnDestroy {
   }
   applyResponsive() {
     const width = window.innerWidth;
-  
-    // Each card, including gap and padding, takes up approximately 250px
-    const cardWidthWithPadding = 230;
-    
-    // Calculate how many cards can fit in the current window width
+    const cardWidthWithPadding = 240;
     const maxCards = Math.floor(width / cardWidthWithPadding);
-  
-    // Ensure the max slice size is 6 (as per your requirement)
     this.SliceEnd = Math.min(maxCards, 8);
-  
-    // Ensure the sliceStart is valid and sliceEnd doesn't exceed the total number of products
     if (this.SliceEnd > this.length) {
       this.SliceEnd = this.length;
     }
-  
-    this.sliceStart = 0; // Optionally reset to always show the first items on resize
-    this.cd.detectChanges(); // Trigger change detection to update the UI
+
+    this.sliceStart = 0;
+    this.cd.detectChanges();
   }
-  
 }

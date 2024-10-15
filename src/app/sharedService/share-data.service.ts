@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class ShareDataService {
-  public url = 'https://musicshop-88945-default-rtdb.firebaseio.com/';
+  public url = 'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app/';
   public allProducts = new BehaviorSubject<ProductKeyValue[]>([]);
   public topProducts = new BehaviorSubject<ProductKeyValue[]>([]);
   public guitarProducts = new BehaviorSubject<ProductKeyValue[]>([]);

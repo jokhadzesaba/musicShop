@@ -27,7 +27,7 @@ import { ShareDataService } from './share-data.service';
 export class SharedServiceService {
   public detectChanges = new BehaviorSubject<boolean>(false);
   userId = this.service.loggedUser.value?.key;
-  public url = 'https://musicshop-88945-default-rtdb.firebaseio.com/';
+  public url = 'https://exercise-app-9b873-default-rtdb.europe-west1.firebasedatabase.app/';
   constructor(
     private http: HttpClient,
     private service: LoginAndRegistrationService,
